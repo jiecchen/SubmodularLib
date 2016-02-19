@@ -4,10 +4,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Naive Greedy Algorithm for monotone submodular function maximization under cardinality constraint
- * Reference: Nemhauser, G. L., and Wolsey, L. A. 1978. Best algorithms for approximating
- *            the maximum of a submodular set function. Math. Oper. Research.
- * Created by cjc on 2/16/16.
+ * ## Naive Greedy Algorithm
+ * for monotone submodular function maximization under cardinality constraint
+ *
+ * - Author: Jiecao Chen
+ * - Date: 2/16/16.
+ *
+ * ## Reference
+ * + Nemhauser, G. L., and Wolsey, L. A. 1978. Best algorithms for approximating
+ *   the maximum of a submodular set function. Math. Oper. Research.
+ *
  */
 
 public class Greedy {
