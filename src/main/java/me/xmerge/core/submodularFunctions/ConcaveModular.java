@@ -3,9 +3,12 @@ package me.xmerge.core.submodularFunctions;
 import me.xmerge.core.SubmodularBuffer;
 
 /**
- * Demo: Assume S is a set of positive numbers,
- *       \( f(S) = (\sum_{a\in S} a)^{\alpha}\) is a submodular function when alpha > 1
- * Created by cjc on 2/16/16.
+ * ## Demo: ConcaveModular
+ *
+ * Assume S is a set of positive numbers,
+ *       $f(S) = (\sum_{a\in S} a)^{\alpha}$ is a submodular function when $\alpha > 1$
+ *
+ * Created by CJC on 2/16/16.
  */
 public class ConcaveModular extends SubmodularBuffer<Double> {
     private double alpha;
