@@ -1,0 +1,118 @@
+
+\section{Submodularity}
+In this section, we first give several equivalent definitions of submodularity, and then we introduce several fundamental properties of submodular functions. We also discuss various constraints that occur frequently in submodular optimization problems. In the last part of this section, we cover algorithms that solve constrained submodular maximization problems with theoretical approximation guarantee. 
+
+\subsection{Definitions}
+There are many equivalent definitions, and we will discuss three of them in this section. 
+
+\begin{definition}[submodular concave]
+  \label{def:sub-concave}
+  A function $f:~2^V \rightarrow \bbR$ is \emRed{submodular} if for any $A, B \subseteq V$, we have that:
+  \begin{equation}
+    \label{eq:sub-concave}
+    f(A) + f(B) \geq f(A \cup B) + f(A \cap B).
+  \end{equation}
+\end{definition}
+
+An alternate equivalent definition is more interpretable in many situations,
+
+\begin{definition}[diminishing returns]
+  \label{def:sub-diminishing}
+  A function $f: 2^V \rightarrow \bbR$ is \emRed{submodular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
+  \begin{equation}
+    \label{eq:sub-diminishing}
+    f(A + v) - f(A) \geq f(B + v) - f(B).
+  \end{equation}
+\end{definition}
+
+Intuitively, this definition requires that the incremental ``gain'' of adding a new element $v$ decreases (diminishes) as the base set grows from $A$ to $B$. We will see that this property is actually shared by many real-world phenomenons.
+
+It turns out that a stronger but equivalent statement can also serve as the definition of a submodular function,
+
+\begin{definition}[group diminishing returns]
+  \label{def:sub-diminishing-group}
+  A function $f: 2^V \rightarrow \bbR$ is \emRed{submodular} if for any $A \subseteq B \subset V$, and $C \subseteq V\backslash B$, we have that:
+  \begin{equation}
+    \label{eq:sub-diminishing-group}
+    f(A \cup C) - f(A) \geq f(B \cup C) - f(B).
+  \end{equation}
+\end{definition}
+
+
+\subsection{Modularity and Supermodularity}
+We also briefly mention modularity and supermodularity here. These two concepts are closely related to submodularity. 
+
+A function $f: 2^V \rightarrow \bbR$ is modular if we replace inequality by equality in Definition \ref{def:sub-diminishing} (or any of other two). Formally, 
+
+\begin{definition}[Modularity]
+  \label{def:modular}
+  A function $f: 2^V \rightarrow \bbR$ is \emRed{modular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
+  \begin{equation}
+    \label{eq:modular}
+    f(A + v) - f(A) = f(B + v) - f(B).
+  \end{equation}
+\end{definition}
+Notably, a modular function $f$ can always be written as
+$$f(S) = f(\emptyset) + \sum_{v\in S} \left( f(\{v\}) - f(\emptyset) \right)$$
+for any $S \subseteq V$.
+
+If we further assume $f(\emptyset) = 0$ (in this case, we call $f$ \emRed{normalized}), we have a simplified expression,
+
+$$f(S) = \sum_{v\in S} f(\{v\}).$$
+
+
+Modularity can be useful in our discussion of submodularity, because one can use modular functions to construct submodular functions with desired properties in their applications. Examples can be found in e.g. \cite{LB11,LB11word}.
+
+
+
+
+A supermodular function is defined by flipping the inequality sign in the definition of a submodular function. Formally,
+\begin{definition}[Supermodularity]
+  \label{def:supermodular}
+  A function $f: 2^V \rightarrow \bbR$ is \emRed{modular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
+  \begin{equation}
+    \label{eq:submodular}
+    f(A + v) - f(A) \leq f(B + v) - f(B).
+  \end{equation}
+\end{definition}
+
+We will focus on submodular functions because a function is supermodular if and only if its negative is submodular. 
+
+
+
+\subsection{Properties}
+Like convex and concave functions, submodular functions have many nice properties. Lov{\'a}sz's description of convex functions \cite{L83} can be viewed as accurate comments on submodularity:
+\begin{quote}
+ - Convex functions occur in many mathematical models in economy,
+engineering, and other sciences. Convexity is a very natural property
+of various functions and domains occurring in such models; quite
+often the only non-trivial property which can be stated in general.
+
+- Convexity is preserved under many natural operations and
+transformations, and thereby the effective range of results can be
+extended, elegant proof techniques can be developed as well as
+unforeseen applications of certain results can be given.
+
+- Convex functions and domains exhibit sufficient structure so that a
+mathematically beautiful and practically useful theory can be
+developed.
+
+- There are theoretically and practically (reasonably) efficient methods
+to find the minimum of a convex function.
+\end{quote}
+ 
+
+
+\subsection{Constraints}
+
+\subsection{Algorithms for Submodular Maximization}
+Greey algorithm guarantee is for normalized, monotone submodular maximization under cardinality constraint.  
+Moreover, no polynomial time algorithm can provide a better approximation guarantee unless P = NP \cite{F98}.
+
+
+
+
+
+
+
+

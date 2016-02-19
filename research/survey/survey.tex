@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+
+
+
+
+
+
+%\usepackage{times}
+\usepackage{palatino}%charter}
+\usepackage{wrapfig}
+\usepackage{citesort}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{fullpage}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{theorem}
+%\theoremstyle{remark} 
+%\theoremstyle{definition}
+%\usepackage{wide}
+%\usepackage[ruled, vlined]{algorithm2e}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\usepackage{color}
+
+
+
+\newcommand{\veps}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\E}{\mathbf{E}}
+\renewcommand{\Pr}{\mathbf{Pr}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\emRed}[1][]{\textcolor{red} #1}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{protocol}{Protocol}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{property}{Property}
+\newtheorem{fact}{Fact}
+\newtheorem{observation}{Observation}
+\newtheorem{heuristic}{Heuristic}
+\newtheorem{solution}{Solution}
+\newtheorem{corollary}{Corollary}
+\newtheorem{scheme}{Scheme}
+\newtheorem{strategy}{Strategy}
+\newtheorem{invariant}{Invariant}
+{\theorembodyfont{\rmfamily}
+\newtheorem{remark}{Remark}}
+{\theorembodyfont{\rmfamily}
+\newtheorem{definition}{Definition}}
+
+
+
+\newcommand{\chensays}[2][]{\textcolor{red} {\textsc{Chen #1:} \emph{#2}}}
+
+
+
+
+\newenvironment{proof}{\trivlist\item[]\emph{Proof:}}%
+{\unskip\nobreak\hskip 1em plus 1fil\nobreak$\Box$
+\parfillskip=0pt%
+\endtrivlist}
+
+
+
+
+
+\begin{document}
+
+\title{A Survey on \\ Distributed/Streaming Submodular Optimization}
+\author{Jiecao Chen}
+\date{\today}
+
+\maketitle
+%\tableofcontents
+\input{introduction}
+\input{submodular}
+\input{application}
+\input{distributed}
+\input{streaming}
+\input{experiment}
+
+\input{conclude}
+
+\bibliographystyle{abbrv}
+\bibliography{survey.bib}
+
+%\newpage
+
+%\appendix
+%\input{appendix}
+
+
+\end{document}
