@@ -26,6 +26,13 @@ public class SieveStreamOPT<T> implements StreamingAlgorithm<T> {
             func.addToSolution(elem);
     }
 
+    /**
+     *
+     * @return value of OPT
+     */
+    public double getOPT() {
+        return OPT;
+    }
 
     public SubmodularBuffer<T> getFunc() {
         return func;
