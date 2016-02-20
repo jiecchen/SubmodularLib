@@ -12,7 +12,7 @@ for any A \subseteq B \subset V,  f(A + v) - f(A) >= f(B + v) - f(B) for all v \
 ~~~~
 
 Submodular functions have many nice properties which allow us to develop deep theoretical results. Also submodularity is such
-a natural property that frequently occurs in many real-world problem. 
+a natural property that it frequently occurs in many real-world problem. 
 
 ## Why submodular optimization is important?
 A large amount of combinatorial problems can be formulated as submodular optimization under certain constraints. 
@@ -22,7 +22,7 @@ network structure learning and many others.
 
 ## Why distributed/streaming?
 Nowadays we have to deal will extremely "big" data: they usually can not fit into a single machine. Distributed computing and streaming
-processing give promising way to handle big data. We implement a set of distributed/streaming algorithms for submodular optimization in
+processing give promising ways to handle big data. We implement a set of distributed/streaming algorithms for submodular optimization in
 this library. 
 
 ## Design
