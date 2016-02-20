@@ -3,7 +3,7 @@ package me.xmerge.streaming;
 import junit.framework.TestCase;
 import me.xmerge.core.Greedy;
 import me.xmerge.core.submodularFunctions.KMedoid;
-import me.xmerge.core.submodularFunctions.MaxValue;
+
 
 import java.util.ArrayList;
 import java.util.Random;
