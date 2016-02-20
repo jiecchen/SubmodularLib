@@ -41,6 +41,7 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
 
 
 
+    @SuppressWarnings("unchecked")
     public void processItem(T elem) {
         double mGain = emptyFunc.marginalGain(elem);
         if (mGain > m)
