@@ -52,9 +52,13 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
         }
 
         // add new SieveStreamOPT instance
-        while (optValues.getLast().getOPT() * (1 + eps) <= 2 * maxSize * m) {
+        while (optValues.isEmpty() || optValues.getLast().getOPT() * (1 + eps) <= 2 * maxSize * m) {
             // create a new SieveStreamOPT instance
-            double newOpt = optValues.getLast().getOPT() * (1 + eps);
+            double newOpt;
+            if (optValues.isEmpty())
+                newOpt = m;
+            else
+                newOpt = optValues.getLast().getOPT() * (1 + eps);
             SubmodularBuffer<T> newFunc = (SubmodularBuffer<T>) UtilFunctions.deepClone(emptyFunc);
             SieveStreamOPT<T> knowOpt = new SieveStreamOPT<>(newOpt, maxSize, newFunc);
             // add it to optValues
@@ -65,6 +69,25 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
                 ssOpt.processItem(elem);
             }
         }
+    }
+
+    /**
+     *
+     * @return func with max function value
+     */
+    public SubmodularBuffer<T> getOptimalFunc() {
+        // find solution with optimal function value
+        Double maxValue = Double.NEGATIVE_INFINITY;
+        SubmodularBuffer<T> ans = emptyFunc;
+
+        for (SieveStreamOPT<T> ssOpt: optValues) {
+            if (ssOpt.getFunc().getCurrentValue() > maxValue) {
+                maxValue = ssOpt.getFunc().getCurrentValue();
+                ans = ssOpt.getFunc();
+            }
+        }
+
+        return ans;
     }
 
     /**
