@@ -1,12 +1,13 @@
 package me.xmerge.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Abstract class for a submodular function
  * Created by cjc on 2/16/16.
  */
-public abstract class SubmodularBuffer<T> {
+public abstract class SubmodularBuffer<T> implements Serializable {
     protected ArrayList<T> S; // solution buffer
     protected double currentValue; // current function value
 
