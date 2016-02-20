@@ -28,7 +28,7 @@ public class KMedoidTest extends TestCase {
         KMedoid func2 = new KMedoid(V);
         GreedyLazy.findOptimal(V, func2, 4);
 
-        assertTrue(Math.abs(func1.getCurrentValue() - func2.getCurrentValue()) < 0.2 * func1.getCurrentValue());
+        assertTrue(Math.abs(func1.getCurrentValue() - func2.getCurrentValue()) < 0.01 * func1.getCurrentValue());
     }
 
 }
