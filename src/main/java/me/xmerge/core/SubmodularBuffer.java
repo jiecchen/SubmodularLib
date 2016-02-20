@@ -5,7 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Abstract class for a submodular function
- * Created by cjc on 2/16/16.
+ * + Author: Jiecao Chen
+ * + Date: 2/16/16
  */
 public abstract class SubmodularBuffer<T> implements Serializable {
     protected ArrayList<T> S; // solution buffer
