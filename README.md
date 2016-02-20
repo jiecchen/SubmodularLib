@@ -1,5 +1,5 @@
-# SubmodularLib
------------
+SubmodularLib
+------------
 Java library for submodular optimization, designed for distributed/streaming computation
 
 + Author: Jiecao Chen (jiecchen@indiana.edu)
