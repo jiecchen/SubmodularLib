@@ -101,7 +101,7 @@ developed.
 to find the minimum of a convex function.
 \end{quote}
 
-We survey several useful properties which can be useful in our later section. Most properties can be found in \cite{B14} or \cite{F05}.
+We survey several useful properties which can be useful in our later section. More properties of submodularity can be found in e.g. \cite{B14,F05}.
 
 
 
@@ -169,7 +169,47 @@ is submodular.
 
 
 \subsection{Constraints}
-For submodular optimization  problem.
+Now we discuss the constraints in submodular optimization problems. A submodular maximization problem usually has the following form,
+\begin{equation}
+  \label{eq:optimization}
+  \arg\max_{I\in\calI} f(I)
+\end{equation}
+
+where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results, normally the difficulty increases when the constraint becomes more general. Ordered by their generality, we will introduce cardinality constraint, matroid, p-system and p-matchoid.
+
+\subsubsection{Cardinality Constraint}
+Cardinality constraint is perhaps the most straightforward constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}). There are also a lot of discussions on optimization subject to cardinality constraint, in both streaming and distributed setting. 
+
+A cardinality constraint is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-medoid clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
+
+
+\subsubsection{Matroid}
+Informally, a \emRed{Matroid} is the abstraction of the \emph{independence} concept in linear algebra. In fact there are so many results around Matroid and the Matroid itself becomes a subfield of algebra. We cover some basics of Matroid theory and from which readers can easily see how powerful this concept is. 
+
+Before discussing the concept of a Matroid, we briefly review the independence concept from linear algebra. For simplicity, let us just consider $\bbR^d$ instead of a general linear space. A subset $S$ of $\bbR^d$ is said to be \emph{independent} if there does not exist any $\mathbf{x}\in S$ such that $\mathbf{x}$ can be represented by linear combination of vectors in $S\backslash\{\mathbf{x}\}$. 
+
+Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following property,
+\begin{itemize}
+\label{item:independence}
+\item $\emptyset \in \calI$
+\item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$
+\item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists \mathbf{x}\in I\backslash J$ such that $J \cup \{\mathbf{x}\}\in \calI$ 
+\end{itemize}
+Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, optimizing $\arg\max_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space. We will see shortly how this optimization problem has direct connection with \emph{Maximum Spanning Tree} problem. If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
+
+It turns out that the properties of $\calI$ we just described are sufficient to give a meaningful definition for Matroid. Formally, 
+\begin{definition}[Matroid]
+\label{def:matroid}
+  A set system $(V, \calI)$ is a Matroid if it has the following properties,
+  \begin{enumerate}
+  \item $\emptyset \in \calI$
+  \item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$
+  \item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists~ x\in I\backslash J$ such that $J \cup \{x\}\in \calI$ 
+  \end{enumerate} 
+\end{definition}
+Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.\chensays{is it necessary?} 
+
+
 
 
 \subsection{Algorithms for Submodular Maximization}
