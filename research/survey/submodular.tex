@@ -100,10 +100,77 @@ developed.
 - There are theoretically and practically (reasonably) efficient methods
 to find the minimum of a convex function.
 \end{quote}
- 
+
+We survey several useful properties which can be useful in our later section. Most properties can be found in \cite{B14} or \cite{F05}.
+
+
+
+
+
+Submodularity is close under addition,
+\begin{property}
+  \label{prop:addition}
+  Let $f_1, f_2: 2^V \rightarrow \bbR$ be two submodular functions. Then 
+  $$f: 2^V\rightarrow \bbR~{with}~ f(A) = \alpha f_1(A) + \beta f_2(A)$$ 
+is submodular for any fixed $\alpha, \beta \in \bbR^+$.
+\end{property}
+
+
+Adding a modular function does not break submodularity,
+\begin{property}
+  \label{prop:modular}
+  Let $f_1, f_2: 2^V \rightarrow \bbR$, $f_1$ is submodular and $f_2$ is modular. Then
+  $$f: 2^V \rightarrow \bbR~\text{with}~ f(A) = f_1(A) + \alpha f_2(A)$$
+is submodular for any fixed $\alpha \in \bbR$.
+\end{property}
+
+Submodularity is preserved under restriction,
+\begin{property}
+  \label{prop:restriction}
+  Let $f: 2^V \rightarrow \bbR$ be a submodular function. Let $S\subseteq V$ be a fixed set. Then
+$$f':2^V \rightarrow \bbR~{with}~f'(A) = f(A\cap S)$$
+is submodular.
+\end{property}
+
+As a direct implication of Property \ref{prop:addition} and Property \ref{prop:restriction}, we have the following more general result,
+\begin{property}
+Let $f:2^V \rightarrow \bbR$ be a submodular function, $\calC = \{C_1, C_2, \ldots, C_k\}$ be a collection of subsets of $V$ (i.e. each $C_i \subseteq V$). Then
+$$f':2^V \rightarrow \bbR~{with}~f'(A) = \sum_{C\in\calC}f(A\cap C)$$ 
+is submodular.
+\end{property}
+This property can be useful in graphical models and image processing. \chensays{TODO: show examples}
+
+
+Following property can be useful when we show that the objective function of k-medoid problem is supermodular,
+\begin{property}
+Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ be its $i$th coordinate. Then 
+$$f:2^V \rightarrow \bbR~{with}~ f(A) = \max_{j\in A}c_i$$ 
+is submodular.
+\end{property}
+
+We can use non-negative modular function and a concave function to construct submodular functions,
+\begin{property}
+  Let $m: 2^V \rightarrow \bbR^+$ be a modular function, and $f$ a concave function over $\bbR$. Then
+$$f: 2^V \rightarrow \bbR ~{with}~ f(A) = g(m(A))$$
+is submodular.
+\end{property}
+
+Before introducing the next property, we define the monotonitcity of set function,
+\begin{definition}[Monotonitcity]
+  An set function $f: 2^V \rightarrow  \bbR$ is said to be monotone non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Monotone non-increasing function can be defined similarly.
+\end{definition}
+
+\begin{property}
+  Let $f, g: 2^V \rightarrow \bbR$ be two submodular functions. If $(f - g)(\cdot)$ is either monotone non-decreasing or monotone non-increasing, then $f: 2^V \rightarrow \bbR$ with
+$$f(A) = \min(f(A), g(A))$$
+is submodular.
+\end{property}
+
 
 
 \subsection{Constraints}
+For submodular optimization  problem.
+
 
 \subsection{Algorithms for Submodular Maximization}
 Greey algorithm guarantee is for normalized, monotone submodular maximization under cardinality constraint.  

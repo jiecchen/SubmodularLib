@@ -5,11 +5,16 @@ Submodularity is a property of set functions with deep theoretical and practical
 There is a large body of research in submodular optimization which we can not cover thoroughly here. In this survey, we focus on the recent advances in optimizing (mostly, maximizing) submodular functions in distributed and streaming setting.
 
 
+
+Through Lov{\'a}sz' extension, a submodular minimization problem can be solved via techniques from convex optimization. Therefore most work focuses on submodular maximization. In particular, almost all results for distributed and streaming submodular optimization are for maximization problems. In this survey, we also focus on submodular maximization, but will briefly mention minimization problems as well when necessary.
+
 \subsection{Notations}
 Through out this survey, 
 
 we use $V$ to represent the ground set we consider. 
 
 $2^V$ is the power set of $V$ (i.e. the set of all subsets of $V$).
+
+In general, $A^V$ is the collection of maps from $V$ to $A$. 
 
 For simplicity, we sometime write $A \cup \{x\}$ as $A + x$.
