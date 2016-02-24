@@ -175,32 +175,30 @@ Now we discuss the constraints in submodular optimization problems. A submodular
   \arg\max_{I\in\calI} f(I)
 \end{equation}
 
-where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results, normally the difficulty increases when the constraint becomes more general. Ordered by their generality, we will introduce cardinality constraint, matroid, p-system and p-matchoid.
+where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results, normally the difficulty increases when the constraint becomes more general. We will introduce cardinality constraint, knapsack constraint, matroid, and p-matchoid.
 
 \subsubsection{Cardinality Constraint}
 Cardinality constraint is perhaps the most straightforward constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}). There are also a lot of discussions on optimization subject to cardinality constraint, in both streaming and distributed setting. 
 
-A cardinality constraint is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-medoid clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
+A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-medoid clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
+
+\subsubsection{Knapsack Constraint}
+Knapsack constraint generalizes cardinality constraint by assigning each element in $V$ a weight. Given a budget $W > 0$ and assume that each $i \in V$ is assigned a weight $w_i \geq 0$, a \emRed{knapsack constraint} can be defined as $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
 
 
 \subsubsection{Matroid}
 Informally, a \emRed{Matroid} is the abstraction of the \emph{independence} concept in linear algebra. In fact there are so many results around Matroid and the Matroid itself becomes a subfield of algebra. We cover some basics of Matroid theory and from which readers can easily see how powerful this concept is. 
 
-Before discussing the concept of a Matroid, we briefly review the independence concept from linear algebra. For simplicity, let us just consider $\bbR^d$ instead of a general linear space. A subset $S$ of $\bbR^d$ is said to be \emph{independent} if there does not exist any $\mathbf{x}\in S$ such that $\mathbf{x}$ can be represented by linear combination of vectors in $S\backslash\{\mathbf{x}\}$. 
+Before discussing the concept of a matroid, we briefly review the independence concept from linear algebra. For simplicity, let us just consider $\bbR^d$ instead of a general linear space. A subset $S$ of $\bbR^d$ is said to be \emph{independent} if there does not exist any $\mathbf{x}\in S$ such that $\mathbf{x}$ can be represented by linear combination of vectors in $S\backslash\{\mathbf{x}\}$. 
 
-Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following property,
-\begin{itemize}
-\label{item:independence}
-\item $\emptyset \in \calI$
-\item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$
-\item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists \mathbf{x}\in I\backslash J$ such that $J \cup \{\mathbf{x}\}\in \calI$ 
-\end{itemize}
+Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following propertie: 1) $\emptyset \in \calI$; 2) if $I\in \calI$, any of $I$'s subsets is also in $\calI$; 3) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
+
 Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, optimizing $\arg\max_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space. We will see shortly how this optimization problem has direct connection with \emph{Maximum Spanning Tree} problem. If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
 
 It turns out that the properties of $\calI$ we just described are sufficient to give a meaningful definition for Matroid. Formally, 
 \begin{definition}[Matroid]
 \label{def:matroid}
-  A set system $(V, \calI)$ is a Matroid if it has the following properties,
+  A set system $(V, \calI)$ is a \emRed{Matroid} if it has the following properties,
   \begin{enumerate}
   \item $\emptyset \in \calI$
   \item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$
@@ -210,11 +208,67 @@ It turns out that the properties of $\calI$ we just described are sufficient to 
 Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.\chensays{is it necessary?} 
 
 
-
+\subsubsection{Matchoids}
+Let $\calM_1 = (V_1, \calI_1),\ldots, \calM_q = (V_q, \calI_q)$ be $q$ matroids where $V = V_1\cup\ldots V_q$. Let $\calI = \{S\subseteq V~|~ S\cap V_i \in \calI_i ~\text{for all}~ i\}$. The finite set system $(V, \calI)$ is a \emRed{p-matchoid} if for every $e\in V$, $e$ is a member of $V_i$ for at most $p$ indices $i \in [q]$. The concept of p-matchoid generalizes the intersection of matroids (taking $p = q$ and $V_i = V$ for all $i$).
 
 \subsection{Algorithms for Submodular Maximization}
-Greey algorithm guarantee is for normalized, monotone submodular maximization under cardinality constraint.  
-Moreover, no polynomial time algorithm can provide a better approximation guarantee unless P = NP \cite{F98}.
+There are a lot of results for submodular maximization in the centralized setting where the data can fit into the RAM. Those results normally assume the \emRed{oracle model}: one is given a value oracle and a membership oracle. Given $S\subseteq V$, the membership oracle answers if $S \in \calI$ and the value oracle returns $f(S)$. We cover several classical results which serve as the building blocks for distributed/streaming algorithms for submodular maximization.
+
+We introduce the notation for \emRed{marginal gain}: $\Delta_f(e|S) = f(S + e) - f(S)$. The following algorithm shows a popular greedy strategy for submodular optimization.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ the ground set, $f$ the submodular function, $\calI$ the constraint}
+\KwOut{a set $S \subseteq V$}
+$S \gets \emptyset$\;
+\While{$\exists ~e\in V\backslash S$ s.t. $S\cup\{e\}\in \calI$} {
+  $e \gets \arg\max_{e\in V\backslash S, ~S\cup\{e\}\in \calI} \Delta_f(e|S)$\;\label{line:emax}
+  $S \gets S\cup \{e\}$\;
+}
+\Return{$S$}\;
+\caption{{\sc Greedy} algorithm for submodular maximization}
+\label{algo:greey}
+\end{algorithm}
+
+
+\subsubsection{Algorithms for Cardinality Constraint}
+
+
+A celebrated result of \cite{NWF78} shows that,
+\begin{theorem}[\cite{NWF78}]
+  \label{thm:1978}
+  For a non-negative monotone non-decreasing submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greey} returns a $(1 - 1/e)$-approximation to $\arg\max_{I\in \calI} f(S)$.
+\end{theorem}
+For several classes of submodular functions, this result is actually the best one can expect for any efficient algorithm. In fact the hardness in \cite{NWF78,F98} shows that any algorithm that is only allowed sub-exponential number of value queries can not achieve better than $(1 - 1/e)$-approximation (for a large class of submodular functions).
+
+There are several papers improving the running time of Algorithm \ref{algo:greey} under cardinality constraint of size $k$ (under which the membership oracle is trivial). Minoux \cite{M78} proposed {\sc Lazy-greedy} as a fast implementation for Algorithm \ref{algo:greey}. Instead of computing $\Delta_f(e|S)$ for each $e\in V\backslash S$ in Line \ref{line:emax},  {\sc Lazy-greedy} keeps an upper bound $\rho(e)$ (initially $+\infty$) on the marginal gain sorted in decreasing order (or kept in a heap). In each iteration, the {\sc Lazy-greedy} algorithm evaluates the element on top of the heap and updates its upper bound $\rho(e) \gets \Delta(e|S)$. If the updated $\rho(e) \geq \rho(e')$ for all other $e'$, submodularity guarantees that $e$ is the element with the largest marginal gain. The exact number of value queries consumed by {\sc Lazy-greedy} is unknown because it heavily relies on both $f$ and $V$, experimental study however shows that the {\sc Lazy-greedy} algorithm is in order of magnitude faster than the naive implementation of Algorithm \ref{algo:greey}.  
+
+Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approximating the underlying submodular function with a set of (sub)modular functions. Badanidiyuru et al. \cite{BV14} proposed a different approach that uses only $O(\frac{|V|}{\eps}\log \frac{1}{\eps})$ number of value queries and guarantees $(1 - 1/e - \eps)$-approximation. This result was improved by Mirzasoleiman et al. \cite{MBK+15} recently where they proposed a randomized algorithm ({\sc Stochastic-Greedy}) that reduce the number of queries to  $O(|V| \log \frac{1}{\eps})$ and the approximation guarantee is $(1 - 1/e - \eps)$, in expectation. The key observation made in \cite{MBK+15} is that, instead of considering all $e\in V\backslash S$, one can only consider $O(\frac{|V|}{k}\log \frac{1}{\eps})$  random samples from $V\backslash S$. 
+
+
+
+ 
+
+
+
+
+
+
+
+\subsubsection{Algorithms for Matroid Constraint}
+Let $f(S) = \sum_{i\in S} w_i$, where $S \subseteq V$ and each element $i\in V$ is assigned a non-negative weight $w_i$. A notable result shows the deep connection between Algorithm \ref{algo:greey} and the concept of matroid,
+
+\begin{theorem}[see e.g. \cite{B14,F05}]
+  \label{thm:matroid}
+  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} modular function $f$ defined in above way, Algorithm \ref{algo:greey} leads to a optimal solution for $\arg\max_{I\in \calI} f(I)$.
+\end{theorem}
+Note that Algorithm \ref{algo:greey} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization of a large class of problems.
+
+
+
+
+
+
 
 
 
