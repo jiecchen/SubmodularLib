@@ -143,6 +143,7 @@ This property can be useful in graphical models and image processing. \chensays{
 
 Following property can be useful when we show that the objective function of k-medoid problem is supermodular,
 \begin{property}
+  \label{prop:max}
 Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ be its $i$th coordinate. Then 
 $$f:2^V \rightarrow \bbR~{with}~ f(A) = \max_{j\in A}c_i$$ 
 is submodular.
@@ -172,7 +173,7 @@ is submodular.
 Now we discuss the constraints in submodular optimization problems. A submodular maximization problem usually has the following form,
 \begin{equation}
   \label{eq:optimization}
-  \arg\max_{I\in\calI} f(I)
+  \argmax_{I\in\calI} f(I)
 \end{equation}
 
 where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results, normally the difficulty increases when the constraint becomes more general. We will introduce cardinality constraint, knapsack constraint, matroid, and p-matchoid.
@@ -193,7 +194,7 @@ Before discussing the concept of a matroid, we briefly review the independence c
 
 Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following propertie: 1) $\emptyset \in \calI$; 2) if $I\in \calI$, any of $I$'s subsets is also in $\calI$; 3) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
 
-Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, optimizing $\arg\max_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space. We will see shortly how this optimization problem has direct connection with \emph{Maximum Spanning Tree} problem. If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
+Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, optimizing $\argmax_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space. We will see shortly how this optimization problem has direct connection with \emph{Maximum Spanning Tree} problem. If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
 
 It turns out that the properties of $\calI$ we just described are sufficient to give a meaningful definition for Matroid. Formally, 
 \begin{definition}[Matroid]
@@ -206,6 +207,9 @@ It turns out that the properties of $\calI$ we just described are sufficient to 
   \end{enumerate} 
 \end{definition}
 Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.\chensays{is it necessary?} 
+
+
+Finally, we generalize the concept of \emRed{rank} in linear algebra. Let $(V, \calI)$ be a matroid, we define the rank function $r: 2^V \rightarrow \bbZ$ as $f(S) = \max_{I\subseteq S, I\in \calI} |I|$, i.e. the rank of $S\subseteq V$ is the maximum possible size of $S$'s subsets that are also members of $\calI$ (or in other words, independent). Our definition of rank is consistent with what we have in linear algebra (in that case $\calI$ is the collection of all independent sets). A rank function is submodular (as you may expect).
 
 
 \subsubsection{Matchoids}
@@ -222,7 +226,7 @@ We introduce the notation for \emRed{marginal gain}: $\Delta_f(e|S) = f(S + e) -
 \KwOut{a set $S \subseteq V$}
 $S \gets \emptyset$\;
 \While{$\exists ~e\in V\backslash S$ s.t. $S\cup\{e\}\in \calI$} {
-  $e \gets \arg\max_{e\in V\backslash S, ~S\cup\{e\}\in \calI} \Delta_f(e|S)$\;\label{line:emax}
+  $e \gets \argmax_{e\in V\backslash S, ~S\cup\{e\}\in \calI} \Delta_f(e|S)$\;\label{line:emax}
   $S \gets S\cup \{e\}$\;
 }
 \Return{$S$}\;
@@ -237,7 +241,7 @@ $S \gets \emptyset$\;
 A celebrated result of \cite{NWF78} shows that,
 \begin{theorem}[\cite{NWF78}]
   \label{thm:1978}
-  For a non-negative monotone non-decreasing submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\arg\max_{I\in \calI} f(S)$.
+  For a non-negative monotone non-decreasing submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\argmax_{I\in \calI} f(S)$.
 \end{theorem}
 For several classes of submodular functions, this result is actually the best one can expect for any efficient algorithm. In fact the hardness in \cite{NWF78,F98} shows that any algorithm that is only allowed sub-exponential number of value queries can not achieve better than $(1 - 1/e)$-approximation (for a large class of submodular functions).
 
@@ -260,7 +264,7 @@ Now we consider the matroid constraint. Let $f(S) = \sum_{i\in S} w_i$, where $S
 
 \begin{theorem}[see e.g. \cite{B14,F05}]
   \label{thm:matroid}
-  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} modular function $f$ defined in above way, Algorithm \ref{algo:greedy} leads to a optimal solution for $\arg\max_{I\in \calI} f(I)$.
+  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} modular function $f$ defined in above way, Algorithm \ref{algo:greedy} leads to a optimal solution for $\argmax_{I\in \calI} f(I)$.
 \end{theorem}
 Note that Algorithm \ref{algo:greedy} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization of a large class of problems.
 

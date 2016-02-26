@@ -1,5 +1,87 @@
 \section{Applications}
-In this section, we discuss several representative applications in great detail. We will see from those examples that submodularity is such a natural property  that many real-world problems can be cast in to the framework of submodular optimization. 
+In this section, we first show a list of possible applications and discuss several representative applications in detail. We will see from those examples that submodularity is such a natural property  that many real-world problems can be cast in to the framework of submodular optimization (maximization).
+
+
+\subsection{List of Possible Applications}
+\begin{itemize}
+\item Combinatorial Problems: set cover, max $k$ coverage, vertex cover, edge cover, graph cut problems etc.
+\item Networks: social networks, viral marketing, diffusion networks etc.
+\item Graphical Models: image segmentation, tree distributions, factors etc.
+\item NLP: document summarization, web search, information retrieval
+\item Machine Learning: active/semi-supervised learning etc.
+\item Economics: markets, economies of scale
+\end{itemize}
+
+
+
+\subsection{Well-known Problems Revisited}
+We first show that several well-known problems actually fit into our standard submodular maximization framework.
+
+\subsubsection{Exemplar Based Clustering}
+Clustering is one of the most important tasks in the area of data mining. In the k-medoid problem \cite{KR09} one tries to minimize the sum of pairwise dissimilarities/distances between exemplars and the elements of the dataset. Let $d: V \times V \rightarrow \bbR^+\cup\{0\}$ be a function that measures the pairwise dissimilarity, we define the k-medoid loss function as following,
+$$L(S) = \sum_{e\in V} \min_{v\in S} d(e, v).$$
+
+It is quite straightforward (by Property \ref{prop:addition}, \ref{prop:max}) to show that $-L(S)$ is submodular. By introducing an auxiliary element $e_0$, we can transform $L$ into a non-negative monotone submodular function,
+$$f(S) = L(\{e_0\}) - L(S \cup \{e_0\}).$$ 
+
+A k-medoid problem can then be formulated as a submodular maximization problem subject to a cardinality constraint,
+
+$$\argmax_{S\subseteq V: |S| \leq k} f(S).$$
+
+
+\subsubsection{Set Cover Problem}
+The \emph{set cover problem} is an important problem in combinatorial optimization where we are given a collection of subsets of a set $E$, i.e. $V = \{C_1, C_2, \ldots, C_n\}$ where each $C_i \subseteq E$. We define a function $f:2^V \rightarrow \bbR$ such that $f(S) = |\cup_{C\in S} C|$. We can interpret $f$ as follow: given $S$ as a subset of $V$, the value of $f(S)$ is the number of distinct elements covered by the sets in $S$.
+
+One can easily verify that $f$ satisfies the diminishing return property thus is a submodular function. Furthermore, it is clear that $f$ is non-decreasing.  Now given the cardinality constraint, we want to solve the following,
+
+$$\argmax_{S\subseteq V: |S|\leq k} f(S).$$
+
+We may also assign each $C\in V$ a non-negative cost $w(C)$ (e.g. the size of $C$), and given a total budget $W$, our goal is to find a solution of the following,
+$$\argmax_{S\subseteq V: w(S) \leq W} f(S),$$
+where $w(S) = \sum_{C\in S} w(C)$. This is a monotone submodular maximization problem under the knapsack constraint.
+
+
+
+\subsubsection{Maximum Spanning Forest}
+Let us consider a graph $G = (V, E)$ where $V$ is the set of vertices and $E$ is the set of edges. In this case we consider $E$ as the ground set and define 
+$$\calI = \{S\subseteq E ~|~\text{edge-induced graph}~G(V, S)~\text{does not contain a circle}\}.$$
+
+One can verify (via definition) that $(E, \calI)$ is a matriod. The rank function of $(E, \calI)$ can be interpreted as the size of the maximum spanning forest of an edge-induced graph, i.e. given $S\subseteq E$, $r(S)$ is the size of maximum spanning forest (in terms of number of edges) of $G(V, S)$. 
+
+
+
+
+Now assume that we assign each $e\in E$ a weight $w_e \geq 0$. Let $f: 2^E\rightarrow \bbR$ with $f(S) = \sum_{e\in S}w_e$ be the objective function we want to maximize. Clearly $f$ is monotone and (sub)modular. we consider the following optimization problem,
+$$\argmax_{S \in \calI} f(S).$$
+This is exactly the \emph{Maximum Spanning Forest} problem and by Theorem \ref{thm:matroid}, we can solve it efficiently (and exactly) using Algorithm \ref{algo:greedy}.
+
+
+\subsubsection{Maximum Cut in Graphs}
+Given an undirected graph $G = (V, E)$ and a non-negative capacity function $c: E \rightarrow \bbR^+\cup\{0\}$, the cut capacity function $f:2^V \rightarrow \bbR$ defined by $f(S) = \sum_{e\in \delta(S)} c(e)$ is submodular, where $\delta(S) = \{e\in E~|~e~\text{has exactly one vertex in}~S\}$ i.e. the set of edges crossing $S$ and $E\backslash S$. To shows why $f$ is submodular, we introduce an auxiliary function $f_e: 2^{\{u, v\}} \rightarrow \bbR$ for each $e = \{u, v\}\in E$ which is defined on the graph $G_e = (\{u,v\}, \{e\})$. We define, 
+\begin{itemize}
+\item $f_e(\{u, v\}) = f_e(\emptyset) = 0$
+\item $f_e(\{u\}) = f_e(\{v\}) = w_e$
+\end{itemize}
+Then $f_e$ is submodular. We have,
+$$f(S) = \sum_{e\in E} f_e(S \cap \{u, v\}).$$
+The submodularity of $f$ follows Property \ref{prop:addition} and Property \ref{prop:restriction}.
+
+An interesting optimization problem can then be formulated as following,
+$$\argmax_{S\subseteq E: |S| \leq k} f(S).$$
+
+
+
+
+
+\subsection{Applications to NLP}
+
+\subsection{Applications to Social Networks}
+
+\subsection{Applications to Machine Learning}
+
+\subsection{More Applications}
+
+
 
 \begin{itemize}
 \item \cite{MKC+15} distributed k-centers using submodular optimization.
