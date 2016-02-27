@@ -274,7 +274,7 @@ Algorithm \ref{algo:greedy} can also be used to handle the matroid constraint. I
   For a non-negative non-decreasing submodular function $f$, given a matroid $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $1/2$-approximation to the optimal solution.
 \end{theorem}
 
-Based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al. \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation) for monotone submodular maximization under matroid constraint. Filmus et al. \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}. Badanidiyuru et al. \cite{BV14} reduces the number of queries to $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ by using a variant of the continuous greedy algorithm.
+Based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al. \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation) for monotone submodular maximization under matroid constraint. Filmus et al. \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}. Badanidiyuru et al. \cite{BV14} gave an algorithm that runs in $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ queries by using a variant of the continuous greedy algorithm.
 
 
 
