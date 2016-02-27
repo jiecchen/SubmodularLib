@@ -17,7 +17,7 @@ In this section, we first show a list of possible applications and discuss sever
 \subsection{Well-known Problems Revisited}
 We first show that several well-known problems actually fit into our standard submodular maximization framework.
 
-\subsubsection{Exemplar Based Clustering}
+\paragraph{Exemplar Based Clustering}
 Clustering is one of the most important tasks in the area of data mining. In the k-medoid problem \cite{KR09} one tries to minimize the sum of pairwise dissimilarities/distances between exemplars and the elements of the dataset. Let $d: V \times V \rightarrow \bbR^+\cup\{0\}$ be a function that measures the pairwise dissimilarity, we define the k-medoid loss function as following,
 $$L(S) = \sum_{e\in V} \min_{v\in S} d(e, v).$$
 
@@ -29,7 +29,7 @@ A k-medoid problem can then be formulated as a submodular maximization problem s
 $$\argmax_{S\subseteq V: |S| \leq k} f(S).$$
 
 
-\subsubsection{Set Cover Problem}
+\paragraph{Set Cover Problem}
 The \emph{set cover problem} is an important problem in combinatorial optimization where we are given a collection of subsets of a set $E$, i.e. $V = \{C_1, C_2, \ldots, C_n\}$ where each $C_i \subseteq E$. We define a function $f:2^V \rightarrow \bbR$ such that $f(S) = |\cup_{C\in S} C|$. We can interpret $f$ as follow: given $S$ as a subset of $V$, the value of $f(S)$ is the number of distinct elements covered by the sets in $S$.
 
 One can easily verify that $f$ satisfies the diminishing return property thus is a submodular function. Furthermore, it is clear that $f$ is non-decreasing.  Now given the cardinality constraint, we want to solve the following,
@@ -42,7 +42,7 @@ where $w(S) = \sum_{C\in S} w(C)$. This is a monotone submodular maximization pr
 
 
 
-\subsubsection{Maximum Spanning Forest}
+\paragraph{Maximum Spanning Forest}
 Let us consider a graph $G = (V, E)$ where $V$ is the set of vertices and $E$ is the set of edges. In this case we consider $E$ as the ground set and define 
 $$\calI = \{S\subseteq E ~|~\text{edge-induced graph}~G(V, S)~\text{does not contain a circle}\}.$$
 
@@ -56,7 +56,7 @@ $$\argmax_{S \in \calI} f(S).$$
 This is exactly the \emph{Maximum Spanning Forest} problem and by Theorem \ref{thm:matroid}, we can solve it efficiently (and exactly) using Algorithm \ref{algo:greedy}.
 
 
-\subsubsection{Maximum Cut in Graphs}
+\paragraph{Maximum Cut in Graphs}
 Given an undirected graph $G = (V, E)$ and a non-negative capacity function $c: E \rightarrow \bbR^+\cup\{0\}$, the cut capacity function $f:2^V \rightarrow \bbR$ defined by $f(S) = \sum_{e\in \delta(S)} c(e)$ is submodular, where $\delta(S) = \{e\in E~|~e~\text{has exactly one vertex in}~S\}$ i.e. the set of edges crossing $S$ and $E\backslash S$. To shows why $f$ is submodular, we introduce an auxiliary function $f_e: 2^{\{u, v\}} \rightarrow \bbR$ for each $e = \{u, v\}\in E$ which is defined on the graph $G_e = (\{u,v\}, \{e\})$. We define, 
 \begin{itemize}
 \item $f_e(\{u, v\}) = f_e(\emptyset) = 0$
@@ -74,6 +74,23 @@ $$\argmax_{S\subseteq E: |S| \leq k} f(S).$$
 
 
 \subsection{Applications to NLP}
+\paragraph{Summarization}
+In the task of summarization, we are given a ground set $V$ and we want to find a subset of $V$ which maximizes some quality measurement under certain constraints. One popular formulation is that, given a function $f: 2^V \rightarrow \bbR$ that measures the quality of a summarization, we try to solve,
+$$\argmax_{S\in\calI} f(S)$$
+where $\calI$ is a knapsack constraint.
+
+Lin et al. \cite{LB11} pointed out that a lot of existing work for document summarization task fit the knapsack optimization framework. Furthermore the quality measurement functions being used are usually submodular. Lin et al. also proposed a class of submodular functions that outperform previous work in many aspects. Each of those functions combines two terms, one that encourages the summary to be representative of the corpus, and the other positively rewards diversity. In the task of speech summarization, several submodular functions were discussed by Lin \cite{L12}. More discussion on the applications of submodular optimization to summarization can be found in \cite{L12}.
+
+\paragraph{Word Alignment}
+Word alignment is a key component in most statistical machine translation systems. Unlike classical approaches that utilize graphical models, Lin et al. \cite{LB11word} viewed word alignment problem as submodular maximization problem under matroid constraints. 
+
+Suppose that we are given a source language (English) string $e_1, e_2, \ldots, e_n$ and a target language (French) string $f_1, f_2, \ldots, f_m$. Let $V = \{(i, j) ~|~ i\in[n], j\in[m] \}$ be the ground set. The goal is to find a match $S\subseteq V$ that maximizes a certain quality function under some constraints. 
+
+Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The \emph{fertility} restriction of a word $f_j$ then requires that $f_j$ can only match at most $k_j$ words in $e_1,\ldots, e_n$, or equivalently the match $S \subseteq V$ satisfies $|S \cap P_j| \leq k_i$ for all $j\in[m]$. Such a constraint is called \emph{partition constraint}, which is an important instance of matroid. Lin et al. then proposed a submodular function as the quality function, which is a composition of a concave function and a modular function. We refer readers to \cite{LB11word} for details.
+
+
+
+
 
 \subsection{Applications to Social Networks}
 
