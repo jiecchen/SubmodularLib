@@ -14,7 +14,7 @@ In this section, we first show a list of possible applications and discuss sever
 
 
 
-\subsection{Well-known Problems Revisited}
+\subsection{Classical Problems Revisited}
 We first show that several well-known problems actually fit into our standard submodular maximization framework.
 
 \paragraph{Exemplar Based Clustering}
@@ -93,6 +93,22 @@ Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The 
 
 
 \subsection{Applications to Social Networks}
+\paragraph{Influence Maximization}
+Domingos and Richardson \cite{DR01,RD02} posed a fundamental algorithmic problem: if we can try to convince a subset of individuals (at most $k$) to adopt a new product or innovation, and the goal is to trigger a large cascade of further adoptions, which set of individuals should we target? 
+Kempe et al. \cite{KKT03} considered such question as a discrete optimization problem. Let $G = (V, E, W)$ a social network (a directed graph with non-negative weights for each edge), two basic models of influence spreading were considered in \cite{KKT03},
+\begin{itemize}
+\item Linear Threshold Mode: after initializing $A \subset V$ as the set of active nodes, at each time step, a node $v$ will turn from inactive to active if the total weights of its active neighbors is above some threshold $\theta_v$. Here $\theta_v$ may or may not be a random variable.
+\item Independent Cascade Model:  after initializing the active set $A \subset V$, at each time step each active node $v$ will activate its neighbor $u$ (for all inactive neighbors) with probability $w_{v,u}$ (which is the parameter of this network).
+\end{itemize}
+
+Now let $\sigma(A)$ be the expected number of active nodes after $T$ time steps ($T$ is usually set to be large). \cite{KKT03} proved that for both models, $\sigma: 2^V \rightarrow \bbZ$ is a monotone submodular function.
+
+
+In our application, one is unlikely to able to efficiently compute the exact value of $\sigma(A)$. In fact, one can extend the result of Theorem \ref{thm:1978} to show that, by using  $(1 + O(\eps))$-approximate values for the function to be optimized, we obtain a $(1 - 1/e - \eps)$-approximation of the optimum.
+
+
+\paragraph{Network Structure Inference}
+
 
 \subsection{Applications to Machine Learning}
 
