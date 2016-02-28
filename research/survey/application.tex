@@ -108,10 +108,40 @@ In our application, one is unlikely to able to efficiently compute the exact val
 
 
 \paragraph{Network Structure Inference}
-Gomez Rodriguez et al. \cite{GLK10} first introduced submodular maximization to the context of network structure learning. The consider the problem of learning the network structure in a influence network.
+Gomez Rodriguez et al. \cite{GLK10} first introduced submodular maximization to the context of network structure learning. They considered the problem of learning the network structure in a influence network: given a hidden directed network $G^*$ (vertices are known while edges are not), we observe multiple cascades spreading over it. Each cascade $c$ can be considered as a series of triples. Each triple has the form $(u_i, t_i, \phi_i)_c$ which presents the event that at time $t_i$, node $u_i$ is reached by $c$ with feature $\phi_i$. The goal is to infer the structure of $G^*$ based on a collection of cascades observed (denoted as $C$).
+
+To model this process, they assumed that in each cascade, each node can only be influenced by at most one other node. So the influence structure of a cascade $c$ is given by a directed tree $T \subseteq G$. Let $P(c|T)$ be the probability of $c$ propagating in a particular tree pattern $T$, $P(c|G)$ the probability that cascade $c$ occurs in a network $G$. Let $\mathcal{T}(G)$ be set of all spanning trees of $G$. \cite{GLK10} then proposed the model 
+$$P(c|G) = \max_{T\in\mathcal{T}(G)}P(c|T) = \max_{T\in\mathcal{T}(G)}\Pi_{(u,v)\in T}P_c(u,v)$$
+where $P_c(u, v) \propto e^{-(t_v - t_u)}$. The structure of the network can be approximated by solving 
+ $$\argmax_{|G|\leq k} P(C|G) = \argmax_{|G|\leq k}\Pi_{c\in C}P(c|G).$$
+
+
+Consider the improvement of log-likelihood for cascade $c$ under graph $G$ over an empty graph $K$:
+$$F_c(G) = \max_{T\in \mathcal{T}(G)}\log P(c|T) - \max_{T\in \mathcal{T}(K)}P(c|T).$$
+It turns out that $F_c(G)$ can be expressed as following,
+$$F_c(G) = \max_{T\in\mathcal{G}}\sum_{(u, v)\in T}w_c(u, v)$$
+where $w_c(u, v)$ is a non-negative weight. Optimizing $P(C|G)$ is equivalently to optimize $F_C(G) = \sum_{c\in C}F_c(G)$ and the latter is shown to be submodular (the ground set is all possible graphs defined over the given vertices set). 
+
+
+
+
 
 
 \subsection{Applications to Machine Learning}
+\paragraph{Kernel Machines}
+Kernel machines \cite{SS02} are powerful non-parametric learning techniques. Those approaches use kernel trick to reduce non-linear problems to linear tasks that have been well studied. The data set $V = \{x_1, x_2, \ldots, x_n\}$ is represented in a transformed space via a kernel matrix
+
+\[ K_V = \left( \begin{array}{ccc}
+\calK(x_1, x_2) & \ldots & \calK(x_1, x_n) \\
+\vdots & \ddots & \vdots \\
+\calK(x_n,x_1) & \ldots & \calK(x_n, x_n) \end{array} \right)\] 
+here $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetric and positive definite. 
+
+For large-scale problem, even representing the matrix $K_V$ (which requires $O(n^2)$ space) is prohibited. The common solution to solve this issue is to select a small representative subset $S \subseteq V$ and only work with $K_S$. An additional benefit by using such a subset is that it may help to avoid overfitting. The question now becomes how to select the subset $S$. One popular way to measure the quality of selected set $S$ is to use \emph{Informative Vector Machine}(IVM) introduced by Laurence et al. \cite{LSH03}. Formally, we define $f: 2^V \rightarrow \bbR$ with
+$$f(S) = \frac{1}{2} \log\det\left( \mathbf{I} + \sigma^{-2} K_S \right)$$
+where $\mathbf{I}$ is the identity matrix and $\sigma > 0$ is a parameter. IVM has close connection with the entropy of  muti-variable Gaussian distribution \cite{B14} and it is shown in \cite{S04,B14} that $f$ is a submodular function. We can then select the set $S\subset V$ by solving
+$$\argmax_{S:|S|\leq k} f(S).$$
+
 
 \subsection{More Applications}
 
