@@ -158,11 +158,12 @@ is submodular.
 
 Before introducing the next property, we define the monotonitcity of set function,
 \begin{definition}[Monotonitcity]
-  An set function $f: 2^V \rightarrow  \bbR$ is said to be monotone non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Monotone non-increasing function can be defined similarly.
+  An set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in similar way.
 \end{definition}
+When we say a submodular function is monotone, we mean it is non-decreasing.
 
 \begin{property}
-  Let $f, g: 2^V \rightarrow \bbR$ be two submodular functions. If $(f - g)(\cdot)$ is either monotone non-decreasing or monotone non-increasing, then $f: 2^V \rightarrow \bbR$ with
+  Let $f, g: 2^V \rightarrow \bbR$ be two submodular functions. If $(f - g)(\cdot)$ is either non-decreasing or non-increasing, then $f: 2^V \rightarrow \bbR$ with
 $$f(A) = \min(f(A), g(A))$$
 is submodular.
 \end{property}
@@ -188,11 +189,11 @@ Knapsack constraint generalizes cardinality constraint by assigning each element
 
 
 \subsubsection{Matroid}
-Informally, a \emRed{Matroid} is the abstraction of the \emph{independence} concept in linear algebra. In fact there are so many results around Matroid and the Matroid itself becomes a subfield of algebra. We cover some basics of Matroid theory and from which readers can easily see how powerful this concept is. 
+Informally,  \emRed{matroid} is the abstraction of the \emph{independence} concept in linear algebra. In fact there are so many results around Matroid and the Matroid itself becomes a subfield of algebra. We cover some basics of Matroid theory and from which readers can easily see how powerful this concept is. 
 
 Before discussing the concept of a matroid, we briefly review the independence concept from linear algebra. For simplicity, let us just consider $\bbR^d$ instead of a general linear space. A subset $S$ of $\bbR^d$ is said to be \emph{independent} if there does not exist any $\mathbf{x}\in S$ such that $\mathbf{x}$ can be represented by linear combination of vectors in $S\backslash\{\mathbf{x}\}$. 
 
-Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following propertie: 1) $\emptyset \in \calI$; 2) if $I\in \calI$, any of $I$'s subsets is also in $\calI$; 3) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
+Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following propertie: 1) $\emptyset \in \calI$; 2) if $I\in \calI$, any of $I$'s subsets is also in $\calI$ (or equivalently, $\calI$ is \emRed{hereditary}); 3) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
 
 Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, optimizing $\argmax_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space. We will see shortly how this optimization problem has direct connection with \emph{Maximum Spanning Tree} problem. If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
 
@@ -202,18 +203,43 @@ It turns out that the properties of $\calI$ we just described are sufficient to 
   A set system $(V, \calI)$ is a \emRed{Matroid} if it has the following properties,
   \begin{enumerate}
   \item $\emptyset \in \calI$
-  \item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$
+  \item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$ (i.e. hereditary)
   \item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists~ x\in I\backslash J$ such that $J \cup \{x\}\in \calI$ 
   \end{enumerate} 
 \end{definition}
 Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.\chensays{is it necessary?} 
 
+Note that in general, the intersection of several matroids is no longer a matroid.
+
 
 Finally, we generalize the concept of \emRed{rank} in linear algebra. Let $(V, \calI)$ be a matroid, we define the rank function $r: 2^V \rightarrow \bbZ$ as $f(S) = \max_{I\subseteq S, I\in \calI} |I|$, i.e. the rank of $S\subseteq V$ is the maximum possible size of $S$'s subsets that are also members of $\calI$ (or in other words, independent). Our definition of rank is consistent with what we have in linear algebra (in that case $\calI$ is the collection of all independent sets). A rank function is submodular (as you may expect).
 
 
-\subsubsection{Matchoids}
-Let $\calM_1 = (V_1, \calI_1),\ldots, \calM_q = (V_q, \calI_q)$ be $q$ matroids where $V = V_1\cup\ldots V_q$. Let $\calI = \{S\subseteq V~|~ S\cap V_i \in \calI_i ~\text{for all}~ i\}$. The finite set system $(V, \calI)$ is a \emRed{p-matchoid} if for every $e\in V$, $e$ is a member of $V_i$ for at most $p$ indices $i \in [q]$. The concept of p-matchoid generalizes the intersection of matroids (taking $p = q$ and $V_i = V$ for all $i$).
+\subsubsection{Matching}
+A matching of a graph $G = (V, E)$ is a set  $S\subseteq E$ such that no edges in $S$ share common vertex. 
+
+
+
+\subsubsection{p-matchoid}
+Let $\calM_1 = (V_1, \calI_1),\ldots, \calM_q = (V_q, \calI_q)$ be $q$ matroids where $V = V_1\cup\ldots V_q$. Let $\calI = \{S\subseteq V~|~ S\cap V_i \in \calI_i ~\text{for all}~ i\}$. The finite set system $(V, \calI)$ is a \emRed{p-matchoid} if for every $e\in V$, $e$ is a member of $V_i$ for at most $p$ indices $i \in [q]$. 
+
+The concept of p-matchoid generalizes the intersection of matroids (taking $p = q$ and $V_i = V$ for all $i$), and matching (which is $2$-matchoid). 
+
+
+
+
+\subsubsection{$p$-system}
+$p$-system is the most general constraint we will discuss in this survey, it includes graph matching, $p$-matchoid (therefore matroid) and many others as special cases.
+
+Let $(V, \calI)$ be a set system and $\calI$ hereditary, we call each $I \in\calI$ an \emRed{independent set} (of $V$). An independent set $I$ is called a base of $A \subseteq V$ if $I\subseteq A$ and for any $e \in A\backslash I$, $I + e\not\in \calI$.  Let $\mathcal{B}(A)$ be the collection of all bases of $A$, we call $(V, \calI)$ a $p$-system if it further satisfies the following property,
+
+$$\forall A\subseteq V: \max_{S\in\mathcal{B}(A)}|S| \leq p\cdot \min_{S\in\mathcal{B}(A)}|S|.$$
+
+It is known that p-matchoid is $p$-system (therefore matching is $2$-system) and the intersection of $p$ matroids $(V, \calI_1), \ldots, (V, \calI_p)$ is $p$-system. 
+
+
+
+
 
 \subsection{Algorithms for Submodular Maximization}
 There are a lot of results for submodular maximization in the centralized setting where the data can fit into the RAM. Those results normally assume the \emRed{oracle model}: one is given a value oracle and a membership oracle. Given $S\subseteq V$, the membership oracle answers if $S \in \calI$ and the value oracle returns $f(S)$. We cover several classical results which serve as the building blocks for distributed/streaming algorithms for submodular maximization.
@@ -241,7 +267,7 @@ $S \gets \emptyset$\;
 A celebrated result of \cite{NWF78} shows that,
 \begin{theorem}[\cite{NWF78}]
   \label{thm:1978}
-  For a non-negative monotone non-decreasing submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\argmax_{I\in \calI} f(S)$.
+  For a non-negative monotone submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\argmax_{I\in \calI} f(S)$.
 \end{theorem}
 For several classes of submodular functions, this result is actually the best one can expect for any efficient algorithm. In fact the hardness in \cite{NWF78,F98} shows that any algorithm that is only allowed sub-exponential number of value queries can not achieve better than $(1 - 1/e)$-approximation (for a large class of submodular functions).
 
@@ -259,30 +285,34 @@ Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approx
 
 
 
-\subsubsection{Algorithms for Matroid Constraint}
-Now we consider the matroid constraint. Let $f(S) = \sum_{i\in S} w_i$, where $S \subseteq V$ and each element $i\in V$ is assigned a non-negative weight $w_i$. A notable result shows the deep connection between Algorithm \ref{algo:greedy} and the concept of matroid,
+\subsubsection{Algorithms for Matroid and $p$-system}
+Now we consider the matroid constraint and $p$-system. In his classical paper \cite{J76}, Jenkyns proved that for a non-negative \emph{modular} maximization problem s.t. $p$-system, Algorithm \ref{algo:greedy} produces a $p$-approximation of the optimum. Since matroid is $1$-system, Algorithm \ref{algo:greedy} always gives the optimal solution. Remarkably, we the following much stronger result, 
 
 \begin{theorem}[see e.g. \cite{B14,F05}]
   \label{thm:matroid}
-  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} modular function $f$ defined in above way, Algorithm \ref{algo:greedy} leads to a optimal solution for $\argmax_{I\in \calI} f(I)$.
+  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} non-negative modular function $f$, Algorithm \ref{algo:greedy} leads to a optimal solution for $\argmax_{I\in \calI} f(I)$.
 \end{theorem}
 Note that Algorithm \ref{algo:greedy} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization of a large class of problems.
 
-Algorithm \ref{algo:greedy} can also be used to handle the matroid constraint. In particular, we have the following guarantee,
-\begin{theorem}[\cite{NWF78}]
-  \label{thm:sub-matroid}
-  For a non-negative non-decreasing submodular function $f$, given a matroid $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $1/2$-approximation to the optimal solution.
+When $f$ is non-decreasing non-negative submodular function, greedy strategy works well for $p$-system,
+\begin{theorem}[\cite{NWF78,CCP+11}]
+  \label{thm:}
+  For a non-negative non-decreasing submodular function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $1/(p + 1)$-approximation to the optimal solution.
 \end{theorem}
+This theorem implies immediately that Algorithm \ref{algo:greedy} gives $1/2$-approximation for matroid constraint. 
 
-Based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al. \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation) for monotone submodular maximization under matroid constraint. Filmus et al. \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}. Badanidiyuru et al. \cite{BV14} gave an algorithm that runs in $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ queries by using a variant of the continuous greedy algorithm.
-
-
-
+There are several recent work improving the approximation ratio for matroid constraint (for non-negative monotone submodular functions): based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al. \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation); Filmus et al. \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}; Badanidiyuru et al. \cite{BV14} gave an algorithm that runs in $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ queries by using a variant of the continuous greedy algorithm.
 
 
+
+
+\chensays{add a table of summary, from \cite{CGQ15}}
 
 
 Non-monotone submodular is normally more difficult to efficiently optimize. Some results from Feldman ..
+
+See Feldman \cite{FNS+11}.
+
 
 
 
