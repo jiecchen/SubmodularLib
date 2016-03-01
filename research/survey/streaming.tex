@@ -1,1 +1,50 @@
 \section{Streaming Submodular Maximization}
+In this section, we cover recent results for submodular maximization over data streaming. In the streaming model, we consider the ground set $V$ as an ordered sequence of items $e_1, e_2, \ldots, e_n$. We process the items one by one and the maximum space being used should be sublinear (i.e. $o(n)$).
+
+
+Unlike in centralized setting where one can always calculate the function value, in streaming model we need to assume value oracle and membership oracle explicitly.  Most algorithms developed for centralized submodular maximization require access to all items in the ground set and hence can not be directly applied in streaming setting. In general streaming submodular maximization is harder and was considered only very recently. 
+
+
+
+
+\subsection{Results for  Cardinality Constraint}
+Monotone submodular maximization with cardinality constraint is the simplest setting and it is most likely to have a good solution. Krause et al. \cite{KG10} gave the first discussion on maximizing a monotone submodular function over data streams. Their approach makes strong assumption on the input data and the update time per item is as high as $O(k)$ value queries ($k$ is the size of the solution).  Kumar et al. \cite{KMV+15} proposed a single-pass which assumes a upper bound on $\max_{e\in V}\Delta(e|\emptyset)$. \cite{KMV+15} also includes a multi-pass algorithm with space usage depending on the ground set. Badanidiyuru et al. \cite{BMK+14} provided a nice solution to monotone submodular maximization under cardinality constraint. They also discussed the situation when value oracle is not realistic in streaming model. 
+
+As for non-monotone submodular maximization, Buchbinder et al. \cite{BFS15} gaves a $.0893$-approximation, and the very general framework of Chekuri et al. \cite{CGQ15} yields a $\frac{1-\eps}{2 + e}$-approximation (in expectation). 
+
+\chensays{add a table for streaming results}
+\paragraph{Monotone Case:} We only describe \cite{BMK+14}, which is the best known result in many aspects.  In Algorithm \ref{algo:greedy}, it is known that the marginal gain $\Delta(e_{i+1}|S_i)$ of the next element $e_{i+1}$ added is at least $(\opt - f(S_i))/k$ where $\opt=\max_{S:|S|\leq k} f(S)$, and $S_i$ is the set of the first $i$ elements picked. This intuition also helps in streaming setting: if we know $\opt$ in advance, we can use $\frac{\opt/2 - f(S)}{k - |S|}$ as a t threshold of marginal gain to decide if a new element $e$ should be added to the solution $S$ or not (). Of course we do not know $\opt$, but for any $e\in V$, we must have $m \leq \opt \leq k\cdot m$ where $m = \max_{e\in V}f(\{e\})$. So we can guess the value of $\opt$ using values in $\{(1 + \eps)^i~|~i\in\bbZ, m\leq (1 + \eps)^i \leq k\cdot m\}$ and for each guess we run a instance of \knowopt.
+
+
+so we guess its values and run multiple instances in parallel. The final algorithm can is depicted in Algorithm \ref{algo:sieve}.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ as data stream, $f$ a monotone submodular function, $k$ the size constraint, $\eps$ a parameter}
+\KwOut{a set $S \subseteq V$}
+$O = \{(1 + \eps)^i~|~i\in \bbZ\}$\;
+\tcc*[h]{maintain the sets only for the necessary $v$'s lazily}\;
+For each $v\in O, ~S_v \gets \emptyset$\;
+$m \gets 0$\;
+
+\For{each $e$ in the data stream} {
+  m $\gets \max\{m, f(\{e\})\}$\;
+  $O\gets \{(1 + \eps)^i~|~m \leq (1 + \eps)^i \leq 2\cdot k \cdot m\}$\;
+  Delete all $S_v$ such that $v \in O$\;
+  \For{$v \in O$}{
+    \If{$\Delta(e|S_v) \geq \frac{v/2 - f(S_v)}{k - |S_v|}$ and $|S_v|<k$}{
+      $S_v \gets S_v \cup \{e\}$\;
+    }
+  }
+}
+\Return{$\argmax_{S_v: v\in O}f(S_v)$}\;
+\caption{{\sc Sieve-Streaming} for submodular maximization}
+\label{algo:sieve}
+\end{algorithm}
+
+
+
+
+\subsection{Results for Matching and Matroids}
+
+\subsection{Results for $p$-matchoid}
