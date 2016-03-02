@@ -8,15 +8,12 @@ Unlike in centralized setting where one can always calculate the function value,
 
 
 \subsection{Results for  Cardinality Constraint}
-Monotone submodular maximization with cardinality constraint is the simplest setting and it is most likely to have a good solution. Krause et al. \cite{KG10} gave the first discussion on maximizing a monotone submodular function over data streams. Their approach makes strong assumption on the input data and the update time per item is as high as $O(k)$ value queries ($k$ is the size of the solution).  Kumar et al. \cite{KMV+15} proposed a single-pass which assumes a upper bound on $\max_{e\in V}\Delta(e|\emptyset)$. \cite{KMV+15} also includes a multi-pass algorithm with space usage depending on the ground set. Badanidiyuru et al. \cite{BMK+14} provided a nice solution to monotone submodular maximization under cardinality constraint. They also discussed the situation when value oracle is not realistic in streaming model. 
+Monotone submodular maximization with cardinality constraint is the simplest setting and it is most likely to have a good solution. Krause et al. \cite{KG10} gave the first discussion on maximizing a monotone submodular function over data streams. Their approach makes strong assumption on the input data and the update time per item is as high as $O(k)$ value queries ($k$ is the size of the solution).  Kumar et al. \cite{KMV+15} proposed a single-pass which assumes an upper bound on $\max_{e\in V}\Delta(e|\emptyset)$. \cite{KMV+15} also includes a multi-pass algorithm with space usage depending on the ground set. Badanidiyuru et al. \cite{BMK+14} provided a nice solution to monotone submodular maximization under cardinality constraint. They also discussed the situation when value oracle is not realistic in streaming model. 
 
 As for non-monotone submodular maximization, Buchbinder et al. \cite{BFS15} gaves a $.0893$-approximation, and the very general framework of Chekuri et al. \cite{CGQ15} yields a $\frac{1-\eps}{2 + e}$-approximation (in expectation). 
 
 \chensays{add a table for streaming results}
-\paragraph{Monotone Case:} We only describe \cite{BMK+14}, which is the best known result in many aspects.  In Algorithm \ref{algo:greedy}, it is known that the marginal gain $\Delta(e_{i+1}|S_i)$ of the next element $e_{i+1}$ added is at least $(\opt - f(S_i))/k$ where $\opt=\max_{S:|S|\leq k} f(S)$, and $S_i$ is the set of the first $i$ elements picked. This intuition also helps in streaming setting: if we know $\opt$ in advance, we can use $\frac{\opt/2 - f(S)}{k - |S|}$ as a t threshold of marginal gain to decide if a new element $e$ should be added to the solution $S$ or not (). Of course we do not know $\opt$, but for any $e\in V$, we must have $m \leq \opt \leq k\cdot m$ where $m = \max_{e\in V}f(\{e\})$. So we can guess the value of $\opt$ using values in $\{(1 + \eps)^i~|~i\in\bbZ, m\leq (1 + \eps)^i \leq k\cdot m\}$ and for each guess we run a instance of \knowopt.
-
-
-so we guess its values and run multiple instances in parallel. The final algorithm can is depicted in Algorithm \ref{algo:sieve}.
+\paragraph{Monotone Case:} We only describe \cite{BMK+14}, which is the best known result in many aspects.  In Algorithm \ref{algo:greedy}, it is known that the marginal gain $\Delta(e_{i+1}|S_i)$ of the next element $e_{i+1}$ added is at least $(\opt - f(S_i))/k$ where $\opt=\max_{S:|S|\leq k} f(S)$, and $S_i$ is the set of the first $i$ elements picked. This intuition also helps in streaming setting: if we know $\opt$ in advance, we can use $\frac{\opt/2 - f(S)}{k - |S|}$ as a  threshold of marginal gain to decide if a new element $e$ should be added to the solution $S$ or not (denote such an algorithm as \knowopt). Of course we do not know $\opt$, but for any $e\in V$, we must have $m \leq \opt \leq k\cdot m$ where $m = \max_{e\in V}f(\{e\})$. So we can guess the value of $\opt$ using values in $\{(1 + \eps)^i~|~i\in\bbZ, m\leq (1 + \eps)^i \leq k\cdot m\}$ and for each guess we run an instance of \knowopt. Such an algorithm, however, requires two passes with $m$ being decided in the first pass. With the trick of lazy-evaluation, we can actually estimate $m$ on the fly. The final algorithm can is depicted in Algorithm \ref{algo:sieve}.
 
 \begin{algorithm}[H]
 \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
@@ -42,9 +39,46 @@ $m \gets 0$\;
 \label{algo:sieve}
 \end{algorithm}
 
+It can be shown that Algorithm \ref{algo:sieve} achieves $(1/2-\eps)$-approximation by using $O(\frac{k \log k}{\eps})$ space and $O(\frac{\log k}{\eps})$ update time per item.
+
+
+\paragraph{Non-negative Non-Monotone Case:} Non-negative non-monotone case can be much harder. The state of the art comes from \cite{CGQ15}. The algorithm we discuss here is an instance of their general framework and it goes as follows: the algorithm is parameterized with a threshold $\alpha > 0$ and  maintains a buffer $B$ of size $\frac{k}{\eps}$; the algorithm then keeps every new coming item with marginal gain above the threshold into the buffer, until the buffer is overflowed; an item $e$ is then randomly sampled from $B$ and added to the solution $S$; all other items with marginal gain below the threshold will be removed from $B$.   We describe the detail in Algorithm \ref{algo:random-streaming}.
+
+\begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ as data stream, $f$ a non-negative submodular function, $k$ the size constraint, $\eps$ a parameter}
+\KwOut{a set $S \subseteq V$}
+$B\gets \emptyset, S\gets \emptyset$\;
+\For{each $e$ in the data stream} {
+  \If{$|S| < k$ and $\Delta(e|S) > \alpha$}{
+    $B \gets B + e$\;
+  }
+  \If{$|B| > \frac{k}{\eps}$}{
+    $e \gets $ uniformly random from $B$\;
+    $B \gets B - e, S \gets S + e$\;
+    \For{all $e'\in B$ s.t. $\Delta(e'|S)\leq \alpha$}{
+      $B \gets B - e'$\;
+    }
+  }
+}
+$S' \gets$ unconstrained offline algorithm on $B$\;
+\Return{$\argmax_{A\in\{S, S'\}}f(A)$}\;
+\caption{{\sc Random-Streaming} for non-monotone submodular maximization}
+\label{algo:random-streaming}
+\end{algorithm}
+
+When taking $\frac{1 - \eps}{(2 + \eps)k}\opt\leq \alpha \leq \frac{1 + \eps}{(2 + e)k}\opt$, Algorithm \ref{algo:random-streaming} yields a $\frac{1 - \eps}{2 + \eps}$-approximation. Of course we do not know $\opt$, but the same trick in {\sc Sieve-Streaming} also works here.
 
 
 
-\subsection{Results for Matching and Matroids}
+\subsection{Results for Matroid}
+For general non-negative submodular maximization subject to matroid constraint, the general framework in \cite{CGQ15} yields a $\frac{1 - \eps}{4 + \eps}$-approximation. For monotone case, a better result was given by Chakrabarti and Kale \cite{CK14}, which follows the algorithm of Varadaraja \cite{V11} on modular maximization. 
 
-\subsection{Results for $p$-matchoid}
+
+
+
+
+
+
+
+\subsection{Results for Matching and $p$-matchoid}
