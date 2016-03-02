@@ -207,7 +207,7 @@ It turns out that the properties of $\calI$ we just described are sufficient to 
   \item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists~ x\in I\backslash J$ such that $J \cup \{x\}\in \calI$ 
   \end{enumerate} 
 \end{definition}
-Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.\chensays{is it necessary?} 
+Note that, unlike in the $\bbR^d$ case, we restrict on a finite set $V$.
 
 Note that in general, the intersection of several matroids is no longer a matroid.
 
@@ -242,7 +242,32 @@ It is known that p-matchoid is $p$-system (therefore matching is $2$-system) and
 
 
 \subsection{Algorithms for Submodular Maximization}
-There are a lot of results for submodular maximization in the centralized setting where the data can fit into the RAM. Those results normally assume the \emRed{oracle model}: one is given a value oracle and a membership oracle. Given $S\subseteq V$, the membership oracle answers if $S \in \calI$ and the value oracle returns $f(S)$. We cover several classical results which serve as the building blocks for distributed/streaming algorithms for submodular maximization.
+There are a lot of results for submodular maximization in the centralized setting where the data can fit into the RAM. Those results normally assume the \emRed{oracle model}: one is given a value oracle and a membership oracle. Given $S\subseteq V$, the membership oracle answers if $S \in \calI$ and the value oracle returns $f(S)$. We cover several classical results which serve as the building blocks for distributed/streaming algorithms for submodular maximization. A summary of best known algorithms (in terms of approximation ratio) for various of constraints is presented in Table \ref{table:centralized}.
+\begin{table}[t]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+constraint & monotone  &  non-negative \\
+\hline
+cardinality & $1 - 1/e$  \cite{NWF78} & $1/e + .004$ \cite{BFN+14}\\
+\hline
+matroid & $1 - 1/e$ \cite{CCP+11}, R & $\frac{1 - \eps}{e}$ \cite{FNS11}, R \\
+\hline
+matching & $\frac{1}{2 + \eps}$ \cite{FNS+11} & $\frac{1}{4 + \eps}$ \cite{FNS+11}\\
+\hline
+intersection of $p$ matroids & $\frac{1}{p + \eps}$ \cite{LSV10} & $\frac{p - 1}{p^2 + \eps}$ \cite{LSV10}\\
+\hline
+$p$-matchoid & $\frac{1}{p + 1}$ \cite{CCP+11,NWF78} & $\frac{(1-\eps)(2-o(1))}{e\cdot p}$ \cite{FNS+11,VCZ11}, R\\
+\hline
+\end{tabular}
+\caption{Best known approximation bounds for submodular maximization in RAM model. Bounds for randomized algorithms that hold in expectation are marked (R).}
+\label{table:centralized}
+\end{table}
+
+
+
+
+
 
 We introduce the notation for \emRed{marginal gain}: $\Delta_f(e|S) = f(S + e) - f(S)$. The following algorithm shows a popular greedy strategy for submodular optimization.
 
@@ -306,12 +331,10 @@ There are several recent work improving the approximation ratio for matroid cons
 
 
 
-\chensays{add a table of summary, from \cite{CGQ15}}
 
 
-Non-monotone submodular is normally more difficult to efficiently optimize. Some results from Feldman ..
 
-See Feldman \cite{FNS+11}.
+Non-monotone submodular is normally more difficult to efficiently optimize. We will not discuss in this survey but simply present a summary in Table \ref{table:centralized}.
 
 
 
