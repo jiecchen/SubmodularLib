@@ -2,7 +2,30 @@
 In this section, we cover recent results for submodular maximization over data streaming. In the streaming model, we consider the ground set $V$ as an ordered sequence of items $e_1, e_2, \ldots, e_n$. We process the items one by one and the maximum space being used should be sublinear (i.e. $o(n)$).
 
 
-Unlike in centralized setting where one can always calculate the function value, in streaming model we need to assume value oracle and membership oracle explicitly.  Most algorithms developed for centralized submodular maximization require access to all items in the ground set and hence can not be directly applied in streaming setting. In general streaming submodular maximization is harder and was considered only very recently. 
+Unlike in centralized setting where one can always calculate the function value, in streaming model we need to assume value oracle and membership oracle explicitly.  Most algorithms developed for centralized submodular maximization require access to all items in the ground set and hence can not be directly applied in streaming setting. In general streaming submodular maximization is harder and was considered only very recently. We provide a table for best known approximation bounds in Table \ref{table:streaming} and review some technical details of those related papers.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+constraint & monotone  &  non-negative \\
+\hline
+cardinality & $\frac{1-\eps}{2}$ \cite{BMK+14} & $\frac{1 - \eps}{2 + e}$ \cite{CGQ15}, R\\
+\hline
+matroid & $1/4$ \cite{CK14} & $\frac{1 - \eps}{4 + e}$ \cite{CGQ15},  R \\
+\hline
+matching & $4/31$ \cite{CK14} & $\frac{1 - \eps}{12 + \eps}$ \cite{CGQ15}, R \\
+\hline
+intersection of $p$ matroids & $\frac{1}{4p}$ \cite{CK14} & $\frac{(1 - \eps)(p - 1)}{5p^2 -4p + \eps}$ \cite{CGQ15}, R\\
+\hline
+$p$-matchoid & $\frac{1}{4p}$ \cite{CGQ15} & $\frac{(1-\eps)(2-o(1))}{(8+e)p}$ \cite{CGQ15}, R\\
+\hline
+\end{tabular}
+\caption{Best know approximation bounds for submodular maximization in streaming model. Bounds for randomized algorithms that hold in expectation are marked (R).}
+\label{table:streaming}
+\end{table}
+
+
 
 
 
@@ -71,8 +94,52 @@ When taking $\frac{1 - \eps}{(2 + \eps)k}\opt\leq \alpha \leq \frac{1 + \eps}{(2
 
 
 
-\subsection{Results for Matroid}
-For general non-negative submodular maximization subject to matroid constraint, the general framework in \cite{CGQ15} yields a $\frac{1 - \eps}{4 + \eps}$-approximation. For monotone case, a better result was given by Chakrabarti and Kale \cite{CK14}, which follows the algorithm of Varadaraja \cite{V11} on modular maximization. 
+\subsection{Results for Matroids and Its Intersection}
+For general non-negative submodular maximization subject to matroid constraint, the general framework in \cite{CGQ15} yields a $\frac{1 - \eps}{4 + \eps}$-approximation (which we will not discuss in detail). For monotone case, a better result was given by Chakrabarti and Kale \cite{CK14}, which follows the algorithm of Varadaraja \cite{V11} on modular maximization. In this section, we mainly discuss the results from \cite{V11,CK14}.
+
+Varadaraja \cite{V11} proposed an algorithm for normalized modular maximization subject to the intersection of $p$ matroids (it actually works for more general problems, be we only need its result for modular function). The algorithm is very simple and we would like to describe here as pseudocode. Also recall that, for a normalized modular function $f$, we have $f(S) = \sum_{e\in S}f(\{e\})$. 
+
+
+
+\begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ as data stream, $f$ a non-decreasing  modular function, $p$ matroid constraints $\calI_1, \ldots, \calI_p$, $\gamma > 0$ is a parameter}
+\KwOut{a set $S \subseteq V$}
+
+\For{each $e$ in the data stream} {
+  \If{$S+e \in \cap_{i}\calI_i$}{
+    $S \gets S + e$\;
+  }
+  \Else{
+    $C \gets \emptyset$\;
+    \For{each $\calI_i$}{
+      \If{$S + e \not\in \calI_i$}{
+        $e_i \gets \argmin_{e': S+e-e' \in \calI_i}f(\{e'\})$\; 
+        $C \gets C \cup e_i$\;
+      }
+      \If{$f(\{e\}) \geq (1 + \gamma)\cdot \left(\sum_{e'\in C}f(\{e'\}) \right)$}{
+        $S \gets S \cup \{e\} \backslash C$\;
+      }
+    }
+  }
+}
+\Return $S$\;
+\caption{Streaming algorithm for non-decreasing modular function}
+\label{algo:streaming-modular}
+\end{algorithm}
+
+Varadaraja proved that Algorithm \ref{algo:streaming-modular} returns a $\frac{\gamma}{(p\cdot (1 + \gamma) - 1)(1 + \gamma)}$-approximation. In particular, this algorithm returns a $(1 + \gamma)$-approximation for matroid constraint. For convenience, we also call the non-decreasing normalized modular maximization
+problem as \emph{maximum weighted} (MW) problem. 
+
+Chakrabarti et al. \cite{CK14} proposed a general framework called \emph{compliant} algorithm. A key theorem in \cite{CK14} then shows that if a compliant algorithm for MW has some approximation guarantee, running the same algorithm for normalized monotone submodular also gives certain guarantee, informally,
+\begin{theorem}
+  \label{thm:compliant}
+  If a compliant algorithm for MW runs on parameter $\gamma$ and returns $C_{\gamma}$-approximation, running the same algorithm for normalized monotone submodular function gives $(C_{\gamma} + 1 + 1/\gamma)$-approximation.
+\end{theorem}
+
+As expected, Algorithm \ref{algo:streaming-modular} is compliant with parameter $\gamma$. By taking $\gamma = 1$, we obtain $\frac{1}{4p}$-approximation for $p$ matroids intersection and $1/4$-approximation for matroid constraint.
+
+
 
 
 
@@ -82,3 +149,6 @@ For general non-negative submodular maximization subject to matroid constraint, 
 
 
 \subsection{Results for Matching and $p$-matchoid}
+For matching constraint, Chakrabarti et al. \cite{CK14} noted that the algorithm in \cite{Z12} for streaming graph matching is a compliant algorithm. By applying Theorem \ref{thm:compliant}, they obtained an algorithm for normalized monotone submodular with $\frac{4}{31}$-approximation guarantee.
+
+\cite{CGQ15} is the only paper that give some results on $p$-matchoid. We will not discuss its technical details but summarize its results in Table \ref{table:streaming}.
