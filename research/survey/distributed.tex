@@ -1,1 +1,37 @@
 \section{Distributed Submodular Maximization}
+
+\subsection{MapReduce Model}
+Most distributed submodular maximization algorithms are discussed under the \emph{MapReduce} model \cite{DG08} which we briefly describe here.
+
+In the MapReduce model, the data is represented as $\langle$key, value$\rangle$ pairs that are distributed across $m$ machines. A computation in this model proceeds in rounds. In each round, there will be two phase.
+\begin{itemize}
+\item Map phase: each pair $\langle$key, value$\rangle$ is mapped by a user-defined hash function to $\langle$hash(key), value$\rangle$; all pairs are then shuffled and sent to different machines, and it is guaranteed that all pairs with the same hash value  will be distributed to the same machine.
+\item Reduce phase: each machine performs computation on the pairs it received as the output or the input of the next round.
+\end{itemize}
+
+\subsection{Algorithms for Cardinality Constraint}
+For submodular maximization subject to cardinality constraint in MapReduce model, simple algorithms exist.
+
+\paragraph{Monotone Case}
+For monotone submodular function with cardinality constraint $k$, Mirzasoleiman et al. \cite{MKS+13} proposed a straightforward solution (they call it {\sc GreeDi}) for MapReduce model. The algorithm proceeds in two rounds:
+\begin{enumerate}
+\item partition the ground set into $m$ parts and for each part $V_i$ run the standard greedy algorithm (Algorithm \ref{algo:greedy}) with constraint $k$ to obtain a corresponding solution $S_i$
+\item union all solutions obtained in the first round and run Algorithm \ref{algo:greedy} with constraint $k$ to obtain a global solution $S$, return the best among $S_i$'s and $S$
+\end{enumerate}
+
+Unfortunately, the approximation guarantee given by this algorithm is only bounded by $(1 - e^{-1})^2/\min(m, k)$. Mirzasoleiman et al. \cite{MKS+13} also gave better bound for datasets with certain geometric structure.
+
+Noting that the method in \cite{MKS+13} gives excellent performance in practice, Barbosa et al \cite{DEN+15} conducted a more sophisticate analysis. Their results show that if the ground set $V$ is randomly partitioned to $m$ machine, one can achieve significantly better approximation guarantee, namely, $\frac{1 - e^{-1}}{2}$ in expectation. In fact, Barbosa et al. \cite{DEN+15} proved much stronger results and we would like to summarize here as an informal theorem,
+\begin{theorem}[\cite{DEN+15}, informal]
+  \label{thm:randomGreeDi}
+  Let $f$ be a sumbodular function and let $\calI$ be a hereditary constraint. Assume {\sc Alg} is an algorithm that gives $\alpha$-approximation for maximizing $f$ subject to $\calI$. We do random partition in {\sc GreeDi} and replace standard greedy algorithm with {\sc Alg}, the constraint we consider here is $\calI$ instead of the cardinality constraint. Then 
+  \begin{itemize}
+  \item if $f$ is monotone, above algorithm gives $\frac{\alpha}{2}$-approximation
+  \item if $f$ is non-monotone and {\sc Alg} satisfies a certain technical property (see \cite{DEN+15} for detail), above algorithm gives $\frac{\alpha}{4 + 2\alpha}$-approximation.
+  \end{itemize}
+\end{theorem}
+Note that the only requirement for the constraint is \emph{hereditary}, so the theorem holds for matroid, knapsack, and $p$-system.
+
+
+
+\subsection{Algorithm for More General Constraints}
