@@ -31,11 +31,9 @@ It is shown in \cite{CCP+11} that the {\sc $\eps$-Greedy} algorithm achieves: 1)
 Those are guarantees can be achieved by the framework in Kumar et al. \cite{KMV+15} as well.
 
 
-\subsection{Algorithms for Cardinality Constraint}
-For submodular maximization subject to cardinality constraint in MapReduce model, simple algorithms exist.
 
-\paragraph{Monotone Case}
-For monotone submodular function with cardinality constraint $k$, Mirzasoleiman et al. \cite{MKS+13} proposed a straightforward solution (they call it {\sc GreeDi}) for MapReduce model. The algorithm proceeds in two rounds:
+\subsection{Theory for {\sc GreeDi}-Based Algorithms}
+{\sc GreeDi} is a simple MapReduce algorithm proposed by  Mirzasoleiman et al. \cite{MKS+13} for monotone submodular maximization under cardinality constraint. Based on this algorithm, \cite{DEN+15,MZ15} gave deep theoretical results. The {\sc GreeDi} algorithm proceeds in two rounds:
 \begin{enumerate}
 \item partition the ground set into $m$ parts and for each part $V_i$ run the standard greedy algorithm (Algorithm \ref{algo:greedy}) with constraint $k$ to obtain a corresponding solution $S_i$
 \item union all solutions obtained in the first round and run Algorithm \ref{algo:greedy} with constraint $k$ to obtain a global solution $S$, return the best among $S_i$'s and $S$
@@ -43,7 +41,7 @@ For monotone submodular function with cardinality constraint $k$, Mirzasoleiman 
 
 Unfortunately, the approximation guarantee given by this algorithm is only bounded by $(1 - e^{-1})^2/\min(m, k)$. Mirzasoleiman et al. \cite{MKS+13} also gave better bound for datasets with certain geometric structure.
 
-Noting that the method in \cite{MKS+13} gives excellent performance in practice, Barbosa et al \cite{DEN+15} conducted a more sophisticate analysis. Their results show that if the ground set $V$ is randomly partitioned to $m$ machine, one can achieve significantly better approximation guarantee, namely, $\frac{1 - e^{-1}}{2}$ in expectation. In fact, Barbosa et al. \cite{DEN+15} proved much stronger results and we would like to summarize here as an informal theorem,
+Noting that the method in \cite{MKS+13} gives excellent performance in practice, Barbosa et al \cite{DEN+15} conducted a more sophisticate analysis. Their results show that if the ground set $V$ is randomly partitioned to $m$ machines, one can achieve significantly better approximation guarantee, namely, $\frac{1 - e^{-1}}{2}$ (in expectation) for monotone submodular maximization subject to cardinality constraint . In fact, Barbosa et al. \cite{DEN+15} proved much stronger results which we would like to summarize here as an informal theorem,
 \begin{theorem}[\cite{DEN+15}, informal]
   \label{thm:randomGreeDi}
   Let $f$ be a sumbodular function and let $\calI$ be a hereditary constraint. Assume {\sc Alg} is an algorithm that gives $\alpha$-approximation for maximizing $f$ subject to $\calI$. We do random partition in {\sc GreeDi} and replace standard greedy algorithm with {\sc Alg}, the constraint we consider here is $\calI$ instead of the cardinality constraint. Then 
@@ -53,7 +51,65 @@ Noting that the method in \cite{MKS+13} gives excellent performance in practice,
   \end{itemize}
 \end{theorem}
 Note that the only requirement for the constraint is \emph{hereditary}, so the theorem holds for matroid, knapsack, and $p$-system.
+ 
+
+
+Mirrokni et al. \cite{MZ15} analyzed a class of {\sc GreeDi}-like algorithms using the concept of randomized composable core-sets. In their framework each item in the ground set $V$ can be randomly assigned to $C$ machines. Machine $i$ was assigned $T_i \subseteq V$. Also we define $f_k$ be the function that takes $V$ returns an solution to $\argmax_{S:|S|\leq k} f(S)$. The randomized composable core-sets is defined as follows,
+\begin{definition}[Informal]
+  \label{def:core-sets}
+  Consider an algorithm \alg~ that given any subset $T\subseteq V$ returns a subset \alg$(T)\subseteq T$ with size at most $k'$. Let $\{T_1, \ldots, T_m\}$ generated as desired above, if 
+$$\E\left[f_k(\alg(T_1)\cup\ldots\cup\alg(T_m))\right] \geq \alpha \cdot \E\left[f_k(T_1\cup\ldots\cup T_m)\right],$$
+we call $\alg$ is an $\alpha$-approximate randomized composable core-sets with parameter $C, k', k$, or simply $\alpha$-core-sets.
+\end{definition}
+If an algorithm is $\alpha$-core-sets and the corresponding $f_k$ is always gives $\beta$-approximation for a submodular maximization problem, we directly obtain a distributed algorithm that gives $\alpha\cdot\beta$-approximation.
 
 
 
-\subsection{Algorithm for More General Constraints}
+Mirrokni et al. \cite{MZ15} then proved that a class of classical algorithm are actually $\alpha$-core-sets (for some $\alpha$). Moreover, if one is allowed to increase $k'$ (recall that $\alg(T)$ return a set with size $k'$), one may obtain better approximation guarantee. Increasing $C$ (recall that each $e\in V$ is randomly assigned to $C$ machines) also helps to increase the approximation ratio. We would not cover the detailed theorem, but summarize some of them in Table \ref{table:distributed}.
+
+\subsubsection{Other Results}
+More recent work of Barbosa et al. \cite{BAN+2015new} proposed a different framework that runs in $O(1/\eps)$ rounds. The algorithm is somewhat involved so we ignore its details here. For an algorithm $\alg$ designed for submodular maximization subject to hereditary constraint, Barbosa et al introduced two properties,
+\begin{itemize}
+\item $\alpha$-approximation: let $T = \argmax_{S\in\calI} f(S)$, for any $S \subseteq V$
+$$f(\alg(S)) \geq \alpha \cdot f(T\cap S)$$
+\item consistency: for two disjoint sets $A, B \subseteq V$, if for every $e\in B$ we have $\alg(A\cup\{e\}) = \alg(A)$, then $\alg(A\cup B) = \alg(A)$
+\end{itemize}
+
+It turns out any deterministic algorithm with those two properties, can be adapted to a distributed algorithm that runs in $O(1/\eps)$ rounds and gives $(\alpha - \eps)$-approximation. 
+
+Finally, we summarize some of the best results known in Table \ref{table:distributed}.
+
+\begin{table}[t]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+constraint & rounds  &  approx. & reference \\
+\hline
+\multirow{3}{*}{cardinality} & $O(\frac{\log n}{\eps})$& $1-e^{-1}-\eps$ & \cite{KMV+15}\\
+\cline{2-4}
+                             & $2$ & $0.545$ & \cite{MZ15} \\
+\cline{2-4}
+                             & $O(1/\eps)$ & $1 - e^{-1}-\eps$ & \cite{BAN+2015new} \\
+
+\hline
+
+
+\multirow{3}{*}{matroid}     & $O(\frac{\log n}{\eps})$ & $1/2 - \eps$ & \cite{KMV+15} \\
+\cline{2-4}
+                             & $2$ & $1/4$ & \cite{DEN+15} \\
+\cline{2-4}
+                             & $O(1/\eps)$ & $1 - e^{-1}-\eps$ & \cite{BAN+2015new} \\
+\hline
+\multirow{3}{*}{p-system}     & $O(\frac{\log n}{\eps})$ & $\frac{1}{p+1} - \eps$ & \cite{KMV+15} \\
+\cline{2-4}
+                            & $2$  & $\frac{1}{2(p + 1)}$ & \cite{DEN+15} \\
+\cline{2-4}      
+                           & $O(1/\eps)$ & $\frac{1}{p + 1} - \eps$ & \cite{BAN+2015new}\\
+\hline
+\end{tabular}
+\caption{Best known algorithms  for monotone submodular maximization in the MapReduce model. All algorithms are randomized.}
+\label{table:distributed}
+\end{table}
+
+
+
