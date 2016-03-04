@@ -7,5 +7,4 @@ import java.util.Deque;
  */
 public interface SetFunction<T> {
     double eval(Deque<T> S);
-    double marginalGain(Deque<T> S, T elem);
 }
