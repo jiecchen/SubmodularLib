@@ -51,7 +51,7 @@ public class Greedy {
     }
 
 
-    public static<T> ArrayList<T> findOptimal(ArrayList<T> V, SubmodularStateless<T> func, int maxSize) {
+    public static<T> ArrayList<T> findOptimalStateless(ArrayList<T> V, SubmodularBuffer<T> func, int maxSize) {
         // to check if an element has been included in the solution
         HashSet<Integer> included = new HashSet<>();
         ArrayList<T> solution = new ArrayList<>();
