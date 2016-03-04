@@ -33,6 +33,8 @@ public class MaxValue extends SubmodularBuffer<Double> {
 
     @Override
     public double eval(ArrayList A) {
+        if (A.size() == 0)
+            return Double.NEGATIVE_INFINITY;
         return (double) Collections.max(A);
     }
 
