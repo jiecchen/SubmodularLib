@@ -45,6 +45,13 @@ public abstract class SubmodularBuffer<T> implements Serializable {
 
     /**
      *
+     * @param A the given set
+     * @return value of f(A), internal states of "this" is not changed
+     */
+    public abstract double eval(ArrayList<T> A);
+
+    /**
+     *
      * @return current function value f(S)
      */
     public double getCurrentValue() {
