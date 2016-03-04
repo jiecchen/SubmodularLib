@@ -16,7 +16,8 @@ public class SieveStreamOPT<T> implements StreamingAlgorithm<T> {
         maxSize = _maxSize;
         func = _func;
     }
-
+    
+    @Override
     public void processItem(T elem) {
         if (func.size() >= maxSize)
             return;
