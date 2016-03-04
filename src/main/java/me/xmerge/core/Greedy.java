@@ -51,6 +51,31 @@ public class Greedy {
     }
 
 
+    public static<T> ArrayList<T> findOptimal(ArrayList<T> V, SubmodularStateless<T> func, int maxSize) {
+        // to check if an element has been included in the solution
+        HashSet<Integer> included = new HashSet<>();
+        ArrayList<T> solution = new ArrayList<>();
+        // grow the solution
+        while (solution.size() < maxSize && included.size() < V.size()) {
+            // find the element that maximizes the marginal gain
+            int m = -1;
+            double m_gain = -1e100;
+            for (int j = 0; j < V.size(); ++j) {
+                if (!included.contains(j)) {
+                    double tmp = func.marginalGain(solution, V.get(j));
+                    if (m == -1 || tmp > m_gain) {
+                        m = j;
+                        m_gain = tmp;
+                    }
+                }
+            }
+            solution.add(V.get(m));
+            included.add(m);
+        }
+
+        return solution;
+    }
+
 
 
 }
