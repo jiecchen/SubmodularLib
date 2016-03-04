@@ -20,12 +20,30 @@ public abstract class SubmodularBuffer<T> implements Serializable {
         currentValue = 0;
     }
 
+
+    ////////////////  abstract methods //////////////////////////////////
+
     /**
      * Add a new elem to the solution set,
      * and update the internal states such as currentValue
      * @param elem the element to be added
      */
     public abstract void addToSolution(T elem);
+
+
+    /**
+     *
+     * @param A the given set
+     * @return value of f(A), internal states of "this" is not changed
+     */
+    public abstract double eval(ArrayList<T> A);
+
+    /**
+     *
+     * @return current function value f(S)
+     */
+
+    ////////////////////////  methods with implementation //////////////////////////////
 
     /**
      *
@@ -43,19 +61,24 @@ public abstract class SubmodularBuffer<T> implements Serializable {
         return S.size();
     }
 
-    /**
-     *
-     * @param A the given set
-     * @return value of f(A), internal states of "this" is not changed
-     */
-    public abstract double eval(ArrayList<T> A);
+
+
+    public double getCurrentValue() {
+        return currentValue;
+    }
 
     /**
      *
-     * @return current function value f(S)
+     * @param BaseSet base set
+     * @param elem new element
+     * @return return marginal gain of adding elem to BaseSet, this function should not modify any states
      */
-    public double getCurrentValue() {
-        return currentValue;
+    public double marginalGain(ArrayList<T> BaseSet, T elem) {
+        double oldV = eval(BaseSet);
+        BaseSet.add(elem);
+        double newV = eval(BaseSet);
+        BaseSet.remove(BaseSet.size() - 1);
+        return newV - oldV;
     }
 
     /**
@@ -63,5 +86,7 @@ public abstract class SubmodularBuffer<T> implements Serializable {
      * @param elem the new element
      * @return marginal gain by adding the new element
      */
-    public abstract double marginalGain(T elem);
+    public double marginalGain(T elem) {
+        return marginalGain(S, elem);
+    }
 }
