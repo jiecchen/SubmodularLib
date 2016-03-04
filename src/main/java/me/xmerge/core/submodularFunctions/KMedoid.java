@@ -25,6 +25,8 @@ public class KMedoid extends SubmodularBuffer<Double> {
 
     }
 
+
+    @Override
     public void addToSolution(Double elem) {
 
         for (int i = 0; i < groundSet.size(); ++i) {
@@ -37,6 +39,16 @@ public class KMedoid extends SubmodularBuffer<Double> {
         S.add(elem);
     }
 
+
+    @Override
+    public double eval(ArrayList<Double> A) {
+        KMedoid tmp = new KMedoid(groundSet);
+        for (Double a: A)
+            tmp.addToSolution(a);
+        return tmp.getCurrentValue();
+    }
+
+    @Override
     public double marginalGain(Double elem) {
         Double tot_gain = 0.;
         for (int i = 0; i < groundSet.size(); ++i) {

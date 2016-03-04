@@ -2,6 +2,8 @@ package me.xmerge.core.submodularFunctions;
 
 import me.xmerge.core.SubmodularBuffer;
 
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 /**
@@ -16,6 +18,7 @@ public class MaxValue extends SubmodularBuffer<Double> {
         max_value = Double.NEGATIVE_INFINITY;
     }
 
+    @Override
     public double marginalGain(Double elem) {
         if (elem > max_value) {
             if (max_value != Double.MIN_VALUE)
@@ -28,6 +31,12 @@ public class MaxValue extends SubmodularBuffer<Double> {
     }
 
 
+    @Override
+    public double eval(ArrayList A) {
+        return (double) Collections.max(A);
+    }
+
+    @Override
     public void addToSolution(Double elem) {
         if (elem > max_value) {
             max_value = elem;
