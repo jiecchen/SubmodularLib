@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Helper functions
@@ -35,5 +36,23 @@ public class UtilFunctions {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+    /**
+     *
+     * @param nCenters number of centers of the multi-Gaussian dist
+     * @param nRepeats number of points generated from each center
+     * @return nCenters * nRepeats points
+     */
+    public static ArrayList<Double> generateGaussianData(int nCenters, int nRepeats) {
+        Random rnd = new Random();
+        ArrayList<Double> V = new ArrayList<>();
+        for (int i = 0; i < nCenters; ++i)
+            for (int j = 0; j < nRepeats; ++j) {
+                V.add(10 * i + rnd.nextDouble());
+            }
+
+        return V;
     }
 }
