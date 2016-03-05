@@ -3,9 +3,10 @@ package me.xmerge.streaming;
 import junit.framework.TestCase;
 import me.xmerge.core.Greedy;
 import me.xmerge.core.submodularFunctions.KMedoid;
+import me.xmerge.util.UtilFunctions;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 
 /**
  * Tests for SieveStream
@@ -13,21 +14,17 @@ import java.util.Random;
 public class SieveStreamTest extends TestCase {
     public void test() {
         // create test data
-        ArrayList<Double> V = new ArrayList<>();
-        Random rnd = new Random();
+        ArrayList<Double> V = UtilFunctions.generateGaussianData(4, 100);
 
-        for (int i = 0; i < 4; ++i)
-            for (int j = 0; j < 100; ++j) {
-                V.add(5 * i + rnd.nextDouble());
-            }
 
         KMedoid func1 = new KMedoid(V);
 
         Greedy.findOptimal(V, func1, 4);
-        SieveStream<Double> sieve = new SieveStream<>(0.2, 4, new KMedoid(V));
+        SieveStream<Double> sieve = new SieveStream<>(0.02, 4, new KMedoid(V));
         for (Double a: V) {
             sieve.processItem(a);
         }
+
 
 
         assertTrue(sieve.getOptimalFunc().getCurrentValue() < 1.3 * func1.getCurrentValue());
