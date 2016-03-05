@@ -26,6 +26,12 @@ public class IVMTest extends TestCase {
             assertTrue(ivm.getCurrentValue() > pre);
             pre = ivm.getCurrentValue();
         }
+
+
+        IVM<MetricDouble> ivm1 = new IVM<>(0);
+        assertTrue(ivm1.eval(VV) <= 1e-100);
     }
+
+
 
 }
