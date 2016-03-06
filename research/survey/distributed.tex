@@ -2,9 +2,9 @@
 \label{sec:distributed}
 As a special case of the more general distributed submodular maximization, the distributed set cover problem (see Sec. \ref{sec:classical}) was discussed in \cite{CKT10}. A polylog-round MapReduce algorithm with $(1-e^{-1})$-approximation guarantee was proposed in that paper. The number of rounds was later reduced to $O(\log^2 |V|)$  by Blelloch et al. \cite{BST12}. 
 
-  The general distributed submodular maximization problem was systematically studied by Kumar et al. \cite{KMV+15} in MapReduce model.  For the cardinality constraint, Mirzasoleiman et al. \cite{MKS+13} proposed a simple two-round MapReduce algorithm that performs well in practice. Barbosa et al. \cite{DEN+15} provided a more sophisticated analysis for a randomized version of the  algorithm in \cite{MKS+13}, and provided much stronger theoretical guarantee. Those results were further extended in \cite{BAN+2015new}. Inspired by \cite{MKS+13}, Mirrokni and Zadimoghaddam \cite{MZ15} provided a general framework for distributed submodular maximization using the concept of randomized composable core-sets. In this section, we mainly discuss the results from \cite{KMV+15,MKS+13,DEN+15,BAN+2015new,MZ15}.
+  The general distributed submodular maximization problem was systematically studied by Kumar et al. \cite{KMV+15} in the MapReduce model.  For the cardinality constraint, Mirzasoleiman et al. \cite{MKS+13} proposed a simple two-round MapReduce algorithm that performs well in practice. Barbosa et al. \cite{DEN+15} provided a more sophisticated analysis for a randomized version of the  algorithm in \cite{MKS+13}, and provided much stronger theoretical guarantee. Those results were further extended in \cite{BAN+2015new}. Inspired by \cite{MKS+13}, Mirrokni and Zadimoghaddam \cite{MZ15} provided a general framework for distributed submodular maximization using the concept of randomized composable core-sets. In this section, we mainly discuss the results from \cite{KMV+15,MKS+13,DEN+15,BAN+2015new,MZ15}.
 
-Unlike in the streaming  where an algorithm is normally designed from scratch, in the distributed setting, centralized algorithms are usually used as black boxes. For this reason, our discussion focus more on the theory of the framework, i.e. the relation between the guarantee in the distributed setting with the guarantee of the centralized algorithm(s) being used.
+Unlike in the streaming  where an algorithm is normally designed from scratch, in the distributed setting, centralized algorithms are usually used as black boxes. For this reason, our discussion focus more on the theory of frameworks, i.e. the relation between the guarantee in the distributed setting with the guarantee of the centralized algorithm(s) being used.
 
 
 \subsection{MapReduce Model}
@@ -22,7 +22,7 @@ All distributed algorithms we cover are discussed in the MapReduce model.
 The techniques being used by Kumar et al. \cite{KMV+15} are very different from other ideas we will cover. Only monotone submodular functions were considered in their paper. There are two main ideas in their framework,
 \begin{itemize}
 \item the approximated version of Algorithm \ref{algo:greedy} (called {\sc $\eps$-Greedy}) where in each step, the algorithm only tries to find $e\in V\backslash S$ with marginal gain $(1 - \eps)$ to the optimum; it can be shown that this algorithm performs almost as well as Algorithm \ref{algo:greedy}
-\item a Sample\&Prune step: in each round the algorithm sample a subset from the remaining elements and run greedy algorithm on that set to obtain a immediate solution;  the immediate solution is then used to prune those impossible to be part of the final solution
+\item a Sample\&Prune step: in each round the algorithm samples a subset from the remaining elements and run greedy algorithm on that set to obtain a immediate solution;  the immediate solution is then used to prune those impossible to be part of the final solution
 \end{itemize}
 
 The framework then uses the Sample\&Prune technique to simulate the {\sc $\eps$-Greedy} algorithm. Let $\Delta = \max_{e\in V} \Delta(e|\emptyset)$. They shown that for hereditary constraint, their framework simulates the {\sc $\eps$-Greedy} using $O(\frac{1}{\eps \delta}\log \Delta)$ rounds of MapReduce. $O(n\log n / \mu)$ machines are used and each machine use $\mu = O(k n^{\delta}\log n)$ space. Here $k$ is the size of returned solution.
@@ -36,7 +36,7 @@ Those are guarantees can be achieved by the framework in Kumar et al. \cite{KMV+
 \subsection{Theory for {\sc GreeDi}-Based Algorithms}
 {\sc GreeDi} is a simple MapReduce algorithm proposed by  Mirzasoleiman et al. \cite{MKS+13} for monotone submodular maximization under cardinality constraint. Based on this algorithm, \cite{DEN+15,MZ15} gave deep theoretical results. The {\sc GreeDi} algorithm proceeds in two rounds:
 \begin{enumerate}
-\item partition the ground set into $m$ parts and for each part $V_i$ run the standard greedy algorithm (Algorithm \ref{algo:greedy}) with constraint $k$ to obtain a corresponding solution $S_i$
+\item partition the ground set into $m$ parts and for each part $V_i$, run the standard greedy algorithm (Algorithm \ref{algo:greedy}) with constraint $k$ to obtain a corresponding solution $S_i$
 \item union all solutions obtained in the first round and run Algorithm \ref{algo:greedy} with constraint $k$ to obtain a global solution $S$, return the best among $S_i$'s and $S$
 \end{enumerate}
 
@@ -55,7 +55,7 @@ Note that the only requirement for the constraint is \emph{hereditary}, so the t
  
 
 
-Mirrokni et al. \cite{MZ15} analyzed a class of {\sc GreeDi}-like algorithms using the concept of randomized composable core-sets. In their framework each item in the ground set $V$ can be randomly assigned to $C$ machines. Machine $i$ was assigned $T_i \subseteq V$. Also we define $f_k$ be the function that takes $V$ returns an solution to $\argmax_{S:|S|\leq k} f(S)$. The randomized composable core-sets is defined as follows,
+Mirrokni et al. \cite{MZ15} analyzed a class of {\sc GreeDi}-like algorithms using the concept of randomized composable core-sets. In their framework each item in the ground set $V$ can be randomly assigned to $C$ machines. Machine $i$ is assigned with the dataset $T_i \subseteq V$. Also we define $f_k$ be a function that takes $V$ returns a (approxiate) solution to $\argmax_{S:|S|\leq k} f(S)$. The randomized composable core-sets is defined as follows,
 \begin{definition}[Informal]
   \label{def:core-sets}
   Consider an algorithm \alg~ that given any subset $T\subseteq V$ returns a subset \alg$(T)\subseteq T$ with size at most $k'$. Let $\{T_1, \ldots, T_m\}$ generated as desired above, if 
@@ -66,10 +66,10 @@ If an algorithm is $\alpha$-core-sets and the corresponding $f_k$ is always give
 
 
 
-Mirrokni et al. \cite{MZ15} then proved that a class of classical algorithm are actually $\alpha$-core-sets (for some $\alpha$). Moreover, if one is allowed to increase $k'$ (recall that $\alg(T)$ return a set with size $k'$), one may obtain better approximation guarantee. Increasing $C$ (recall that each $e\in V$ is randomly assigned to $C$ machines) also helps to increase the approximation ratio. We would not cover the detailed theorem, but summarize some of them in Table \ref{table:distributed}.
+Mirrokni et al. \cite{MZ15} then proved that a class of classical algorithms are actually $\alpha$-core-sets (for some $\alpha$). Moreover, if one is allowed to increase $k'$ (recall that $\alg(T)$ returns a set with size $k'$), one may obtain better approximation guarantee. Increasing $C$ (recall that each $e\in V$ is randomly assigned to $C$ machines) also helps to increase the approximation ratio. We would not cover the detailed theorem, but summarize some of them in Table \ref{table:distributed}.
 
 \subsubsection{Other Results}
-More recent work of Barbosa et al. \cite{BAN+2015new} proposed a different framework that runs in $O(1/\eps)$ rounds. The algorithm is somewhat involved so we ignore its details here. For an algorithm $\alg$ designed for submodular maximization subject to hereditary constraint, Barbosa et al introduced two properties,
+More recent work of Barbosa et al. \cite{BAN+2015new} proposed a different framework that runs in $O(1/\eps)$ rounds. The algorithm is somewhat involved so we ignore its details here. For an algorithm $\alg$ designed for submodular maximization subject to hereditary constraint, Barbosa et al. \cite{BAN+2015new} introduced two properties,
 \begin{itemize}
 \item $\alpha$-approximation: let $T = \argmax_{S\in\calI} f(S)$, for any $S \subseteq V$
 $$f(\alg(S)) \geq \alpha \cdot f(T\cap S)$$
