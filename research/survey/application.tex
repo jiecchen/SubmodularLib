@@ -1,17 +1,19 @@
 \section{Applications}
 \label{sec:applications}
-In this section, we first show a list of possible applications and discuss several representative applications in detail. We will see from those examples that submodularity is such a natural property  that many real-world problems can be cast in to the framework of submodular optimization (maximization).
+In this section, we first show how one can re-formulate many classical combinatorial problems as submodular maximization problems. We then show applications  from several resent papers from areas of social network, natural language processing, and general machine learning. 
 
 
-\subsection{List of Possible Applications}
-\begin{itemize}
-\item Combinatorial Problems: set cover, max $k$ coverage, vertex cover, edge cover, graph cut problems etc.
-\item Networks: social networks, viral marketing, diffusion networks etc.
-\item Graphical Models: image segmentation, tree distributions, factors etc.
-\item NLP: document summarization, web search, information retrieval
-\item Machine Learning: active/semi-supervised learning etc.
-\item Economics: markets, economies of scale
-\end{itemize}
+
+
+% \subsection{List of Possible Applications}
+% \begin{itemize}
+% \item Combinatorial Problems: set cover, max $k$ coverage, vertex cover, edge cover, graph cut problems etc.
+% \item Networks: social networks, viral marketing, diffusion networks etc.
+% \item Graphical Models: image segmentation, tree distributions, factors etc.
+% \item NLP: document summarization, web search, information retrieval
+% \item Machine Learning: active/semi-supervised learning etc.
+% \item Economics: markets, economies of scale
+% \end{itemize}
 
 
 
@@ -46,7 +48,7 @@ where $w(S) = \sum_{C\in S} w(C)$. This is a monotone submodular maximization pr
 
 \paragraph{Maximum Spanning Forest}
 Let us consider a graph $G = (V, E)$ where $V$ is the set of vertices and $E$ is the set of edges. In this case we consider $E$ as the ground set and define 
-$$\calI = \{S\subseteq E ~|~\text{edge-induced graph}~G(V, S)~\text{does not contain a circle}\}.$$
+$$\calI = \{S\subseteq E ~|~\text{edge-induced graph}~G(V, S)~\text{that does not contain a circle}\}.$$
 
 One can verify (via definition) that $(E, \calI)$ is a matriod. The rank function of $(E, \calI)$ can be interpreted as the size of the maximum spanning forest of an edge-induced graph, i.e. given $S\subseteq E$, $r(S)$ is the size of maximum spanning forest (in terms of number of edges) of $G(V, S)$. 
 

@@ -1,2 +1,10 @@
 \section{Conclusion and Future Research}
 \label{sec:conclusion}
+We have shown some of the nice properties of submodular functions and how they can be applied to various areas. Submodular maximization has been studied for many years but there are still many open problems left. Less results are known in streaming and distributed submodular maximization while these two models are playing increasingly important roles in ``big data'' era. We list several open problems/directions for future research.
+
+\begin{itemize}
+\item We mentioned that {\sc Stochastic-Greedy} in \cite{MBK+15} uses only $O(|V|\log\frac{k}{\eps})$ number of value queries based on a sampling technique, but this method only works for cardinality constraint. Is it possible to design fast sampling-based algorithms for more general constraints (e.g. matroid)?
+\item There are several algorithms proposed for streaming submodular maximization, but most of them assume value oracle, which, unfortunately is not realistic in streaming model. Often we need the whole ground set to calculate the value of a submodular function. In \cite{BMK+14}, the authors discussed how one can deal with composable submodular (i.e. $f(S) = \sum_{v\in V}f_v(S)$) function via sampling. Can we also obtain some results for non-composable submodular functions?
+\item We note that the power of submodularity is not fully explored in the area of database, can we identify some problems that may have submodular formulations? 
+\item It would be interesting to extend submodular maximization to Distributed Monitoring Model \cite{CMY11}.
+\end{itemize}
