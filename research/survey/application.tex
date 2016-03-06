@@ -88,9 +88,9 @@ Lin et al. \cite{LB11} pointed out that a lot of existing work for document summ
 \paragraph{Word Alignment}
 Word alignment is a key component in most statistical machine translation systems. Unlike classical approaches that utilize graphical models, Lin et al. \cite{LB11word} viewed word alignment problem as submodular maximization problem under matroid constraints. 
 
-Suppose that we are given a source language (English) string $e_1, e_2, \ldots, e_n$ and a target language (French) string $f_1, f_2, \ldots, f_m$. Let $V = \{(i, j) ~|~ i\in[n], j\in[m] \}$ be the ground set. The goal is to find a match $S\subseteq V$ that maximizes a certain quality function under some constraints. 
+Suppose that we are given a source language (English) string $e_1, e_2, \ldots, e_n$ and a target language (French) string $f_1, f_2, \ldots, f_m$. Let $V = \{(i, j) ~|~ i\in[n], j\in[m] \}$ be the ground set. The goal is to find a matching $S\subseteq V$ that maximizes a certain quality function under some constraints. 
 
-Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The \emph{fertility} restriction of a word $f_j$ then requires that $f_j$ can only match at most $k_j$ words in $e_1,\ldots, e_n$, or equivalently the match $S \subseteq V$ satisfies $|S \cap P_j| \leq k_i$ for all $j\in[m]$. Such a constraint is called \emph{partition constraint}, which is an important instance of matroid. Lin et al. then proposed a submodular function as the quality function, which is a composition of a concave function and a modular function. We refer readers to \cite{LB11word} for details.
+Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The \emph{fertility} restriction of a word $f_j$ then requires that $f_j$ can only match at most $k_j$ words in $e_1,\ldots, e_n$, or equivalently the matching $S \subseteq V$ satisfies $|S \cap P_j| \leq k_i$ for all $j\in[m]$. Such a constraint is called \emph{partition constraint}, which is an important instance of matroid. Lin et al. then proposed a submodular function as the quality measurement, which is a composition of a concave function and a modular function. We refer readers to \cite{LB11word} for details.
 
 
 
@@ -101,7 +101,7 @@ Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The 
 Domingos and Richardson \cite{DR01,RD02} posed a fundamental algorithmic problem: if we can try to convince a subset of individuals (at most $k$) to adopt a new product or innovation, and the goal is to trigger a large cascade of further adoptions, which set of individuals should we target? 
 Kempe et al. \cite{KKT03} considered such question as a discrete optimization problem. Let $G = (V, E, W)$ a social network (a directed graph with non-negative weights for each edge), two basic models of influence spreading were considered in \cite{KKT03},
 \begin{itemize}
-\item Linear Threshold Mode: each $v\in V$ uniformly at random sample a threshold $\theta_v$ from some interval. After initializing $A \subset V$ as the set of active nodes, at each time step, any node $v$ with the total weights of its active neighbors above $\theta_v$ will be activated. Repeat this process until no more nodes can be activated. 
+\item Linear Threshold Mode: each $v\in V$ uniformly at random samples a threshold $\theta_v$ from some interval. After initializing $A \subset V$ as the set of active nodes, at each time step, any node $v$ with the total weights of its active neighbors above $\theta_v$ will be activated. Repeat this process until no more nodes can be activated. 
 
 \item Independent Cascade Model:  after initializing the active set $A \subset V$, at each time step each active node $v$ will activate its neighbor $u$ (for all inactive neighbors) with probability $w_{v,u}$ (which is the parameter of this network).
 \end{itemize}
@@ -124,7 +124,7 @@ where $P_c(u, v) \propto e^{-(t_v - t_u)}$. The structure of the network can be 
 Consider the improvement of log-likelihood for cascade $c$ under graph $G$ over an empty graph $K$:
 $$F_c(G) = \max_{T\in \mathcal{T}(G)}\log P(c|T) - \max_{T\in \mathcal{T}(K)}P(c|T).$$
 It turns out that $F_c(G)$ can be expressed as following,
-$$F_c(G) = \max_{T\in\mathcal{G}}\sum_{(u, v)\in T}w_c(u, v)$$
+$$F_c(G) = \max_{T\in\mathcal{T}(G)}\sum_{(u, v)\in T}w_c(u, v)$$
 where $w_c(u, v)$ is a non-negative weight. Optimizing $P(C|G)$ is equivalently to optimize $F_C(G) = \sum_{c\in C}F_c(G)$ and the latter is shown to be submodular (the ground set is all possible graphs defined over the given vertices set). 
 
 
@@ -144,15 +144,16 @@ here $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetri
 
 For large-scale problem, even representing the matrix $K_V$ (which requires $O(n^2)$ space) is prohibited. The common solution to solve this issue is to select a small representative subset $S \subseteq V$ and only work with $K_S$. An additional benefit by using such a subset is that it may help to avoid overfitting. The question now becomes how to select the subset $S$. One popular way to measure the quality of selected set $S$ is to use \emph{Informative Vector Machine}(IVM) introduced by Laurence et al. \cite{LSH03}. Formally, we define $f: 2^V \rightarrow \bbR$ with
 $$f(S) = \frac{1}{2} \log\det\left( \mathbf{I} + \sigma^{-2} K_S \right)$$
-where $\mathbf{I}$ is the identity matrix and $\sigma > 0$ is a parameter. IVM has close connection with the entropy of  muti-variable Gaussian distribution \cite{B14} and it is shown in \cite{S04,B14} that $f$ is a submodular function. We can then select the set $S\subset V$ by solving
+where $\mathbf{I}$ is the identity matrix and $\sigma > 0$ is a parameter. IVM has a close connection to the entropy of  muti-variable Gaussian distribution \cite{B14} and it is shown in \cite{S04,B14} that $f$ is a submodular function. We can then select the set $S\subset V$ by solving
 $$\argmax_{S:|S|\leq k} f(S).$$
 
+\chensays{consider to add another example for ML}
 
-\subsection{More Applications}
+% \subsection{More Applications}
 
 
 
-\begin{itemize}
-\item \cite{MKC+15} distributed k-centers using submodular optimization.
-\end{itemize}
+% \begin{itemize}
+% \item \cite{MKC+15} distributed k-centers using submodular optimization.
+% \end{itemize}
 
