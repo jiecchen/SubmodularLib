@@ -304,9 +304,9 @@ A celebrated result of \cite{NWF78} shows that,
 \end{theorem}
 For several classes of submodular functions, this result is actually the best one can expect for any efficient algorithm (which we mean using only sub-exponential value queries). In fact the hardness result in \cite{NWF78,F98} shows that any algorithm that is only allowed sub-exponential number of value queries can not achieve better than $(1 - 1/e)$-approximation (for a large class of submodular functions).
 
-There are several papers improving the running time of Algorithm \ref{algo:greedy} under cardinality constraint of size $k$ (under which the membership oracle is trivial). Minoux \cite{M78} proposed {\sc Lazy-greedy} as a fast implementation for Algorithm \ref{algo:greedy}. Instead of computing $\Delta_f(e|S)$ for each $e\in V\backslash S$ in Line \ref{line:emax},  {\sc Lazy-greedy} keeps an upper bound $\rho(e)$ (initially $+\infty$) on the marginal gain sorted in decreasing order (or kept in a heap). In each iteration, the {\sc Lazy-greedy} algorithm evaluates the element on top of the heap and updates its upper bound $\rho(e) \gets \Delta(e|S)$. If the updated $\rho(e) \geq \rho(e')$ for all other $e'$, submodularity guarantees that $e$ is the element with the largest marginal gain. The exact number of value queries consumed by {\sc Lazy-greedy} is unknown because it heavily relies on both $f$ and $V$, experimental study however shows that the {\sc Lazy-greedy} algorithm is in order of magnitude faster than the naive implementation of Algorithm \ref{algo:greedy}.  
+There are several papers improving the running time of Algorithm \ref{algo:greedy} under cardinality constraint of size $k$ (under which the membership oracle is trivial). Minoux \cite{M78} proposed {\sc Lazy-greedy} as a fast implementation for Algorithm \ref{algo:greedy}. Instead of computing $\Delta_f(e|S)$ for each $e\in V\backslash S$ in Line \ref{line:emax},  {\sc Lazy-greedy} keeps an upper bound $\rho(e)$ (initially $+\infty$) on the marginal gain sorted in decreasing order (or kept in a heap). In each iteration, the {\sc Lazy-greedy} algorithm evaluates the element on top of the heap and updates its upper bound via $\rho(e) \gets \Delta(e|S)$. If the updated $\rho(e) \geq \rho(e')$ for all other $e'$, submodularity guarantees that $e$ is the element with the largest marginal gain. The exact number of value queries consumed by {\sc Lazy-greedy} is unknown because it heavily relies on both $f$ and $V$, experimental study however shows that the {\sc Lazy-greedy} algorithm is in order of magnitude faster than the naive implementation of Algorithm \ref{algo:greedy}.  
 
-Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approximating the underlying submodular function with a set of (sub)modular functions. Badanidiyuru et al. \cite{BV14} proposed a different approach that uses only $O(\frac{|V|}{\eps}\log \frac{1}{\eps})$ number of value queries and guarantees $(1 - 1/e - \eps)$-approximation. This result was improved by Mirzasoleiman et al. \cite{MBK+15} recently where they proposed a randomized algorithm ({\sc Stochastic-Greedy}) that reduce the number of queries to  $O(|V| \log \frac{1}{\eps})$ and the approximation guarantee is $(1 - 1/e - \eps)$, in expectation. The key observation made in \cite{MBK+15} is that, instead of considering all $e\in V\backslash S$, one can only consider $O(\frac{|V|}{k}\log \frac{1}{\eps})$  random samples from $V\backslash S$. 
+Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approximating the underlying submodular function with a set of (sub)modular functions. Badanidiyuru et al. \cite{BV14} proposed a different approach that uses only $O(\frac{|V|}{\eps}\log \frac{1}{\eps})$ number of value queries and guarantees $(1 - 1/e - \eps)$-approximation. This result was improved by Mirzasoleiman et al. \cite{MBK+15} recently where they proposed a randomized algorithm ({\sc Stochastic-Greedy}) that reduces the number of queries to  $O(|V| \log \frac{1}{\eps})$ and the approximation guarantee is $(1 - 1/e - \eps)$, in expectation. The key observation made in \cite{MBK+15} is that, instead of considering all $e\in V\backslash S$, one can only consider $O(\frac{|V|}{k}\log \frac{1}{\eps})$  random samples from $V\backslash S$. 
 
 
 
@@ -318,19 +318,19 @@ Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approx
 
 
 
-\subsubsection{Algorithms for Matroid and $p$-system}
+\subsubsection{Algorithms for Matroid and $p$-System}
 Now we consider the matroid constraint and $p$-system. In his classical paper \cite{J76}, Jenkyns proved that for a non-negative \emph{modular} maximization problem s.t. $p$-system, Algorithm \ref{algo:greedy} produces a $p$-approximation of the optimum. Since matroid is $1$-system, Algorithm \ref{algo:greedy} always gives the optimal solution. Remarkably, we the following much stronger result, 
 
 \begin{theorem}[see e.g. \cite{B14,F05}]
   \label{thm:matroid}
   Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} non-negative modular function $f$, Algorithm \ref{algo:greedy} leads to a optimal solution for $\argmax_{I\in \calI} f(I)$.
 \end{theorem}
-Note that Algorithm \ref{algo:greedy} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization of a large class of problems.
+Note that Algorithm \ref{algo:greedy} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization for a large class of problems.
 
-When $f$ is non-decreasing non-negative submodular function, greedy strategy works well for $p$-system,
+When $f$ is a non-negative non-decreasing submodular function, greedy strategy works well for $p$-system,
 \begin{theorem}[\cite{NWF78,CCP+11}]
   \label{thm:}
-  For a non-negative non-decreasing submodular function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $1/(p + 1)$-approximation to the optimal solution.
+  For a non-negative non-decreasing submodular function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p + 1}$-approximation.
 \end{theorem}
 This theorem implies immediately that Algorithm \ref{algo:greedy} gives $1/2$-approximation for matroid constraint. 
 
