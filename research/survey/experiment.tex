@@ -1,0 +1,143 @@
+\documentclass[11pt]{article}
+
+
+
+
+
+
+%\usepackage{times}
+\usepackage{palatino}%charter}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{url}
+\usepackage{citesort}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{fullpage}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{theorem}
+%\theoremstyle{remark} 
+%\theoremstyle{definition}
+%\usepackage{wide}
+%\usepackage[ruled, vlined]{algorithm2e}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\usepackage{color}
+
+
+
+\newcommand{\veps}{\varepsilon}
+\newcommand{\eps}{\epsilon}
+\newcommand{\E}{\mathbf{E}}
+\renewcommand{\Pr}{\mathbf{Pr}}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+
+\newcommand{\bbR}{\mathbb{R}}
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\emRed}[1][]{\textcolor{blue} #1}
+\newcommand{\opt}{\text{OPT}}
+\newcommand{\knowopt}{{\sc KnowOpt}}
+\newcommand{\alg}{\text{ALG}}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{protocol}{Protocol}
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{property}{Property}
+\newtheorem{fact}{Fact}
+\newtheorem{observation}{Observation}
+\newtheorem{heuristic}{Heuristic}
+\newtheorem{solution}{Solution}
+\newtheorem{corollary}{Corollary}
+\newtheorem{scheme}{Scheme}
+\newtheorem{strategy}{Strategy}
+\newtheorem{invariant}{Invariant}
+{\theorembodyfont{\rmfamily}
+\newtheorem{remark}{Remark}}
+{\theorembodyfont{\rmfamily}
+\newtheorem{definition}{Definition}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+
+\newcommand{\chensays}[2][]{\textcolor{red} {\textsc{Chen #1:} \emph{#2}}}
+
+
+
+
+\newenvironment{proof}{\trivlist\item[]\emph{Proof:}}%
+{\unskip\nobreak\hskip 1em plus 1fil\nobreak$\Box$
+\parfillskip=0pt%
+\endtrivlist}
+
+
+
+
+
+\begin{document}
+
+\title{Report: Experimental Study for Submodular Maximization}
+\author{Jiecao Chen\\ jiecchen@indiana.edu}
+\date{\today}
+
+\maketitle
+
+
+
+%----------- start -----------------------
+\section{Roadmap}
+In this part, we give a experimental study of submodular maximization. 
+
+\section{The Setup}
+\label{sec:setup}
+\paragraph{Datasets.}
+\paragraph{Computation Environments.}
+
+
+
+\section{Simple Greedy Algorithms}
+\label{sec:greedy}
+
+\section{Streaming Submodular Maximization}
+\label{sec:streaming}
+
+\section{Distributed Submodular Maximization}
+\label{sec:distributed}
+
+\section{Discussion and Conclusion}
+\label{sec:conclude}
+
+
+
+%----------- end -------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+\bibliographystyle{abbrv}
+\bibliography{survey.bib}
+
+%\newpage
+
+%\appendix
+%\input{appendix}
+
+
+\end{document}
