@@ -21,7 +21,7 @@ public class MaxValue extends SubmodularBuffer<Double> {
     @Override
     public double marginalGain(Double elem) {
         if (elem > max_value) {
-            if (max_value != Double.MIN_VALUE)
+            if (max_value != Double.NEGATIVE_INFINITY)
                 return elem - max_value;
             else
                 return elem;
