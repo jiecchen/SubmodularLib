@@ -95,16 +95,6 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
      * @return the best possible solution of the constrained submodular maximization problem
      */
     public ArrayList<T> getOptimalSolution() {
-        // find solution with optimal function value
-        Double maxValue = Double.NEGATIVE_INFINITY;
-        ArrayList<T> ans = new ArrayList<>();
-        for (SieveStreamOPT<T> ssOpt: optValues) {
-            if (ssOpt.getFunc().getCurrentValue() > maxValue) {
-                maxValue = ssOpt.getFunc().getCurrentValue();
-                ans = ssOpt.getFunc().getSolution();
-            }
-        }
-
-        return ans;
+        return getOptimalFunc().getSolution();
     }
 }
