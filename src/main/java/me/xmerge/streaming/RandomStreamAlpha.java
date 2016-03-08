@@ -26,6 +26,7 @@ public class RandomStreamAlpha<T> implements StreamingAlgorithm<T> {
         func = _func;
         eps = _eps;
         rand = new Random();
+        buffer = new ArrayList<>();
     }
 
     public double getAlpha() {
