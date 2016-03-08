@@ -28,6 +28,10 @@ public class RandomStreamAlpha<T> implements StreamingAlgorithm<T> {
         rand = new Random();
     }
 
+    public double getAlpha() {
+        return alpha;
+    }
+
     @Override
     public void processItem(T elem) {
         if (func.size() < maxSize && func.marginalGain(elem) > alpha) {
