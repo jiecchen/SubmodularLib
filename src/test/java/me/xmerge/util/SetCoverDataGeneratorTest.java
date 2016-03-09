@@ -17,6 +17,6 @@ public class SetCoverDataGeneratorTest extends TestCase {
         ArrayList<Integer> groundSet = IntegersGenerator.range(10);
         SetCoverDataGenerator<Integer> scGenerator = new SetCoverDataGenerator<>();
         ArrayList<HashSet<Integer>> sets = scGenerator.generate(5, groundSet);
-        
+
     }
 }
