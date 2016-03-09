@@ -14,7 +14,7 @@ There are many equivalent definitions, and we discuss three of them in this sect
   \end{equation}
 \end{definition}
 
-An alternate equivalent definition is more interpretable in many situations,
+An alternate equivalent definition is more interpretable in many situations.
 
 \begin{definition}[diminishing returns]
   \label{def:sub-diminishing}
@@ -27,7 +27,7 @@ An alternate equivalent definition is more interpretable in many situations,
 
 Intuitively, this definition requires that the incremental ``gain'' of adding a new element $v$ decreases (diminishes) as the base set grows from $A$ to $B$. We will see that this property is actually shared by many real-world phenomenons.
 
-It turns out that a stronger but equivalent statement can also serve as the definition of a submodular function,
+One can also define submodular functions in the following way.
 
 \begin{definition}[group diminishing returns]
   \label{def:sub-diminishing-group}
@@ -42,7 +42,7 @@ It turns out that a stronger but equivalent statement can also serve as the defi
 \subsection{Modularity and Supermodularity}
 We also briefly mention modularity and supermodularity here. These two concepts are closely related to submodularity. 
 
-A function $f: 2^V \rightarrow \bbR$ is modular if we replace inequality by equality in Definition \ref{def:sub-diminishing} (or any of other two). Formally, 
+A function $f: 2^V \rightarrow \bbR$ is modular if we replace inequality by equality in Definition \ref{def:sub-diminishing} (or any of other two).  
 
 \begin{definition}[Modularity]
   \label{def:modular}
@@ -66,7 +66,7 @@ Modularity can be useful in our discussion of submodularity, because modular fun
 
 
 
-A supermodular function is defined by flipping the inequality sign in the definition of a submodular function. Formally,
+A supermodular function is defined by flipping the inequality sign in the definition of a submodular function. 
 \begin{definition}[Supermodularity]
   \label{def:supermodular}
   A function $f: 2^V \rightarrow \bbR$ is \emRed{supermodular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
@@ -81,7 +81,7 @@ We will focus on submodular functions because a function is supermodular if and 
 
 
 \subsection{Properties}
-Like convex and concave functions, submodular functions have many nice properties. Lov{\'a}sz's comment on convex functions \cite{L83} gives an accurate description of submodular functions as well. We would like to quote it here, 
+Like convex and concave functions, submodular functions have many nice properties. Lov{\'a}sz's comment on convex functions \cite{L83} gives an accurate description of submodular functions as well. We would like to quote it here. 
 \begin{quote}
  - Convex functions occur in many mathematical models in economy,
 engineering, and other sciences. Convexity is a very natural property
@@ -107,58 +107,58 @@ We survey several useful properties which can be useful in our later sections. M
 
 
 
-Submodularity is closed under addition, formally,
+Submodularity is closed under addition.
 \begin{property}
   \label{prop:addition}
   Let $f_1, f_2: 2^V \rightarrow \bbR$ be two submodular functions. Then 
-  $$f: 2^V\rightarrow \bbR~{with}~ f(A) = \alpha f_1(A) + \beta f_2(A)$$ 
+  $$f: 2^V\rightarrow \bbR~~\text{with}~~ f(A) = \alpha f_1(A) + \beta f_2(A)$$ 
 is submodular for any fixed $\alpha, \beta \in \bbR^+$.
 \end{property}
 
 
-Adding a modular function does not break submodularity,
+Adding a modular function does not break submodularity.
 \begin{property}
   \label{prop:modular}
   Let $f_1, f_2: 2^V \rightarrow \bbR$, $f_1$ is submodular and $f_2$ is modular. Then
-  $$f: 2^V \rightarrow \bbR~\text{with}~ f(A) = f_1(A) + \alpha f_2(A)$$
+  $$f: 2^V \rightarrow \bbR~~\text{with}~~ f(A) = f_1(A) + \alpha f_2(A)$$
 is submodular for any fixed $\alpha \in \bbR$.
 \end{property}
 
-Submodularity is preserved under restriction,
+Submodularity is preserved under restriction.
 \begin{property}
   \label{prop:restriction}
   Let $f: 2^V \rightarrow \bbR$ be a submodular function. Let $S\subseteq V$ be a fixed set. Then
-$$f':2^V \rightarrow \bbR~{with}~f'(A) = f(A\cap S)$$
+$$f':2^V \rightarrow \bbR~~\text{with}~~f'(A) = f(A\cap S)$$
 is submodular.
 \end{property}
 
-As a direct implication of Property \ref{prop:addition} and Property \ref{prop:restriction}, we have the following more general result,
+As a direct implication of Property \ref{prop:addition} and Property \ref{prop:restriction}, we have the following more general result.
 \begin{property}
 Let $f:2^V \rightarrow \bbR$ be a submodular function, $\calC = \{C_1, C_2, \ldots, C_k\}$ be a collection of subsets of $V$ (i.e. each $C_i \subseteq V$). Then
-$$f':2^V \rightarrow \bbR~{with}~f'(A) = \sum_{C\in\calC}f(A\cap C)$$ 
+$$f':2^V \rightarrow \bbR~~\text{with}~~f'(A) = \sum_{C\in\calC}f(A\cap C)$$ 
 is submodular.
 \end{property}
-This property can be useful in graphical models and image processing. \chensays{TODO: show examples}
+%This property can be useful in graphical models and image processing. \chensays{TODO: show examples}
 
 
-The following property can be useful when we show that the objective function of k-medoid problem is supermodular,
+The following property can be useful when we show that the objective function of k-median problem is supermodular (see Section \ref{sec:applications}).
 \begin{property}
   \label{prop:max}
 Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ its $i$th coordinate. Then 
-$$f:2^V \rightarrow \bbR~{with}~ f(A) = \max_{j\in A}c_i$$ 
+$$f:2^V \rightarrow \bbR~~\text{with}~~ f(A) = \max_{j\in A}c_i$$ 
 is submodular.
 \end{property}
 
 We can use non-negative modular function and a concave function to construct submodular functions,
 \begin{property}
   Let $m: 2^V \rightarrow \bbR^+$ be a modular function, and $f$ a concave function over $\bbR$. Then
-$$f: 2^V \rightarrow \bbR ~{with}~ f(A) = g(m(A))$$
+$$f: 2^V \rightarrow \bbR ~~\text{with}~~ f(A) = g(m(A))$$
 is submodular.
 \end{property}
 
-Before introducing the next property, we define the monotonitcity of set function,
+Before introducing the next property, we define the monotonitcity of a set function.
 \begin{definition}[Monotonitcity]
-  An set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in the similar way.
+  A set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in the similar way.
 \end{definition}
 When we say a submodular function is monotone, we mean it is non-decreasing.
 
@@ -171,13 +171,12 @@ is submodular.
 
 
 \subsection{Constraints}
-Now we discuss the constraints in submodular optimization problems. A submodular maximization problem usually has the following form,
+Now we discuss the constraints in submodular optimization problems. A submodular maximization problem usually has the following form:
 \begin{equation}
   \label{eq:optimization}
-  \argmax_{I\in\calI} f(I)
+  \argmax_{I\in\calI} f(I),
 \end{equation}
-
-where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results, normally the difficulty increases when the constraint becomes more general. In this section, we define several of the most popular constraints. Before introducing any of them, we define
+where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results; normally the difficulty increases when the constraint becomes more general. In this section, we define some of the most popular constraints. Before introducing any of them, we define hereditary set systems.
 \begin{definition}[Hereditary]
   \label{def:hereditary}
   A constraint $\calI \subseteq 2^V$ is said to be \emRed{hereditary} if 
@@ -190,31 +189,31 @@ All constraints we discuss in this section are hereditary.
 \subsubsection{Cardinality Constraint}
 Cardinality constraint is perhaps the most straightforward yet most popular constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}) subject to this constraint. There are also a lot of extensions, to both streaming and distributed setting. 
 
-A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-medoid clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
+A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-median clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
 
 \subsubsection{Knapsack Constraint}
 Knapsack constraint generalizes cardinality constraint by assigning each element in $V$ a weight. Given a budget $W > 0$ and assume that each $i \in V$ is assigned a weight $w_i \geq 0$, a \emRed{knapsack constraint} can be defined as $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
 
 
 \subsubsection{Matroid}
-Informally,  \emRed{matroid} is the abstraction of the \emph{independence} concept in linear algebra. In fact there are so many results around matroid and the matroid itself becomes a subfield of algebra. We cover some basics of matroid theory, from which readers can easily see how powerful this concept is. 
+Informally,  \emRed{matroid} is the abstraction of the \emph{independence} concept in linear algebra. There are many results around matroid and the matroid itself becomes a subfield of algebra. We cover some basics of matroid theory, from which readers can see how powerful this concept is. 
 
 Before discussing the concept of  matroid, we briefly review the independence concept from linear algebra. For simplicity, let us just consider $\bbR^d$ instead of a general linear space. A subset $S$ of $\bbR^d$ is said to be \emph{independent} if there does not exist any $\mathbf{x}\in S$ such that $\mathbf{x}$ can be represented by linear combination of vectors in $S\backslash\{\mathbf{x}\}$. 
 
-Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only a independent set can be considered feasible. From what we learn in college linear algebra course, we know $\calI$ has the following propertie: 1) if $I\in \calI$, any of $I$'s subsets is also in $\calI$ (or equivalently, $\calI$ is hereditary); 2) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
+Let $\calI = \{S \subseteq \bbR^d~|~S ~\text{is independent}~\}$, i.e. only an independent set can be considered feasible. By the properties of a linear space, we know that $\calI$ has the following properties: 1) if $I\in \calI$, any of $I$'s subsets is also in $\calI$ (or equivalently, $\calI$ is hereditary); 2) if $J, I\in \calI$ and $J$ has smaller size than $I$, we must be able to find an element  $\mathbf{x} \in I\backslash J$ such that $J\cup \{\mathbf{x}\} \in \calI$. 
 
-Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, solving $\argmax_{I\in\calI} f(S)$ would have tremendous applications because its optimal solution is a base of the vector space.  If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form (\ref{eq:optimization}). 
+Even for the ``trivial'' size function $f: 2^V \rightarrow \bbZ$ with $f(A) = |A|$, solving $\argmax_{I\in\calI} f(S)$ would have numerous applications because its optimal solution is a base of the vector space.  If we somehow generalize the definition of independence, we may be able to model a much more larger class of problems into the form of (\ref{eq:optimization}). 
 
-It turns out that the properties of $\calI$ we just described are sufficient to give a meaningful definition for Matroid. Formally, 
+It turns out that the properties of $\calI$ we just described are sufficient to give a meaningful definition for Matroid. 
 \begin{definition}[Matroid]
 \label{def:matroid}
-  A set system $(V, \calI)$ is a \emRed{matroid} if it has the following properties,
+  A set system $(V, \calI)$ is a \emRed{matroid} if it has the following properties:
   \begin{enumerate}
   \item $\forall I \in \calI$, $J\subseteq I \implies J\in \calI$ (i.e. hereditary)
   \item $\forall I, J \in \calI,$ with $|I| = |J| + 1$,  then $\exists~ x\in I\backslash J$ such that $J \cup \{x\}\in \calI$ 
   \end{enumerate} 
 \end{definition}
-Unlike in the $\bbR^d$ case, in this survey we restrict our discuss on matriod with a finite ground set. Note that in general, the intersection of several matroids is no longer a matroid.
+Unlike in the $\bbR^d$ case, in this survey we restrict our discuss on matriod in a finite ground set. Note that in general, the intersection of several matroids is no longer a matroid.
 
 
 Finally, we generalize the concept of \emRed{rank} in linear algebra. Let $(V, \calI)$ be a matroid, we define the rank function $r: 2^V \rightarrow \bbZ$ as $f(S) = \max_{I\subseteq S, I\in \calI} |I|$, i.e. the rank of $S\subseteq V$ is the maximum possible size of $S$'s subsets that are also members of $\calI$ (or in other words, independent). Our definition of rank is consistent with what we have in linear algebra (in that case $\calI$ is the collection of all independent sets). A rank function is submodular (as you may expect).
@@ -274,7 +273,7 @@ $p$-matchoid & $\frac{1}{p + 1}$ \cite{CCP+11,NWF78} & $\frac{(1-\eps)(2-o(1))}{
 
 
 
-We introduce the notation for \emRed{marginal gain}: $\Delta_f(e|S) = f(S + e) - f(S)$, and we say an algorithm for sumbodular maximization gives \emRed{$\alpha$-approximation} if the solution $S$ it returns always has guarantee $f(S) \geq \alpha \cdot \argmax_{I\in\calI}f(I)$. When the algorithm is randomized, we normally say it guarantees \emRed{$\alpha$-approximation in expectation} if $\E[f(S)] \geq \alpha\cdot \argmax_{I\in\calI}f(I)$.
+We introduce the notation of \emRed{marginal gain}: $\Delta_f(e|S) = f(S + e) - f(S)$ (or simply $\Delta(e|S)$ when $f$ is clear from context), and we say an algorithm for sumbodular maximization gives \emRed{$\alpha$-approximation} if the returned solution $S$ always satisfies  $f(S) \geq \alpha \cdot \argmax_{I\in\calI}f(I)$. When the algorithm is randomized, we normally say it guarantees \emRed{$\alpha$-approximation in expectation} if $\E[f(S)] \geq \alpha\cdot \argmax_{I\in\calI}f(I)$.
 
 
 The following algorithm shows a popular greedy strategy for submodular maximization.
@@ -297,7 +296,7 @@ $S \gets \emptyset$\;
 \subsubsection{Algorithms for Cardinality Constraint}
 
 
-A celebrated result of \cite{NWF78} shows that,
+A celebrated result of \cite{NWF78} shows the strong guarantee of Algorithm \ref{algo:greedy}.
 \begin{theorem}[\cite{NWF78}]
   \label{thm:1978}
   For a non-negative monotone submodular function $f: 2^V \rightarrow \bbR$, let $\calI$ be the cardinality constraint, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\argmax_{I\in \calI} f(S)$.
@@ -306,7 +305,7 @@ For several classes of submodular functions, this result is actually the best on
 
 There are several papers improving the running time of Algorithm \ref{algo:greedy} under cardinality constraint of size $k$ (under which the membership oracle is trivial). Minoux \cite{M78} proposed {\sc Lazy-greedy} as a fast implementation for Algorithm \ref{algo:greedy}. Instead of computing $\Delta_f(e|S)$ for each $e\in V\backslash S$ in Line \ref{line:emax},  {\sc Lazy-greedy} keeps an upper bound $\rho(e)$ (initially $+\infty$) on the marginal gain sorted in decreasing order (or kept in a heap). In each iteration, the {\sc Lazy-greedy} algorithm evaluates the element on top of the heap and updates its upper bound via $\rho(e) \gets \Delta(e|S)$. If the updated $\rho(e) \geq \rho(e')$ for all other $e'$, submodularity guarantees that $e$ is the element with the largest marginal gain. The exact number of value queries consumed by {\sc Lazy-greedy} is unknown because it heavily relies on both $f$ and $V$, experimental study however shows that the {\sc Lazy-greedy} algorithm is in order of magnitude faster than the naive implementation of Algorithm \ref{algo:greedy}.  
 
-Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approximating the underlying submodular function with a set of (sub)modular functions. Badanidiyuru et al. \cite{BV14} proposed a different approach that uses only $O(\frac{|V|}{\eps}\log \frac{1}{\eps})$ number of value queries and guarantees $(1 - 1/e - \eps)$-approximation. This result was improved by Mirzasoleiman et al. \cite{MBK+15} recently where they proposed a randomized algorithm ({\sc Stochastic-Greedy}) that reduces the number of queries to  $O(|V| \log \frac{1}{\eps})$ and the approximation guarantee is $(1 - 1/e - \eps)$, in expectation. The key observation made in \cite{MBK+15} is that, instead of considering all $e\in V\backslash S$, one can only consider $O(\frac{|V|}{k}\log \frac{1}{\eps})$  random samples from $V\backslash S$. 
+Wei et al.\ \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approximating the underlying submodular function with a set of (sub)modular functions. Badanidiyuru et al.\ \cite{BV14} proposed a different approach that uses only $O(\frac{|V|}{\eps}\log \frac{1}{\eps})$ number of value queries and guarantees $(1 - 1/e - \eps)$-approximation. This result was improved by Mirzasoleiman et al.\ \cite{MBK+15} recently where they proposed a randomized algorithm ({\sc Stochastic-Greedy}) that reduces the number of queries to  $O(|V| \log \frac{1}{\eps})$ and the approximation guarantee is $(1 - 1/e - \eps)$, in expectation. The key observation made in \cite{MBK+15} is that, instead of considering all $e\in V\backslash S$, one can only consider $O(\frac{|V|}{k}\log \frac{1}{\eps})$  random samples from $V\backslash S$. 
 
 
 
@@ -319,22 +318,22 @@ Wei et al. \cite{WIB14} improved the running time of {\sc Lazy-greedy} by approx
 
 
 \subsubsection{Algorithms for Matroid and $p$-System}
-Now we consider the matroid constraint and $p$-system. In his classical paper \cite{J76}, Jenkyns proved that for a non-negative \emph{modular} maximization problem s.t. $p$-system, Algorithm \ref{algo:greedy} produces a $p$-approximation of the optimum. Since matroid is $1$-system, Algorithm \ref{algo:greedy} always gives the optimal solution. Remarkably, we the following much stronger result, 
+Now we consider the matroid constraint and $p$-system. In his classical paper \cite{J76}, Jenkyns proved that for a non-negative \emph{modular} maximization problem subject to $p$-system, Algorithm \ref{algo:greedy} produces a $p$-approximation of the optimum. Since matroid is $1$-system, Algorithm \ref{algo:greedy} always gives the optimal solution. Remarkably, we have the following much stronger result. 
 
 \begin{theorem}[see e.g. \cite{B14,F05}]
   \label{thm:matroid}
-  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} non-negative modular function $f$, Algorithm \ref{algo:greedy} leads to a optimal solution for $\argmax_{I\in \calI} f(I)$.
+  Let $(V, \calI)$ be a set system we consider, $\calI$ is a matroid \emph{if and only if} for \emph{any} non-negative modular function $f$, Algorithm \ref{algo:greedy} leads to an optimal solution for $\argmax_{I\in \calI} f(I)$.
 \end{theorem}
 Note that Algorithm \ref{algo:greedy} actually includes many greedy algorithms as special cases (e.g. maximum weighted spanning tree algorithm). The statement of Theorem \ref{thm:matroid} is so strong that it provides a complete  characterization for a large class of problems.
 
-When $f$ is a non-negative non-decreasing submodular function, greedy strategy works well for $p$-system,
+When $f$ is a non-negative non-decreasing submodular function, greedy strategy works well for $p$-system.
 \begin{theorem}[\cite{NWF78,CCP+11}]
   \label{thm:}
   For a non-negative non-decreasing submodular function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p + 1}$-approximation.
 \end{theorem}
 This theorem implies immediately that Algorithm \ref{algo:greedy} gives $1/2$-approximation for matroid constraint. 
 
-There are several recent work improving the approximation ratio for matroid constraint (for non-negative monotone submodular functions): based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al. \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation); Filmus et al. \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}; Badanidiyuru et al. \cite{BV14} gave an algorithm that runs in $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ queries by using a variant of the continuous greedy algorithm.
+There are several recent work improving the approximation ratio for matroid constraint (for non-negative monotone submodular functions): based on the idea of continuous greedy process \cite{V08} and pipage rounding \cite{AS04}, Calinescu et al.\ \cite{CCP+11} improved the approximation ratio to $(1 - 1/e)$ (in expectation); Filmus et al.\ \cite{FW14} presented a randomized combinatorial $(1 - 1/e -\eps)$-approximation algorithm using only $O(|V|r^3\eps^{-3}\log r)$ number of value queries, where $r$ is the size of returned set. Their method is based on local-search and is conceptually much simpler than \cite{CCP+11}; Badanidiyuru et al.\ \cite{BV14} gave an algorithm that runs in $O(\frac{r|V|}{\eps^4}\log^2\frac{r}{\eps})$ queries by using a variant of the continuous greedy algorithm.
 
 
 
