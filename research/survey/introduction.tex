@@ -2,7 +2,7 @@
 Submodularity is a property of set functions with deep theoretical and practical consequences. Submodular functions occur in a variety of applications, including representative skyline selection \cite{SLN+11}, network structure learning \cite{GLK10}, influence maximization \cite{KKT03}, document summarization \cite{LB11}, image segmentation \cite{BJM01,KKT09} and many others.
 
 
-There is a large body of research in submodular optimization, and our main focus of this survey is submodular maximization. In particular, we will cover the recent advances of maximizing submodular functions in distributed and streaming setting. Part of the reason we do not discuss submodular minimization is that, one can convert a minimization problem to a convex optimization problem through the Lov{\'a}sz' extension \cite{L83}, and it can be therefore solved in polynomial time. On the other hand, most submodular maximization problems we will discuss are NP-Hard, and can only be solved efficiently via approximation algorithms.
+There is a large body of research in submodular optimization. Our main focus of this survey is submodular maximization. In particular, we will cover the recent advances of maximizing submodular functions in distributed and streaming setting. Part of the reason that we do not discuss submodular minimization is that one can convert a minimization problem to a convex optimization problem through the Lov{\'a}sz' extension \cite{L83}, and it can therefore be solved in polynomial time. On the other hand, most submodular maximization problems we will discuss are NP-Hard, and can only be solved efficiently via approximation algorithms.
 
 
 \paragraph{Roadmap:}
@@ -14,4 +14,4 @@ This survey is organized as follows. In Section \ref{sec:submodularity} we intro
 
 
 \paragraph{Notations:}
-Through out this survey, we use $V$ or $E$ to represent the ground set we consider; $2^V$ is the power set of $V$ (i.e. the set of all subsets of $V$); in general, $A^V$ is the collection of maps from $V$ to $A$; for simplicity, we sometime write $A \cup \{x\}$ as $A + x$. Other notation will be defined later when it is first introduced.
+Through out this survey, we use $V$ or $E$ to represent the ground set we consider; $2^V$ is the power set of $V$ (i.e. the set of all subsets of $V$); in general, $A^V$ is the collection of maps from $V$ to $A$; for simplicity, we sometimes write $A \cup \{x\}$ as $A + x$. Other notation will be defined later when it is first introduced.
