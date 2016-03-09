@@ -27,7 +27,7 @@ An alternate equivalent definition is more interpretable in many situations.
 
 Intuitively, this definition requires that the incremental ``gain'' of adding a new element $v$ decreases (diminishes) as the base set grows from $A$ to $B$. We will see that this property is actually shared by many real-world phenomenons.
 
-One can also define submodular functions in the following way.
+One can also define submodular functions in the following way:
 
 \begin{definition}[group diminishing returns]
   \label{def:sub-diminishing-group}
@@ -81,7 +81,7 @@ We will focus on submodular functions because a function is supermodular if and 
 
 
 \subsection{Properties}
-Like convex and concave functions, submodular functions have many nice properties. Lov{\'a}sz's comment on convex functions \cite{L83} gives an accurate description of submodular functions as well. We would like to quote it here. 
+Like convex and concave functions, submodular functions have many nice properties. Lov{\'a}sz's comment on convex functions \cite{L83} gives an accurate description of submodular functions as well. We would like to quote it here: 
 \begin{quote}
  - Convex functions occur in many mathematical models in economy,
 engineering, and other sciences. Convexity is a very natural property
@@ -176,7 +176,7 @@ Now we discuss the constraints in submodular optimization problems. A submodular
   \label{eq:optimization}
   \argmax_{I\in\calI} f(I),
 \end{equation}
-where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results; normally the difficulty increases when the constraint becomes more general. In this section, we define some of the most popular constraints. Before introducing any of them, we define hereditary set systems.
+where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem. The structure of $\calI$ plays a crucial role in submodular optimization. Different constraints have different hardness results; normally the difficulty increases when the constraint becomes more general. In this section, we define some of the most popular constraints. First we define hereditary set systems.
 \begin{definition}[Hereditary]
   \label{def:hereditary}
   A constraint $\calI \subseteq 2^V$ is said to be \emRed{hereditary} if 
@@ -187,7 +187,7 @@ All constraints we discuss in this section are hereditary.
 
 
 \subsubsection{Cardinality Constraint}
-Cardinality constraint is perhaps the most straightforward yet most popular constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}) subject to this constraint. There are also a lot of extensions, to both streaming and distributed setting. 
+Cardinality constraint is perhaps the most straightforward yet most popular constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}) subject to this constraint. There are also a lot of extensions, to both streaming and distributed settings. 
 
 A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-median clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
 
