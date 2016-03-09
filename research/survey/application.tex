@@ -22,13 +22,13 @@ In this section, we first show how one can re-formulate many classical combinato
 We first show that several well-known problems actually fit into our standard submodular maximization framework.
 
 \paragraph{Exemplar Based Clustering}
-Clustering is one of the most important tasks in the area of data mining. In the k-medoid problem \cite{KR09} one tries to minimize the sum of pairwise dissimilarities/distances between exemplars and the elements of the dataset. Let $d: V \times V \rightarrow \bbR^+\cup\{0\}$ be a function that measures the pairwise dissimilarity, we define the k-medoid loss function as following,
+Clustering is one of the most important tasks in the area of data mining. In the k-median problem \cite{KR09} one tries to minimize the sum of pairwise dissimilarities/distances between exemplars and the elements of the dataset. Let $d: V \times V \rightarrow \bbR^+\cup\{0\}$ be a function that measures the pairwise dissimilarity, we define the k-median loss function as
 $$L(S) = \sum_{e\in V} \min_{v\in S} d(e, v).$$
 
 It is quite straightforward (by Property \ref{prop:addition}, \ref{prop:max}) to show that $-L(S)$ is submodular. By introducing an auxiliary element $e_0$, we can transform $L$ into a non-negative monotone submodular function,
 $$f(S) = L(\{e_0\}) - L(S \cup \{e_0\}).$$ 
 
-A k-medoid problem can then be formulated as a submodular maximization problem subject to a cardinality constraint,
+A k-median problem can then be formulated as a submodular maximization problem subject to a cardinality constraint,
 
 $$\argmax_{S\subseteq V: |S| \leq k} f(S).$$
 
@@ -70,7 +70,7 @@ Then $f_e$ is submodular. We have,
 $$f(S) = \sum_{e\in E} f_e(S \cap \{u, v\}).$$
 The submodularity of $f$ follows Property \ref{prop:addition} and Property \ref{prop:restriction}.
 
-An interesting optimization problem can then be formulated as following,
+An interesting optimization problem can then be formulated as 
 $$\argmax_{S\subseteq E: |S| \leq k} f(S).$$
 
 
@@ -79,14 +79,14 @@ $$\argmax_{S\subseteq E: |S| \leq k} f(S).$$
 
 \subsection{Applications to NLP}
 \paragraph{Summarization}
-In the task of summarization, we are given a ground set $V$ and we want to find a subset of $V$ which maximizes some quality measurement under certain constraints. One popular formulation is that, given a function $f: 2^V \rightarrow \bbR$ that measures the quality of a summarization, we try to solve,
-$$\argmax_{S\in\calI} f(S)$$
+In the task of summarization, we are given a ground set $V$ and we want to find a subset of $V$ which maximizes some quality measurement under certain constraints. One popular formulation is that, given a function $f: 2^V \rightarrow \bbR$ that measures the quality of a summarization, we try to solve
+$$\argmax_{S\in\calI} f(S),$$
 where $\calI$ is a knapsack constraint.
 
-Lin et al. \cite{LB11} pointed out that a lot of existing work for document summarization task fit the knapsack optimization framework. Furthermore the quality measurement functions being used are usually submodular. Lin et al. also proposed a class of submodular functions that outperform previous work in many aspects. Each of those functions combines two terms, one that encourages the summary to be representative of the corpus, and the other positively rewards diversity. In the task of speech summarization, several submodular functions were discussed by Lin \cite{L12}. More discussion on the applications of submodular optimization to summarization can be found in \cite{L12}.
+Lin et al.\ \cite{LB11} pointed out that a lot of existing work for document summarization task fit the knapsack optimization framework. Furthermore the quality measurement functions being used are usually submodular. Lin et al. also proposed a class of submodular functions that outperform previous work in many aspects. Each of those functions combines two terms, one that encourages the summary to be representative of the corpus, and the other that positively rewards diversity. In the task of speech summarization, several submodular functions were discussed by Lin \cite{L12}. More discussion on the applications of submodular optimization to summarization can be found in \cite{L12}.
 
 \paragraph{Word Alignment}
-Word alignment is a key component in most statistical machine translation systems. Unlike classical approaches that utilize graphical models, Lin et al. \cite{LB11word} viewed word alignment problem as submodular maximization problem under matroid constraints. 
+Word alignment is a key component in most statistical machine translation systems. Unlike classical approaches that utilize graphical models, Lin et al.\ \cite{LB11word} viewed word alignment problem as submodular maximization problem under matroid constraints. 
 
 Suppose that we are given a source language (English) string $e_1, e_2, \ldots, e_n$ and a target language (French) string $f_1, f_2, \ldots, f_m$. Let $V = \{(i, j) ~|~ i\in[n], j\in[m] \}$ be the ground set. The goal is to find a matching $S\subseteq V$ that maximizes a certain quality function under some constraints. 
 
@@ -99,7 +99,7 @@ Let $P_1, \ldots, P_m$ be a partition of $V$ where $P_j = [n]\times \{j\}$. The 
 \subsection{Applications to Social Networks}
 \paragraph{Influence Maximization}
 Domingos and Richardson \cite{DR01,RD02} posed a fundamental algorithmic problem: if we can try to convince a subset of individuals (at most $k$) to adopt a new product or innovation, and the goal is to trigger a large cascade of further adoptions, which set of individuals should we target? 
-Kempe et al. \cite{KKT03} considered such question as a discrete optimization problem. Let $G = (V, E, W)$ a social network (a directed graph with non-negative weights for each edge), two basic models of influence spreading were considered in \cite{KKT03},
+Kempe et al.\ \cite{KKT03} considered such question as a discrete optimization problem. Let $G = (V, E, W)$ be a social network (a directed graph with non-negative weights for each edge), two basic models of influence spreading were considered in \cite{KKT03}.
 \begin{itemize}
 \item Linear Threshold Mode: each $v\in V$ uniformly at random samples a threshold $\theta_v$ from some interval. After initializing $A \subset V$ as the set of active nodes, at each time step, any node $v$ with the total weights of its active neighbors above $\theta_v$ will be activated. Repeat this process until no more nodes can be activated. 
 
@@ -109,11 +109,11 @@ Kempe et al. \cite{KKT03} considered such question as a discrete optimization pr
 Now let $\sigma(A)$ be the expected number of active nodes after long enough time. \cite{KKT03} proved that for both models, $\sigma: 2^V \rightarrow \bbZ$ is a monotone submodular function.
 
 
-In our application, one is unlikely to able to efficiently compute the exact value of $\sigma(A)$. In fact, one can extend the result of Theorem \ref{thm:1978} to show that, by using  $(1 + O(\eps))$-approximate values for the function to be optimized, we obtain a $(1 - 1/e - \eps)$-approximation of the optimum.
+In this application, one is unlikely to able to efficiently compute the exact value of $\sigma(A)$. In fact, one can extend the result of Theorem \ref{thm:1978} to show that, by using  $(1 + O(\eps))$-approximate values for the function to be optimized, we obtain a $(1 - 1/e - \eps)$-approximation of the optimum.
 
 
 \paragraph{Network Structure Inference}
-Gomez Rodriguez et al. \cite{GLK10} first introduced submodular maximization to the context of network structure learning. They considered the problem of learning the network structure in a influence network: given a hidden directed network $G^*$ (vertices are known while edges are not), we observe multiple cascades spreading over it. Each cascade $c$ can be considered as a series of triples. Each triple has the form $(u_i, t_i, \phi_i)_c$ which presents the event that at time $t_i$, node $u_i$ is reached by $c$ with feature $\phi_i$. The goal is to infer the structure of $G^*$ based on a collection of cascades observed (denoted as $C$).
+Gomez Rodriguez et al.\ \cite{GLK10} first introduced submodular maximization to the context of network structure learning. They considered the problem of learning the network structure in an influence network: given a hidden directed network $G^*$ (vertices are known while edges are not), we observe multiple cascades spreading over it. Each cascade $c$ can be considered as a series of triples. Each triple has the form $(u_i, t_i, \phi_i)_c$ which presents the event that at time $t_i$, node $u_i$ is reached by $c$ with feature $\phi_i$. The goal is to infer the structure of $G^*$ based on a collection of cascades observed (denoted as $C$).
 
 To model this process, they assumed that in each cascade, each node can only be influenced by at most one other node. So the influence structure of a cascade $c$ is given by a directed tree $T \subseteq G$. Let $P(c|T)$ be the probability of $c$ propagating in a particular tree pattern $T$, $P(c|G)$ the probability that cascade $c$ occurs in a network $G$. Let $\mathcal{T}(G)$ be set of all spanning trees of $G$. \cite{GLK10} then proposed the model 
 $$P(c|G) = \max_{T\in\mathcal{T}(G)}P(c|T) = \max_{T\in\mathcal{T}(G)}\Pi_{(u,v)\in T}P_c(u,v)$$
@@ -123,8 +123,8 @@ where $P_c(u, v) \propto e^{-(t_v - t_u)}$. The structure of the network can be 
 
 Consider the improvement of log-likelihood for cascade $c$ under graph $G$ over an empty graph $K$:
 $$F_c(G) = \max_{T\in \mathcal{T}(G)}\log P(c|T) - \max_{T\in \mathcal{T}(K)}P(c|T).$$
-It turns out that $F_c(G)$ can be expressed as following,
-$$F_c(G) = \max_{T\in\mathcal{T}(G)}\sum_{(u, v)\in T}w_c(u, v)$$
+It turns out that $F_c(G)$ can be expressed as 
+$$F_c(G) = \max_{T\in\mathcal{T}(G)}\sum_{(u, v)\in T}w_c(u, v),$$
 where $w_c(u, v)$ is a non-negative weight. Optimizing $P(C|G)$ is equivalently to optimize $F_C(G) = \sum_{c\in C}F_c(G)$ and the latter is shown to be submodular (the ground set is all possible graphs defined over the given vertices set). 
 
 
@@ -139,11 +139,11 @@ Kernel machines \cite{SS02} are powerful non-parametric learning techniques. Tho
 \[ K_V = \left( \begin{array}{ccc}
 \calK(x_1, x_2) & \ldots & \calK(x_1, x_n) \\
 \vdots & \ddots & \vdots \\
-\calK(x_n,x_1) & \ldots & \calK(x_n, x_n) \end{array} \right)\] 
-here $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetric and positive definite. 
+\calK(x_n,x_1) & \ldots & \calK(x_n, x_n) \end{array} \right),\] 
+where $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetric and positive definite. 
 
-For large-scale problem, even representing the matrix $K_V$ (which requires $O(n^2)$ space) is prohibited. The common solution to solve this issue is to select a small representative subset $S \subseteq V$ and only work with $K_S$. An additional benefit by using such a subset is that it may help to avoid overfitting. The question now becomes how to select the subset $S$. One popular way to measure the quality of selected set $S$ is to use \emph{Informative Vector Machine}(IVM) introduced by Laurence et al. \cite{LSH03}. Formally, we define $f: 2^V \rightarrow \bbR$ with
-$$f(S) = \frac{1}{2} \log\det\left( \mathbf{I} + \sigma^{-2} K_S \right)$$
+For large-scale problem, even representing the matrix $K_V$ (which requires $O(n^2)$ space) is prohibited. The common solution to solve this issue is to select a small representative subset $S \subseteq V$ and only work with $K_S$. An additional benefit by using such a subset is that it may help to avoid overfitting. The question now becomes how to select the subset $S$. One popular way to measure the quality of selected set $S$ is to use \emph{Informative Vector Machine}(IVM) introduced by Laurence et al.\ \cite{LSH03}. Formally, we define $f: 2^V \rightarrow \bbR$ with
+$$f(S) = \frac{1}{2} \log\det\left( \mathbf{I} + \sigma^{-2} K_S \right),$$
 where $\mathbf{I}$ is the identity matrix and $\sigma > 0$ is a parameter. IVM has a close connection to the entropy of  muti-variable Gaussian distribution \cite{B14} and it is shown in \cite{S04,B14} that $f$ is a submodular function. We can then select the set $S\subset V$ by solving
 $$\argmax_{S:|S|\leq k} f(S).$$
 
