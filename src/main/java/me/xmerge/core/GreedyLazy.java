@@ -27,7 +27,7 @@ public class GreedyLazy {
      */
     public static<T> ArrayList<T> findOptimal(final ArrayList<T> V, SubmodularBuffer<T> func, final int maxSize) {
         PriorityQueue<Pair<T, Double>> upperBounds = new PriorityQueue<>(); // keep upper bounds (its negative) for marginal gain
-
+        int stepCounter = 0;
         // initialize upperBounds
         for (T elem: V) {
             upperBounds.add(new Pair<>(elem, Double.NEGATIVE_INFINITY));
@@ -37,6 +37,7 @@ public class GreedyLazy {
             Double tmp = Double.MAX_VALUE;
 
             while (tmp > upperBounds.peek().getValue()) {
+                stepCounter++;
                 Pair<T, Double> p = upperBounds.poll();
                 tmp = -func.marginalGain(p.getKey());
                 upperBounds.add(new Pair<>(p.getKey(), tmp));
@@ -47,7 +48,7 @@ public class GreedyLazy {
             // add to solution
             func.addToSolution(p.getKey());
         }
-
+        System.out.println("total value queries = " + stepCounter);
         return func.getSolution();
     }
 }
