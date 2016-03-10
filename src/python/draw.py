@@ -23,8 +23,12 @@ def draw_errorbar(X, Ys, labels, styles,  xlabel='x', ylabel='y'):
     # draw pictures
     for label, style in zip(labels, styles):
         Y = Ys[label]
-        errors = [2. * np.std(y) for y in Y]
-        means = [np.mean(y) for y in Y] 
+        if isinstance(Y, list):
+            errors = [2. * np.std(y) for y in Y]
+            means = [np.mean(y) for y in Y]
+        else:
+            errors = [0] * len(Y)
+            means = Y
         plt.errorbar(X, means, errors, fmt=style, label=label)
 
     legend = plt.legend(loc='upper right', shadow=True)
@@ -41,6 +45,6 @@ if __name__ == '__main__':
     X = [1, 2, 3]
     Ys = {}
     Ys['test1'] = [[1.9, 2, 2], [5, 4.7, 5], [3, 2.7, 3.1]]
-    Ys['test2'] = [[1, 0.8, 1.2], [2.2, 2, 1.9], [6.5, 6.4, 7.2]]
+    Ys['test2'] = [1, 2, 3]
     draw_errorbar(X, Ys, labels, styles)
 
