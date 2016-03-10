@@ -15,3 +15,32 @@ def draw_figure(X, Ys, labels, styles, xlabel='x', ylabel='y', y_range=(0,)):
 
     plt.ylim(*y_range)
     plt.show()
+
+
+def draw_errorbar(X, Ys, labels, styles,  xlabel='x', ylabel='y'):
+    plt.figure()
+
+    # draw pictures
+    for label, style in zip(labels, styles):
+        Y = Ys[label]
+        errors = [2. * np.std(y) for y in Y]
+        means = [np.mean(y) for y in Y] 
+        plt.errorbar(X, means, errors, fmt=style, label=label)
+
+    legend = plt.legend(loc='upper right', shadow=True)
+    plt.xlim((0, max(X) * 1.2))
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)    
+    plt.show()
+
+if __name__ == '__main__':
+    # test
+
+    labels = ['test1', 'test2']    
+    styles = ['r-o', 'b-o']
+    X = [1, 2, 3]
+    Ys = {}
+    Ys['test1'] = [[1.9, 2, 2], [5, 4.7, 5], [3, 2.7, 3.1]]
+    Ys['test2'] = [[1, 0.8, 1.2], [2.2, 2, 1.9], [6.5, 6.4, 7.2]]
+    draw_errorbar(X, Ys, labels, styles)
+
