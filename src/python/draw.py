@@ -17,7 +17,7 @@ def draw_figure(X, Ys, labels, styles, xlabel='x', ylabel='y', y_range=(0,)):
     plt.show()
 
 
-def draw_errorbar(X, Ys, labels, styles,  xlabel='x', ylabel='y'):
+def draw_errorbar(X, Ys, labels, styles,  xlabel='x', ylabel='y', ylim=(0,)):
     plt.figure()
 
     # draw pictures
@@ -33,8 +33,10 @@ def draw_errorbar(X, Ys, labels, styles,  xlabel='x', ylabel='y'):
 
     legend = plt.legend(loc='upper right', shadow=True)
     plt.xlim((0, max(X) * 1.2))
+    plt.ylim(*ylim)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)    
+
     plt.show()
 
 if __name__ == '__main__':
