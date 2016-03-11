@@ -40,4 +40,32 @@ public class SetCoverDataGenerator<T> {
 
         return toReturn;
     }
+
+    /**
+     *
+     * @param nSets number of sets
+     * @param groundSet the groundSet, from which we will sample
+     * @param maxSize size of each set
+     * @return samples
+     */
+    public ArrayList<HashSet<T>> generate(int nSets, ArrayList<T> groundSet, int maxSize) {
+        assert groundSet.size() != 0;
+        assert maxSize <= groundSet.size();
+        assert maxSize > 0;
+
+        ArrayList<HashSet<T>> toReturn = new ArrayList<>();
+        Random rand = new Random();
+
+        for (int i = 0; i < nSets; ++i) {
+            HashSet<T> tmp = new HashSet<>();
+
+            for (T a : Sample.SampleWithRplmt(groundSet, rand.nextInt(maxSize)))
+                    tmp.add(a);
+
+            // add tmp to toReturn
+            toReturn.add(tmp);
+        }
+
+        return toReturn;
+    }
 }
