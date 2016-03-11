@@ -13,7 +13,7 @@ labels = ['Greedy', 'GreedyLazy', 'StocGreedy']
 nQueries = {}
 nQueries[labels[0]] = [nSets * a for a in ks]
 nQueries[labels[1]] = [2048, 2053, 2058, 2063, 2068, 2073, 2078, 2083, 2088]
-nQueries[labels[2]] = [696, 573, 538, 505, 501, 492, 498, 489, 481]
+nQueries[labels[2]] = [[1464, 1462, 1457, 1441, 1450], [1214, 1222, 1221, 1222, 1217], [1032, 1137, 1140, 1156, 1150], [1089, 1100, 1105, 1119, 1109], [1083, 1075, 1091, 1081, 1069], [1066, 1050, 1049, 1048, 1059], [1044, 1038, 1051, 1057, 1049], [1042, 1030, 1055, 1040, 1054], [1032, 1049, 1032, 1040, 1031]]
 
 values = {}
 values[labels[0]] = [256, 438, 602, 668, 756, 828, 848, 890, 925]
@@ -31,7 +31,7 @@ styles = ['g-x', 'r-^', 'b-s']
 ylabel = r'number of value queries'
 xlabel = r'k - cardinality constraint'
 
-draw.draw_figure(ks, nQueries, labels, styles, xlabel, ylabel, (0, 10000))
+draw.draw_errorbar(ks, nQueries, labels, styles, xlabel, ylabel, (0, 20000))
 
 ylabel = r'f(S) - value of function'
 xlabel = r'k - cardinality constraint'
