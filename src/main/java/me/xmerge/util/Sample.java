@@ -4,6 +4,7 @@ package me.xmerge.util;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 
 /**
@@ -26,6 +27,16 @@ public class Sample<T> {
         ArrayList<T> samples = new ArrayList<>();
         for (int i = 0; i < nSamples; ++i)
             samples.add(V.get(i));
+        return samples;
+    }
+
+    public static<T> ArrayList<T> SampleWithRplmt(ArrayList<T> V, int nSamples) {
+        assert nSamples > 0;
+        Random rand = new Random();
+        ArrayList<T> samples = new ArrayList<>();
+        for (int i = 0; i < nSamples; ++i)
+            samples.add(V.get(rand.nextInt(V.size())));
+
         return samples;
     }
 }
