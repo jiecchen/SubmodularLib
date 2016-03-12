@@ -4,6 +4,7 @@ import me.xmerge.core.SubmodularBuffer;
 import me.xmerge.util.RawPair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 /**
@@ -11,20 +12,26 @@ import java.util.HashSet;
  */
 public class WeightedVertex<T> extends SubmodularBuffer<RawPair<T, T>> {
     private HashSet<T> vertices;
-    private RealValueFunction<T> func;
+    private HashMap<T, Double> func;
 
 
-    public WeightedVertex(RealValueFunction<T> weightFunction) {
+    public WeightedVertex(HashMap<T, Double> weightFunc) {
         this.currentValue = 0;
-        func = weightFunction;
+        func = weightFunc;
         vertices = new HashSet<>();
     }
 
     @Override
     public double eval(ArrayList<RawPair<T, T>> A) {
         double tot_weight = 0.;
-        for (T v : vertices)
-            tot_weight += func.eval(v);
+        HashSet<T> tmpVertices = new HashSet<>();
+        for (RawPair<T, T> p : A) {
+            tmpVertices.add(p.getFirst());
+            tmpVertices.add(p.getSecond());
+        }
+
+        for (T v : tmpVertices)
+            tot_weight += func.get(v);
         return tot_weight;
     }
 
@@ -34,13 +41,26 @@ public class WeightedVertex<T> extends SubmodularBuffer<RawPair<T, T>> {
         vertices.add(edge.getFirst());
         if (vertices.size() > vertexSizeBak) {
             vertexSizeBak++;
-            this.currentValue += func.eval(edge.getFirst());
+            this.currentValue += func.get(edge.getFirst());
         }
         vertices.add(edge.getSecond());
         if (vertices.size() > vertexSizeBak) {
-            this.currentValue += func.eval(edge.getSecond());
+            this.currentValue += func.get(edge.getSecond());
         }
         this.S.add(edge);
     }
+
+//    @Override
+//    public double marginalGain(RawPair<T, T> elem) {
+//        double tot_gain = 0.;
+//        if (!vertices.contains(elem.getFirst())) {
+//            tot_gain += func.get(elem.getSecond());
+//        }
+//        // assume first != second
+//        if (!vertices.contains(elem.getSecond())) {
+//            tot_gain += func.get(elem.getSecond());
+//        }
+//        return tot_gain;
+//    }
 
 }
