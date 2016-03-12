@@ -35,7 +35,6 @@ public class WeightedVertex<T> extends SubmodularBuffer<RawPair<T, T>> {
         return tot_weight;
     }
 
-    // overiride to speed up
     @Override
     public void addToSolution(RawPair<T, T> edge) {
         int vertexSizeBak = vertices.size();
@@ -51,5 +50,18 @@ public class WeightedVertex<T> extends SubmodularBuffer<RawPair<T, T>> {
         this.S.add(edge);
     }
 
+    // override to speed up
+    @Override
+    public double marginalGain(RawPair<T, T> elem) {
+        double tot_gain = 0.;
+        if (!vertices.contains(elem.getFirst())) {
+            tot_gain += func.get(elem.getSecond());
+        }
+        // assume first != second
+        if (!vertices.contains(elem.getSecond())) {
+            tot_gain += func.get(elem.getSecond());
+        }
+        return tot_gain;
+    }
 
 }
