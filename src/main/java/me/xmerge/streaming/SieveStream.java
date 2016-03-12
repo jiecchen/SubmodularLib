@@ -42,7 +42,8 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
 
 
     @SuppressWarnings("unchecked")
-    public void processItem(T elem) {
+    public void processItem(final T elem) {
+
         double mGain = emptyFunc.marginalGain(elem);
         if (mGain > m)
             m = mGain;
@@ -51,7 +52,8 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
             optValues.removeFirst();
         }
 
-        // add new SieveStreamOPT instance
+
+        // add SieveStreamOPT instances
         while (optValues.isEmpty() || optValues.getLast().getOPT() * (1 + eps) <= 2 * maxSize * m) {
             // create a new SieveStreamOPT instance
             double newOpt;
@@ -63,11 +65,11 @@ public class SieveStream<T> implements StreamingAlgorithm<T>{
             SieveStreamOPT<T> knowOpt = new SieveStreamOPT<>(newOpt, maxSize, newFunc);
             // add it to optValues
             optValues.add(knowOpt);
+        }
 
-            // now update each instance in optValues
-            for (SieveStreamOPT<T> ssOpt: optValues) {
-                ssOpt.processItem(elem);
-            }
+        // now update each instance in optValues
+        for (SieveStreamOPT<T> ssOpt: optValues) {
+            ssOpt.processItem(elem);
         }
     }
 
