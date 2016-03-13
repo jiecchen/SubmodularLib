@@ -48,7 +48,7 @@ public class CircuitStream<T> implements StreamingAlgorithm<T> {
             }
 
             // update the solution if necessary
-            if (func.marginalGain(emptyList, elem) > 2 * minGain) {
+            if (func.marginalGain(emptyList, elem) >= 2 * minGain) {
                 S.set(idx, elem);
             }
         }
@@ -61,5 +61,13 @@ public class CircuitStream<T> implements StreamingAlgorithm<T> {
      */
     public ArrayList<T> getOptimalSolution() {
         return S;
+    }
+
+    /**
+     *
+     * @return return function value
+     */
+    public double getOptimalValue() {
+        return func.eval(S);
     }
 }
