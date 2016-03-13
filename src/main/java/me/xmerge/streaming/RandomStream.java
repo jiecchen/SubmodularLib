@@ -21,15 +21,19 @@ public class RandomStream<T> implements StreamingAlgorithm<T> {
      * @param _emptyFunc an instance of FuncT (Submodular function) with empty buffer
      */
     @SuppressWarnings("unchecked")
-    public RandomStream(double _eps, int _maxSize, SubmodularBuffer<T> _emptyFunc) {
+    public RandomStream(double _eps, int _maxSize, SubmodularBuffer<T> _emptyFunc, double alpha_llimit, double alpha_rlimit) {
+        assert alpha_llimit < alpha_rlimit;
+        assert alpha_llimit > 0;
+
         optValues = new ArrayDeque<>();
         emptyFunc = _emptyFunc;
-        for (double i = 0.0001; i < 10000.; i *= 1.5) {
+        for (double i = alpha_llimit; i < alpha_rlimit; i *= 1.5) {
             SubmodularBuffer<T> func = (SubmodularBuffer<T>) UtilFunctions.deepClone(emptyFunc);
             RandomStreamAlpha<T> randStreamAlpha = new RandomStreamAlpha<>(i, _maxSize, func, _eps);
             optValues.add(randStreamAlpha);
         }
     }
+
 
 
 
