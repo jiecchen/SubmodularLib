@@ -103,7 +103,7 @@ public class TestStreaming {
 
         // load dataset
         ArrayList<RawPair<Integer, Integer>> edges = DataLoader.loadEdges("datasets/facebook.txt");
-        Collections.shuffle(edges);
+        // Collections.shuffle(edges);
 
         // construct weighted function
         HashMap<Integer, Double> values = new HashMap<>();
@@ -124,24 +124,25 @@ public class TestStreaming {
 
 
 
-        runWeightedVertex(k, edges, values, "SieveStream");
-        runWeightedVertex(k, edges, values, "CircuitStream");
-        runWeightedVertex(k, edges, values, "Offline");
+        // runWeightedVertex(k, edges, values, "SieveStream");
+        for (int kk = 150; kk < 500; kk += 50)
+            runWeightedVertex(kk, edges, values, "CircuitStream");
+        // runWeightedVertex(k, edges, values, "Offline");
 
-        {
-            ArrayList<Double> vv = new ArrayList<>();
-            for (int i = 0; i < 10; ++i) {
-                vv.add(runWeightedVertex(k, edges, values, "Baseline"));
-            }
-            System.out.println(vv);
-        }
-        {
-            ArrayList<Double> vv = new ArrayList<>();
-            for (int i = 0; i < 100; ++i) {
-                vv.add(runWeightedVertex(k, edges, values, "RandomStream"));
-            }
-            System.out.println(vv);
-        }
+//        {
+//            ArrayList<Double> vv = new ArrayList<>();
+//            for (int i = 0; i < 10; ++i) {
+//                vv.add(runWeightedVertex(k, edges, values, "Baseline"));
+//            }
+//            System.out.println(vv);
+//        }
+//        {
+//            ArrayList<Double> vv = new ArrayList<>();
+//            for (int i = 0; i < 10; ++i) {
+//                vv.add(runWeightedVertex(k, edges, values, "RandomStream"));
+//            }
+//            System.out.println(vv);
+//        }
     }
 
     public static void main(String args[]) {
