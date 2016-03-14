@@ -48,29 +48,27 @@ public class RandomStream<T> implements StreamingAlgorithm<T> {
      *
      * @return func with max function value
      */
-    public SubmodularBuffer<T> getOptimalFunc() {
+    public ArrayList<T> getOptimalSolution() {
         // find solution with optimal function value
         Double maxValue = Double.NEGATIVE_INFINITY;
-        SubmodularBuffer<T> ans = emptyFunc;
+        ArrayList<T> sol = new ArrayList<>();
 
         for (RandomStreamAlpha<T> ssAlpha: optValues) {
-            if (ssAlpha.getFunc().getCurrentValue() > maxValue) {
-                maxValue = ssAlpha.getFunc().getCurrentValue();
-                ans = ssAlpha.getFunc();
+            if (ssAlpha.getCurrentValue() > maxValue) {
+                maxValue = ssAlpha.getCurrentValue();
+                sol = ssAlpha.getOptimalSolution();
             }
         }
-        System.out.println(optValues.size());
-        System.out.println("maxValue = " + maxValue);
 
-        return ans;
+        return sol;
     }
 
     /**
      *
-     * @return the best possible solution of the constrained submodular maximization problem
+     * @return the function value
      */
-    public ArrayList<T> getOptimalSolution() {
-        return getOptimalFunc().getSolution();
+    public double getOptimalValue() {
+        return emptyFunc.eval(getOptimalSolution());
     }
 
 
