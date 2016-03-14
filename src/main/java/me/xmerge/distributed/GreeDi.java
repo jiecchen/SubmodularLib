@@ -1,6 +1,9 @@
-package experimental;
+package me.xmerge.distributed;
 
+import me.xmerge.core.GreedyLazy;
+import me.xmerge.core.SubmodularBuffer;
 import me.xmerge.util.Sample;
+import me.xmerge.util.UtilFunctions;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,24 @@ public class GreeDi<T> {
         }
 
     }
+
+
+    public ArrayList<T> runGreedy(int kk, int k, SubmodularBuffer<T> func) {
+        assert kk * nMachines >= k;
+        ArrayList<T> results = new ArrayList<>();
+        for (ArrayList<T> dataset : datasets) {
+            SubmodularBuffer<T> funcCopy = (SubmodularBuffer<T>) UtilFunctions.deepClone(func);
+            GreedyLazy.findOptimal(dataset, funcCopy, kk);
+            results.addAll(funcCopy.getSolution());
+        }
+        GreedyLazy.findOptimal(results, func, k);
+        return func.getSolution();
+    }
+
+    public ArrayList<T> runGreedy(int k, SubmodularBuffer<T> func) {
+        return runGreedy(k, k, func);
+    }
+
 
     public void printDatasets() {
         for (ArrayList<T> arr : datasets) {
