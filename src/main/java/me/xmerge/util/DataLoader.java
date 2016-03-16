@@ -5,6 +5,7 @@ package me.xmerge.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
 
 
@@ -36,5 +37,33 @@ public class DataLoader {
         }
 
         return edges;
+    }
+
+    /**
+     *
+     * @param fileName
+     * @return sets
+     */
+    public static ArrayList<HashSet<String>> loadSets(String fileName) {
+        ArrayList<HashSet<String>> sets = new ArrayList<>();
+        Scanner scanner;
+        try {
+            scanner = new Scanner(new File(fileName));
+        }
+        catch (FileNotFoundException e) {
+            System.err.println("Error: file not found!");
+            return new ArrayList<>();
+        }
+
+        while (scanner.hasNext()) {
+            String line = scanner.nextLine();
+            HashSet<String> st = new HashSet<>();
+            for (String s : line.split(" ")) {
+                st.add(s);
+            }
+            sets.add(st);
+        }
+
+        return sets;
     }
 }
