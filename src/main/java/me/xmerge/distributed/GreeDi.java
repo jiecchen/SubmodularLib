@@ -52,6 +52,7 @@ public class GreeDi<T> {
             GreedyLazy.findOptimal(dataset, funcCopy, kk);
             results.addAll(funcCopy.getSolution());
         }
+        results = UtilFunctions.removeDuplicate(results);
         GreedyLazy.findOptimal(results, func, k);
         return func.getSolution();
     }
