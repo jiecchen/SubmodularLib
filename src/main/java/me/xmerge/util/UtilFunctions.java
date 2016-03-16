@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 /**
@@ -54,5 +55,14 @@ public class UtilFunctions {
             }
 
         return V;
+    }
+
+
+    public static<T> ArrayList<T> removeDuplicate(ArrayList<T> arr) {
+        HashSet<T> st = new HashSet<>();
+        st.addAll(arr);
+        ArrayList<T> res = new ArrayList<>();
+        res.addAll(st);
+        return res;
     }
 }
