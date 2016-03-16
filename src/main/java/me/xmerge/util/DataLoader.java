@@ -41,8 +41,8 @@ public class DataLoader {
 
     /**
      *
-     * @param fileName
-     * @return sets
+     * @param fileName the name of the  file
+     * @return sets the sets to be returned
      */
     public static ArrayList<HashSet<String>> loadSets(String fileName) {
         ArrayList<HashSet<String>> sets = new ArrayList<>();
