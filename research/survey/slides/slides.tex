@@ -88,9 +88,21 @@
 \newtheorem{property}{Property}
 
 
+
+\newcommand{\bbZ}{\mathbb{Z}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\opt}{\text{OPT}}
+\newcommand{\knowopt}{{\sc KnowOpt}}
+\newcommand{\alg}{\text{ALG}}
+
 \newcommand{\emRed}[1][]{\textcolor{blue} #1}
 \newcommand{\bbR}{\mathbb{R}}
 
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -216,6 +228,82 @@ is submodular.
 
 
 
+\subsection{Constraints}
+\begin{frame}
+\frametitle{Constraints}
+\begin{block}{Submodular Maximization Problem}
+A submodular maximization problem usually has the following form:
+
+\begin{equation}
+  \label{eq:optimization}
+  \argmax_{I\in\calI} f(I),
+\end{equation}
+\end{block}
+where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Constraints}
+
+\begin{block}{$\calI$ is important!}
+The structure of $\calI$ plays a crucial role in submodular optimization:
+\begin{itemize}
+\item Different constraints have different hardness results.
+\item Normally the difficulty increases when the constraint becomes more general.
+\end{itemize}
+\end{block}
+
+\begin{block}{Popular constraints}
+Some popular constraints:
+\begin{itemize}
+\item Cardinality constraint
+\item Knapsack constraint
+\item Matroid constraint
+\item Matching
+\item $p$-System
+\item ...
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Constraints cont.}
+First we define hereditary set systems.
+\begin{definition}[Hereditary]
+  \label{def:hereditary}
+  A constraint $\calI \subseteq 2^V$ is said to be \emRed{hereditary} if 
+$$I\in\calI \implies J\in\calI ~\text{for any}~J\subseteq I.$$
+A hereditary constraint is sometimes called an \emRed{independent system} and each $I\in\calI$ is called an \emRed{independent set}. 
+\end{definition}
+\textbf{All constraints we will discuss are hereditary.}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Constraints cont.}
+  \begin{block}{Cardinality}
+    \emRed{Cardinality constraint}: $\calI = \{A \subseteq V ~|~ |A| \leq k\}$
+  \end{block}
+
+  \begin{block}{Knapsack}
+   \emRed{Knapsack Constraint}: each $i \in V$ is assigned a weight $w_i \geq 0$,  $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
+  \end{block}
+
+
+  \begin{block}{Matching}
+     \emRed{Matching}: given a graph $G = (V, E)$, a \emph{Matching} is a set $S\subseteq E$ such that no edges in $S$ share common vertex.
+  \end{block}
+
+  \begin{block}{Matroid}
+    \emRed{Matroid} is the generalization of the independence concept in linear algebra;
+    omit details here ...
+  \end{block}
+
+
+\end{frame}
+
 
 
 %------------------------------------------------
@@ -335,5 +423,7 @@ This statement requires citation \cite{p1}.
 
 
 
+\bibliographystyle{abbrv}
+\bibliography{survey.bib}
 
 \end{document} 
