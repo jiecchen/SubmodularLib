@@ -104,10 +104,21 @@
 \newcommand{\E}{\mathbf{E}}
 \newcommand{\emRed}[1][]{\textcolor{blue} #1}
 \newcommand{\bbR}{\mathbb{R}}
+\newcommand{\eps}{\epsilon}
+\newcommand{\greedy}{{\sc Greedy}~}
+\newcommand{\greedyLazy}{{\sc GreedyLazy}~}
+\newcommand{\stocGreedy}{{\sc StocGreedy}~}
+%\newcommand{\baseline}{{\sc BaselineStream}~}
+\newcommand{\randomSampling}{{\sc RandomSampling}~}
+\newcommand{\sieveStream}{{\sc SieveStream}~}
+\newcommand{\sieveStreamOPT}{{\sc SieveStreamOPT}~}
+\newcommand{\randomStream}{{\sc RandomStream}~}
+\newcommand{\circuitStream}{{\sc CircuitStream}~}
+\newcommand{\offline}{{\sc Offline}~}
 
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
-
+\newcommand{\chensays}[2][]{\textcolor{red} {\textsc{Chen #1:} \emph{#2}}}
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
@@ -447,52 +458,113 @@ $$\calI = \{ A \subseteq V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\ma
  \end{frame}
 
 
+
+
 \begin{frame}
-\frametitle{Multiple Columns}
-\begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
-
-\column{.45\textwidth} % Left column and width
-\textbf{Heading}
-\begin{enumerate}
-\item Statement
-\item Explanation
-\item Example
-\end{enumerate}
-
-\column{.5\textwidth} % Right column and width
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
-
-\end{columns}
+  \frametitle{Summary of state of the arts}
+  \begin{table}[t]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+constraint & monotone  &  non-negative \\
+\hline
+cardinality & $1 - 1/e$  \cite{NWF78} & $1/e + .004$ \cite{BFN+14}\\
+\hline
+matroid & $1 - 1/e$ \cite{CCP+11}, R & $\frac{1 - \eps}{e}$ \cite{FNS11}, R \\
+\hline
+matching & $\frac{1}{2 + \eps}$ \cite{FNS+11} & $\frac{1}{4 + \eps}$ \cite{FNS+11}\\
+\hline
+intersection of $p$ matroids & $\frac{1}{p + \eps}$ \cite{LSV10} & $\frac{p - 1}{p^2 + \eps}$ \cite{LSV10}\\
+\hline
+$p$-matchoid & $\frac{1}{p + 1}$ \cite{CCP+11,NWF78} & $\frac{(1-\eps)(2-o(1))}{e\cdot p}$ \cite{FNS+11,VCZ11}, R\\
+\hline
+\end{tabular}
+\caption{Best known approximation bounds for submodular maximization in RAM model. Bounds for randomized algorithms that hold in expectation are marked (R).}
+\label{table:centralized}
+\end{table}
 \end{frame}
+
+% \begin{frame}
+% \frametitle{Multiple Columns}
+% \begin{columns}[c] % The "c" option specifies centered vertical alignment while the "t" option is used for top vertical alignment
+
+% \column{.45\textwidth} % Left column and width
+% \textbf{Heading}
+% \begin{enumerate}
+% \item Statement
+% \item Explanation
+% \item Example
+% \end{enumerate}
+
+% \column{.5\textwidth} % Right column and width
+% Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+
+% \end{columns}
+% \end{frame}
 
 %------------------------------------------------
 \section{Applications}
 %------------------------------------------------
-
+\subsection{Overview}
 \begin{frame}
-\frametitle{Table}
-\begin{table}
-\begin{tabular}{l l l}
-\toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
-\midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
-\bottomrule
-\end{tabular}
-\caption{Table caption}
-\end{table}
+\frametitle{Overview of Applications}
+\subsection{List of Possible Applications}
+\begin{itemize}
+\item \textbf{Combinatorial Problems}: set cover, max $k$ coverage, vertex cover, edge cover, graph cut problems etc.
+\item \textbf{Networks}: social networks, viral marketing, diffusion networks etc.
+\item \textbf{Graphical Models}: image segmentation, tree distributions, factors etc.
+\item \textbf{NLP}: document summarization, web search, information retrieval
+\item \textbf{Machine Learning}: active/semi-supervised learning etc.
+\item \textbf{Economics}: markets, economies of scale
+\end{itemize}
+
 \end{frame}
 
 %------------------------------------------------
+\subsection{Examples of Applications}
+\begin{frame}
+\frametitle{Set Cover Problem}
+\begin{itemize}
+\item Let $E$ be a fixed set with finite size.
+\item $V = \{C_1, C_2, \ldots, C_n\}$ where each $C_i \subseteq E$.
+\item  We define a function $f:2^V \rightarrow \bbR$ such that $f(S) = |\cup_{C\in S} C|$.
+\item Goal: pick $S \subseteq V$ with $|S| \leq k$ that maximizes $f(S)$
+\item $f(S)$ is monotone submodular and this is a submodular maximization problem s.t. cardinality constraint!
+\end{itemize}
+
+\end{frame}
+
 
 \begin{frame}
-\frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-  $E = mc^2$
-\end{theorem}
+\frametitle{Kernel Machines}
+The data set $V = \{x_1, x_2, \ldots, x_n\}$ is represented in a transformed space via a kernel matrix
+
+\[ K_V = \left( \begin{array}{ccc}
+\calK(x_1, x_2) & \ldots & \calK(x_1, x_n) \\
+\vdots & \ddots & \vdots \\
+\calK(x_n,x_1) & \ldots & \calK(x_n, x_n) \end{array} \right),\] 
+where $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetric and positive definite. 
 \end{frame}
+
+\begin{frame}
+  \frametitle{Kernel Machines cont.}
+  \begin{itemize}
+  \item   $K_V$ is large for large $|V|$, need to select a subset from $V$.
+  \item   How to measure the quality of selected subset?
+  \item A popular way is to use \emph{Informative Vector Machine} (IVM) introduced by Laurence et al.\ \cite{LSH03}:
+    $$f(S) = \frac{1}{2} \log\det\left( \mathbf{I} + \sigma^{-2} K_S \right)$$
+   \item $f(S)$ is submodular!
+   \item Goal: $$\argmax_{S\subseteq V : |S| \leq k} f(S).$$
+  \end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
 
 %------------------------------------------------
 
@@ -513,39 +585,134 @@ Treatment 3 & 0.0009271 & 0.296 \\
 
 %------------------------------------------------
 
-\begin{frame}
-\frametitle{Figure}
-Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
-%\begin{figure}
-%\includegraphics[width=0.8\linewidth]{test}
-%\end{figure}
-\end{frame}
+% \begin{frame}
+% \frametitle{Figure}
+% Uncomment the code on this slide to include your own image from the same directory as the template .TeX file.
+% %\begin{figure}
+% %\includegraphics[width=0.8\linewidth]{test}
+% %\end{figure}
+% \end{frame}
 
 %------------------------------------------------
 
-\begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
-\frametitle{Citation}
-An example of the \verb|\cite| command to cite within the presentation:\\~
+% \begin{frame}[fragile] % Need to use the fragile option when verbatim is used in the slide
+% \frametitle{Citation}
+% An example of the \verb|\cite| command to cite within the presentation:\\~
 
-This statement requires citation \cite{p1}.
-\end{frame}
+% This statement requires citation \cite{p1}.
+% \end{frame}
 
 %------------------------------------------------
 %------------------------------------------------
 \section{Streaming Submodular Maximization}
 %------------------------------------------------
+\subsection{Streaming Model} 
+\begin{frame}{The model}
+
+  The ground set $V$ is an ordered sequence of items $e_1, e_2, \ldots, e_n$. We process the items one by one and the maximum space being used should be sublinear (i.e. $o(n)$).
+
+\chensays{insert a graph here}
+\end{frame}
+
+
+\subsection{Algorithms}
+
+\begin{frame}
+\frametitle{\sieveStream assume $\opt$ is known}
+\begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ as data stream, $f$ a monotone submodular function, $k$ the size constraint, $\opt$ the optimal value of $f(S)$ under the constraint}
+\KwOut{a set $S \subseteq V$}
+$S \gets \emptyset$\;
+\For{each $e$ in the data stream} {
+  \If{$\Delta(e|S) \geq \frac{\opt/2 - f(S)}{k - |S|}$ and $|S|<k$}{
+      $S \gets S \cup \{e\}$\;    
+    }
+}
+\Return{$S$}\;
+\caption{\sieveStreamOPT for submodular maximization}
+\label{algo:sieveStreamOPT}
+\end{algorithm}
+\end{frame}
+
+\begin{frame}
+  \frametitle{\sieveStream assume $\opt$ is unknown}
+  \begin{block}{Problems with \sieveStreamOPT}
+    \large{$\opt$ is unknown!}
+  \end{block}
+  %\pause
+  So what we do?    
+  \begin{block}{Solution}
+    \begin{itemize}
+    \item $m = \max_{e\in V}f(\{e\})$, for simplicity, assume $f(\emptyset) = \emptyset$
+    \item note that $m \leq \opt \leq k\cdot m$
+    \item if we know $m$, we guess $\opt$ as $m, (1 + \eps) m, (1 + \eps)^2m, \ldots \leq  k\cdot m$, each guess runs an instance of \sieveStreamOPT
+    \item it runs only $O(\log_{(1 + \eps)}) = O(\frac{k}{\eps})$ instances
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+ \frametitle{\sieveStream assume $\opt$ is unknown, cont.}
+ \begin{block}{Problem again}
+    \large{calculating $m = \max_{e\in V}f(\{e\})$ requires an extra pass!}
+  \end{block}
+  Solution?
+  \begin{block}{Solution}
+    \begin{itemize}
+    \item update $m \gets \max(f({e_i}, m))$ on the fly!
+    \item lazy-evaluation, create an instance of \sieveStreamOPT only when necessary
+    \item it runs only $O(\log_{(1 + \eps)}) = O(\frac{k}{\eps})$ instances, using only $1$ pass
+    \item guarantee $(1/2 - \eps)$-approximation for monotone submodular maximization s.t. cardinality constraint
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+
+
+
 
 
 \begin{frame}
-\frametitle{References}
-\footnotesize{
-\begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
-\bibitem[Smith, 2012]{p1} John Smith (2012)
-\newblock Title of the publication
-\newblock \emph{Journal Name} 12(3), 45 -- 678.
-\end{thebibliography}
+  \frametitle{\randomStream}
+  \begin{algorithm}[H]
+\DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+\KwIn{$V$ as data stream, $f$ a non-negative submodular function, $k$ the cardinality constraint, $\eps$ a parameter}
+\KwOut{a set $S \subseteq V$}
+$B\gets \emptyset, S\gets \emptyset$\;
+\For{each $e$ in the data stream} {
+  \If{$|S| < k$ and $\Delta(e|S) > \alpha$}{
+    $B \gets B + e$\;
+  }
+  \If{$|B| > \frac{k}{\eps}$}{
+    $e \gets $ uniformly random from $B$\;
+    $B \gets B - e, S \gets S + e$\;
+    \For{all $e'\in B$ s.t. $\Delta(e'|S)\leq \alpha$}{
+      $B \gets B - e'$\;
+    }
+  }
 }
+$S' \gets$ offline algorithm on $B$\;
+\Return{$\argmax_{A\in\{S, S'\}}f(A)$}\;
+\caption{\randomStream for submodular maximization}
+\label{algo:randomStream}
+\end{algorithm}
+
 \end{frame}
+
+
+% \begin{frame}
+% \frametitle{References}
+% \footnotesize{
+% \begin{thebibliography}{99} % Beamer does not support BibTeX so references must be inserted manually as below
+% \bibitem[Smith, 2012]{p1} John Smith (2012)
+% \newblock Title of the publication
+% \newblock \emph{Journal Name} 12(3), 45 -- 678.
+% \end{thebibliography}
+% }
+% \end{frame}
 
 %------------------------------------------------
 
@@ -555,7 +722,7 @@ This statement requires citation \cite{p1}.
 
 
 \begin{frame}
-\Huge{\centerline{The End}}
+\Huge{\centerline{Thank you!}}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
