@@ -172,10 +172,16 @@ $$f(S) = \sum_{v\in S} f(\{v\}).$$
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Monotonitcity}
+\begin{definition}[Monotonitcity]
+  A set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in the similar way.
+\end{definition}
+When we say a submodular function is monotone, we mean it is non-decreasing.
+\end{frame}
+
 
 \subsection{Properties}
-
-
 \begin{frame}
 \frametitle{Properties}
 
@@ -187,9 +193,30 @@ Submodularity is closed under addition.
 is submodular for any fixed $\alpha, \beta \in \bbR^+$.
 \end{property}
 
-
-
+Submodularity is preserved under restriction.
+\begin{property}
+  \label{prop:restriction}
+  Let $f: 2^V \rightarrow \bbR$ be a submodular function. Let $S\subseteq V$ be a fixed set. Then
+$$f':2^V \rightarrow \bbR~~\text{with}~~f'(A) = f(A\cap S)$$
+is submodular.
+\end{property}
 \end{frame}
+
+
+\begin{frame}
+\frametitle{Properties cont.}
+The following property can be useful when we show that the negative of the objective function of k-median problem is submodular.
+\begin{property}
+  \label{prop:max}
+Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ its $i$th coordinate. Then 
+$$f:2^V \rightarrow \bbR~~\text{with}~~ f(A) = \max_{j\in A}c_i$$ 
+is submodular.
+\end{property}
+\end{frame}
+
+
+
+
 
 %------------------------------------------------
 
