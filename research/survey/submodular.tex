@@ -189,7 +189,7 @@ All constraints we discuss in this section are hereditary.
 \subsubsection{Cardinality Constraint}
 Cardinality constraint is perhaps the most straightforward yet most popular constraint we would discuss in this survey. Efficient algorithms have been developed for finding or approximating the optimal solution of (\ref{eq:optimization}) subject to this constraint. There are also a lot of extensions, to both streaming and distributed settings. 
 
-A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |V| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-median clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
+A \emRed{cardinality constraint} is parameterized with a fixed constant $k \in \bbZ^+$. It is simply defined as $\calI = \{A \subseteq V ~|~ |A| \leq k\}$, i.e. all subsets of $V$ with size no larger than $k$. Cardinality constraint is arguably the most popular constraint, and it occurs everywhere. For example, in k-median clustering, we want to find a set $S$ of \emph{at most} $k$ points, that minimizes the total distance of all points to $S$.  
 
 \subsubsection{Knapsack Constraint}
 Knapsack constraint generalizes cardinality constraint by assigning each element in $V$ a weight. Given a budget $W > 0$ and assume that each $i \in V$ is assigned a weight $w_i \geq 0$, a \emRed{knapsack constraint} can be defined as $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
