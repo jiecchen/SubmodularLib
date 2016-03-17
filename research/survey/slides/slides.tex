@@ -79,6 +79,10 @@
 \usepackage{graphicx} % Allows including images
 \usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
 \usepackage{color}
+\usepackage[ruled, vlined, linesnumbered]{algorithm2e}
+\usepackage{subfig}
+\usepackage{pgf}
+%\usepackage[a4paper,top=10.0mm,bottom=15.0mm]{geometry}
 
 
 %\newtheorem{theorem}{Theorem}
@@ -97,7 +101,7 @@
 \newcommand{\opt}{\text{OPT}}
 \newcommand{\knowopt}{{\sc KnowOpt}}
 \newcommand{\alg}{\text{ALG}}
-
+\newcommand{\E}{\mathbf{E}}
 \newcommand{\emRed}[1][]{\textcolor{blue} #1}
 \newcommand{\bbR}{\mathbb{R}}
 
@@ -253,7 +257,7 @@ The structure of $\calI$ plays a crucial role in submodular optimization:
 \item Normally the difficulty increases when the constraint becomes more general.
 \end{itemize}
 \end{block}
-
+\pause
 \begin{block}{Popular constraints}
 Some popular constraints:
 \begin{itemize}
@@ -291,6 +295,7 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
    \emRed{Knapsack Constraint}: each $i \in V$ is assigned a weight $w_i \geq 0$,  $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
   \end{block}
 
+  \pause
 
   \begin{block}{Matching}
      \emRed{Matching}: given a graph $G = (V, E)$, a \emph{Matching} is a set $S\subseteq E$ such that no edges in $S$ share common vertex.
@@ -309,16 +314,24 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
 
 \begin{frame}
   \frametitle{$p$-System}
-\emRed{$p$-system} is the most general constraint we will discuss in this survey, it includes graph matching, $p$-matchoid (therefore matroid) and many others as special cases.
+\emRed{$p$-system} is very general, it includes many other constraints as special cases.
 
 \begin{block}{Definition of $p$-System}
 Let $(V, \calI)$ be a set system and $\calI$ hereditary.  Let $\mathcal{B}(A)$ be the collection of all bases of $A$.
 
-$$\calI = \{ A \subset V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\mathcal{B}(A)}|S|} \leq p \}.$$
+$$\calI = \{ A \subseteq V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\mathcal{B}(A)}|S|} \leq p \}.$$
 \end{block}
-
+\pause
 \textbf{Note:} a \emRed{base} of $A$ is the maximal independent set included in $A$. 
-
+\pause
+\begin{block}{examples of $p$-system}
+  \begin{itemize}
+    \item matroid is $1$-system
+    \item matching is $2$-system
+    \item intersection of $p$ matroid is $p$-system
+    \item ...
+  \end{itemize}
+\end{block}
 \end{frame}
 
 
@@ -342,6 +355,96 @@ $$\calI = \{ A \subset V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\math
 
 %------------------------------------------------
 
+
+
+\subsection{Algorithms}
+
+\begin{frame}
+  \frametitle{Notations}
+  \begin{block}{Some notations}
+    \begin{itemize}
+      \item $\Delta_f(e|S) = f(S + e) - f(S)$ (or simply $\Delta(e|S)$ when $f$ is clear from context)
+      \item \emRed{$\alpha$-approximation}: the returned solution $S$ always satisfies  $f(S) \geq \alpha \cdot \argmax_{I\in\calI}f(I)$
+      \item When the algorithm is randomized, we normally say it guarantees \emRed{$\alpha$-approximation in expectation} if $$\E[f(S)] \geq \alpha\cdot \argmax_{I\in\calI}f(I).$$ 
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{The standard greedy algorithm}
+  \begin{algorithm}[H]
+    \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+    \KwIn{$V$ the ground set, $f$ the submodular function, $\calI$ the constraint}
+    \KwOut{a set $S \subseteq V$}
+    $S \gets \emptyset$\;
+    \While{$\exists ~e\in V\backslash S$ s.t. $S\cup\{e\}\in \calI$} {
+      $e \gets \argmax_{e\in V\backslash S, ~S\cup\{e\}\in \calI} \Delta_f(e|S)$\;\label{line:emax}
+      $S \gets S\cup \{e\}$\;
+    }
+    \Return{$S$}\;
+    \caption{{\sc Greedy} algorithm for submodular maximization}
+    \label{algo:greedy}
+\end{algorithm}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Theorems of Algorithm \ref{algo:greedy}}
+\begin{theorem}[\cite{NWF78}, for cardinality constraint]
+  \label{thm:1978}
+  For a non-negative \emRed{monotone submodular} function $f: 2^V \rightarrow \bbR$, let $\calI$ be the \emRed{cardinality constraint}, Algorithm \ref{algo:greedy} returns a $(1 - 1/e)$-approximation to $\argmax_{I\in \calI} f(S)$.
+\end{theorem}
+\pause
+\begin{theorem}[\cite{NWF78,CCP+11}, for $p$-system]
+  \label{thm:1978-p}
+  For a non-negative \emRed{monotone submodular} function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p + 1}$-approximation.
+\end{theorem}
+\pause
+\begin{theorem}[\cite{J76}, modular maximization s.t. $p$-system]
+  \label{thm:1976-p}
+  For a non-negative \emRed{monotone modular} function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p}$-approximation.
+\end{theorem}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Speedup - {\sc GreedyLazy}}
+ \begin{block}{GreedyLazy}
+   \begin{itemize}
+   \item<1,2,3,4>  Minoux \cite{M78} proposed {\sc Lazy-greedy} as a fast implementation for Algorithm \ref{algo:greedy}.
+   \item<2,3,4> {\sc GreedyLazy} keeps an upper bound $\rho(e)$ on the marginal gain sorted in a heap.
+    \item<3,4> In each step, only update the top element in the heap and push it back, if this element remains in the top, include it into solution.
+    \item<4> Again gives $(1 - e^{-1})$-approximation.
+   \end{itemize}
+ \end{block}
+\end{frame}
+
+\begin{frame}
+\frametitle{Speedup - {\sc StocGreedy}\cite{MBK+15}}
+ \begin{block}{StocGreedy}
+   \begin{itemize}
+   \item<1,2,3> In each round, instead of considering all $V\backslash S$  to get
+     $$e \gets \argmax_{e\in V\backslash S, ~S\cup\{e\}\in \calI} \Delta_f(e|S),$$
+    \item<2,3>   consider only $\frac{|V|}{k}\log\frac{1}{\epsilon}$ random samples from $V \backslash S$.
+    \item<3> $(1 - e^{-1}-\epsilon)$-approximation in expectation.
+   \end{itemize}
+\end{block}
+ \end{frame}
+
+
+
+ \begin{frame}
+   \frametitle{Comparison}
+\begin{figure}[h!t]
+     \centering
+     \subfloat[][Efficiency]{\includegraphics[width=0.5\textwidth]{figures/value-queries}\label{fig:greedy-efficiency}}
+     ~~
+     \subfloat[][Quality]{\includegraphics[width=0.5\textwidth]{figures/func-values}\label{fig:quality-greedy}}    
+     \caption{Experiment on {\sc Synthetic} dataset}
+     \label{fig:sythetic-offline}
+   \end{figure}
+ \end{frame}
 
 
 \begin{frame}
@@ -460,6 +563,6 @@ This statement requires citation \cite{p1}.
 
 
 \bibliographystyle{abbrv}
-\bibliography{survey.bib}
+\bibliography{survey}
 
 \end{document} 
