@@ -306,7 +306,43 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
 
 
 
+
+\begin{frame}
+  \frametitle{$p$-System}
+\emRed{$p$-system} is the most general constraint we will discuss in this survey, it includes graph matching, $p$-matchoid (therefore matroid) and many others as special cases.
+
+\begin{block}{Definition of $p$-System}
+Let $(V, \calI)$ be a set system and $\calI$ hereditary.  Let $\mathcal{B}(A)$ be the collection of all bases of $A$.
+
+$$\calI = \{ A \subset V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\mathcal{B}(A)}|S|} \leq p \}.$$
+\end{block}
+
+\textbf{Note:} a \emRed{base} of $A$ is the maximal independent set included in $A$. 
+
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Hierarchy of constraints}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/hh}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Hierarchy of constraints (extended)}
+  \begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/hierarchy}
+  \end{figure}
+\end{frame}
+
+
 %------------------------------------------------
+
+
 
 \begin{frame}
 \frametitle{Multiple Columns}
