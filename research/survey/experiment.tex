@@ -239,7 +239,7 @@ For each $v\in O, ~S_v \gets \emptyset$\;
 $m \gets 0$\;
 
 \For{each $e$ in the data stream} {
-  m $\gets \max\{m, f(\{e\})\}$\;
+  $m \gets \max\{m, f(\{e\})\}$\;
   $O\gets \{(1 + \eps)^i~|~m \leq (1 + \eps)^i \leq 2\cdot k \cdot m\}$\;
   Delete all $S_v$ such that $v \in O$\;
   \For{$v \in O$}{
@@ -388,7 +388,7 @@ Mirrokni et al.\ \cite{MZ15} argued that when $k'$ and $C$ are increased, the ap
 
 \section{Conclusion}
 \label{sec:conclude}
-We implemented and tested several algorithms for submodular maximization. In particular, we focus on monotone submodular maximization subject to cardinality constraint, which is case in most applications we have seen in our survey. Many of the algorithms included in this report are the first time being implemented, and some interesting phenomenons have been observed: e.g. when input data is shuffled, streaming algorithms may give solutions with better quality than the offline greedy algorithm, or increasing $k$ and $C$ actually does not help too much in increasing the approximation ratio.  Due to lack of computation resources, our experiments were simulated in a laptop instead of a cluster. More datasets are necessary to obtain  convincing conclusions. We leave this to future work, possibly a research paper that experimentally evaluates algorithms for streaming/distributed submodular maximization.
+We implemented and tested several algorithms for submodular maximization. In particular, we focus on monotone submodular maximization subject to cardinality constraint, which is the case in most applications we have seen in our survey. Many of the algorithms included in this report are the first time being implemented, and some interesting phenomenons have been observed: e.g. when input data is shuffled, streaming algorithms may give solutions with better quality than the offline greedy algorithm, or increasing $k$ and $C$ actually does not help too much in increasing the approximation ratio.  Due to lack of computation resources, our experiments were simulated in a laptop instead of a cluster. More datasets are necessary to obtain  convincing conclusions. We leave this to future work, possibly a research paper that experimentally evaluates algorithms for streaming/distributed submodular maximization.
 
 
 %----------- end -------------------------
