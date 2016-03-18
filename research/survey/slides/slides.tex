@@ -82,6 +82,7 @@
 \usepackage[ruled, vlined, linesnumbered]{algorithm2e}
 \usepackage{subfig}
 \usepackage{pgf}
+\usepackage{multirow}
 %\usepackage[a4paper,top=10.0mm,bottom=15.0mm]{geometry}
 
 
@@ -660,7 +661,7 @@ $S \gets \emptyset$\;
   Solution?
   \begin{block}{Solution}
     \begin{itemize}
-    \item update $m \gets \max(f({e_i}, m))$ on the fly!
+    \item update $m \gets \max(f({e_i}), m)$ on the fly!
     \item lazy-evaluation, create an instance of \sieveStreamOPT only when necessary
     \item it runs only $O(\log_{(1 + \eps)}) = O(\frac{k}{\eps})$ instances, using only $1$ pass
     \item guarantee $(1/2 - \eps)$-approximation for monotone submodular maximization s.t. cardinality constraint
@@ -668,7 +669,29 @@ $S \gets \emptyset$\;
   \end{block}
 \end{frame}
 
+\begin{frame}
+  \frametitle{\sieveStream}
 
+  \begin{algorithm}[H]
+    \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
+    \KwIn{$V$ as data stream, $f$ a monotone submodular function, $k$ the size constraint, $\eps$ a parameter}
+    \KwOut{a set $S \subseteq V$}
+    $O = \{(1 + \eps)^i~|~i\in \bbZ\}$\;
+    \tcc*[h]{maintain the sets only for the necessary $v$'s lazily}\;
+    For each $v\in O, ~S_v \gets \emptyset$\;
+    $m \gets 0$\;
+
+    \For{each $e$ in the data stream} {
+      $m \gets \max\{m, f(\{e\})\}$\;
+      $O\gets \{(1 + \eps)^i~|~m \leq (1 + \eps)^i \leq 2\cdot k \cdot m\}$\;
+      run in parallel \sieveStreamOPT with each $\opt$ in $O$\;
+    }
+\Return{$\argmax_{S_v: v\in O}f(S_v)$}\;
+\caption{\sieveStream for submodular maximization}
+\label{algo:sieveStream}
+\end{algorithm}
+
+\end{frame}
 
 
 
@@ -676,7 +699,7 @@ $S \gets \emptyset$\;
 
 
 \begin{frame}
-  \frametitle{\randomStream}
+  \frametitle{\randomStream, assume $\alpha$ is known}
   \begin{algorithm}[H]
 \DontPrintSemicolon % Some LaTeX compilers require you to use \dontprintsemicolon instead
 \KwIn{$V$ as data stream, $f$ a non-negative submodular function, $k$ the cardinality constraint, $\eps$ a parameter}
@@ -703,6 +726,59 @@ $S' \gets$ offline algorithm on $B$\;
 \end{frame}
 
 
+
+\begin{frame}
+  \frametitle{\randomStream cont.}
+  \begin{block}{$\alpha$/$\opt$ is unknown}
+  \begin{itemize}
+  \item   In \randomStream, when $\alpha \approx \frac{\opt}{k}$, then algorithm gives $\frac{1 - \eps}{2 + \eps}$-approximation.
+  \item Again we can guess $\opt$ in parallel as we did in \sieveStream.
+  \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{experiment}
+  
+  \begin{figure}[h!]
+    \centering
+    \subfloat[][Shuffled edges]{\includegraphics[width=0.5\textwidth]{figures/streaming-shuffle}\label{fig:streaming-shuffle}}
+    ~~
+    \subfloat[][Edges grouped by vertices]{\includegraphics[width=0.5\textwidth]{figures/streaming}\label{fig:streaming-not-shuffle}}    
+    \caption{Streaming Algorithms on {\sc Facebook};  $\eps$ is set to be $0.2$ for both \sieveStream and \randomStream; $\gamma$ is set to be $1.0$ for \circuitStream.}
+    \label{fig:streaming-facebook}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Summary of state of the art}
+\begin{table}[t]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+constraint & monotone  &  non-negative \\
+\hline
+cardinality & $\frac{1-\eps}{2}$ \cite{BMK+14} & $\frac{1 - \eps}{2 + e}$ \cite{CGQ15}, R\\
+\hline
+matroid & $1/4$ \cite{CK14} & $\frac{1 - \eps}{4 + e}$ \cite{CGQ15},  R \\
+\hline
+matching & $4/31$ \cite{CK14} & $\frac{1 - \eps}{12 + \eps}$ \cite{CGQ15}, R \\
+\hline
+intersection of $p$ matroids & $\frac{1}{4p}$ \cite{CK14} & $\frac{(1 - \eps)(p - 1)}{5p^2 -4p + \eps}$ \cite{CGQ15}, R\\
+\hline
+$p$-matchoid & $\frac{1}{4p}$ \cite{CGQ15} & $\frac{(1-\eps)(2-o(1))}{(8+e)p}$ \cite{CGQ15}, R\\
+\hline
+\end{tabular}
+\caption{Best known approximation bounds for submodular maximization in streaming model. Bounds for randomized algorithms that hold in expectation are marked (R).}
+\label{table:streaming}
+\end{table}
+
+\end{frame}
+
+
+
 % \begin{frame}
 % \frametitle{References}
 % \footnotesize{
@@ -719,10 +795,109 @@ $S' \gets$ offline algorithm on $B$\;
 %------------------------------------------------
 \section{Distributed Submodular Maximization}
 %------------------------------------------------
+\subsection{The model}
+\begin{frame}
+  \frametitle{The model}
+  \begin{block}{Crash Introduction to MapReduce}
+  
+  \begin{itemize}
+  \item the data is represented as $\langle$key, value$\rangle$ pairs that are distributed across $m$ machines
+    \item a computation in this model proceeds in rounds. In each round, there will be two phases.
+      \item \emRed{Map phase:} each pair $\langle$key, value$\rangle$ is mapped by a user-defined hash function to $\langle$hash(key), value$\rangle$, all pairs are then shuffled and sent to different machines
+      \item \emRed{Reduce phase:} each machine performs computation on the pairs it received as the output or the input of the next round
+  \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{If you do not know MapReduce model ...}
+    Think of it as a group of machines with one machine as the coordinator/center node.    
+  \end{block}
+\end{frame}
+
+\subsection{The framework}
+
+\begin{frame}
+  \frametitle{{\sc GreeDi}-based algorithms}
+  \begin{block}{framework of {\sc GreeDi}-based algorithms}
+    $m$ -  the number of machines; $C \in \bbZ^+$ is an parameter;  $k$ - the cardinality constraint. The algorithm goes as follows:
+    \begin{itemize}
+    \item Randomly assign each $v$ to $C$ out of $m$ machines, we obtain subsets $V_1, \ldots, V_m$
+    \item Let $\alg$ be an offline algorithm, $k'$ be a cardinality constraint. Run $\alg$ on each $V_i$ with constraint $k'$, we obtains $U_1, U_2, \ldots, U_m$ as results.
+    \item Let $U = \cup_i S_i$, run $\alg$ on $U$ with parameter $k$, we obtain $S$ as the result. Also run $\alg$ on $U_1, \ldots, U_m$ with parameter $k$ to obtain $S_1, S_2, \ldots, S_m$.
+    \item Return the best solution among $S$, $S_1, \ldots, S_m$.
+    \end{itemize}
+
+  \end{block}
+\end{frame}
 
 
 \begin{frame}
-\Huge{\centerline{Thank you!}}
+  \frametitle{Some theories about the {\sc GreeDi}-Based Algorithms}
+  \begin{block}{some theories (informal)}
+    \begin{itemize}
+    \item use the standard greedy algorithm as $\alg$, $k' = k$, $C = 1$, the {\sc GreeDi}-Based algorithm gives $\frac{1-e^{-1}}{2}$-approximation.
+    \item increasing $k'$ or $C$ would \textbf{slightly} increase the approximation ratio (in worse case!), but not too much
+    \end{itemize}
+  \end{block}
+  
+\end{frame}
+
+\subsection{Experiment}
+
+\begin{frame}
+  \frametitle{experiment}
+  \begin{figure}[h!]
+     \centering
+     \subfloat[][Different multiplicity $C$; set $k' = k$; number of machines is $20$.]{\includegraphics[width=0.5\textwidth]{figures/C-acc}\label{fig:dist-C-acc}}
+     ~~
+     \subfloat[][Different $k'$; $C$ is set to be $1$; number of machines is set to be $20$.]{\includegraphics[width=0.5\textwidth]{figures/kk-acc}\label{fig:dist-kk-acc}}    
+     \caption{{\sc GreeDi}-based Algorithms on {\sc Accidents} dataset.}
+     \label{fig:distributed-accidents}
+\end{figure}
+
+\end{frame}
+
+
+
+\subsection{Summary}
+\begin{frame}
+\frametitle{Summary of state of the art}
+\begin{table}
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+constraint & rounds  &  approx. & reference \\
+\hline
+\multirow{3}{*}{cardinality} & $O(\frac{\log n}{\eps})$& $1-e^{-1}-\eps$ & \cite{KMV+15}\\
+\cline{2-4}
+                             & $2$ & $0.545$ & \cite{MZ15} \\
+\cline{2-4}
+                             & $O(1/\eps)$ & $1 - e^{-1}-\eps$ & \cite{BAN+2015new} \\
+
+\hline
+
+
+\multirow{3}{*}{matroid}     & $O(\frac{\log n}{\eps})$ & $1/2 - \eps$ & \cite{KMV+15} \\
+\cline{2-4}
+                             & $2$ & $1/4$ & \cite{DEN+15} \\
+\cline{2-4}
+                             & $O(1/\eps)$ & $1 - e^{-1}-\eps$ & \cite{BAN+2015new} \\
+\hline
+\multirow{3}{*}{p-system}     & $O(\frac{\log n}{\eps})$ & $\frac{1}{p+1} - \eps$ & \cite{KMV+15} \\
+\cline{2-4}
+                            & $2$  & $\frac{1}{2(p + 1)}$ & \cite{DEN+15} \\
+\cline{2-4}      
+                           & $O(1/\eps)$ & $\frac{1}{p + 1} - \eps$ & \cite{BAN+2015new}\\
+\hline
+\end{tabular}
+\caption{Best known algorithms  for monotone submodular maximization in the MapReduce model. All algorithms are randomized.}
+\label{table:distributed}
+\end{table}
+
+\end{frame}
+
+
+\begin{frame}
+\Huge{\centerline{Question? Thank you!}}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
