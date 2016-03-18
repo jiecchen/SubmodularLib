@@ -154,7 +154,7 @@ Indiana University Bloomington \\ % Your institution for the title page
 \section{Introduction to Submodularity} % Sections can be created in order to organize your presentation into discrete blocks, all sections and subsections are automatically printed in the table of contents as an overview of the talk
 %------------------------------------------------
 
-\subsection{Definitions} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{Definitions \& Properties} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 \begin{frame}
 \frametitle{Definitions of Submodularity}
@@ -167,6 +167,7 @@ Indiana University Bloomington \\ % Your institution for the title page
   \end{equation}
 \end{definition}
 
+\pause
 An alternate equivalent definition is more interpretable in many situations.
 
 \begin{definition}[diminishing returns]
@@ -197,7 +198,6 @@ $$f(S) = f(\emptyset) + \sum_{v\in S} \left( f(\{v\}) - f(\emptyset) \right)$$
 for any $S \subseteq V$. If we further assume $f(\emptyset) = 0$ (in this case, we call $f$ \emRed{normalized} or \emRed{proper}), we have a simplified expression,
 
 $$f(S) = \sum_{v\in S} f(\{v\}).$$
-
 \end{frame}
 
 \begin{frame}
@@ -209,7 +209,7 @@ When we say a submodular function is monotone, we mean it is non-decreasing.
 \end{frame}
 
 
-\subsection{Properties}
+%\subsection{Properties}
 \begin{frame}
 \frametitle{Properties}
 
@@ -220,7 +220,7 @@ Submodularity is closed under addition.
   $$f: 2^V\rightarrow \bbR~~\text{with}~~ f(A) = \alpha f_1(A) + \beta f_2(A)$$ 
 is submodular for any fixed $\alpha, \beta \in \bbR^+$.
 \end{property}
-
+\pause
 Submodularity is preserved under restriction.
 \begin{property}
   \label{prop:restriction}
@@ -233,7 +233,7 @@ is submodular.
 
 \begin{frame}
 \frametitle{Properties cont.}
-The following property can be useful when we show that the negative of the objective function of k-median problem is submodular.
+The following property can be useful if we want to show that the negative of the objective function of k-median problem is submodular.
 \begin{property}
   \label{prop:max}
 Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ its $i$th coordinate. Then 
@@ -302,7 +302,7 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
   \begin{block}{Cardinality}
     \emRed{Cardinality constraint}: $\calI = \{A \subseteq V ~|~ |A| \leq k\}$
   \end{block}
-
+  \pause
   \begin{block}{Knapsack}
    \emRed{Knapsack Constraint}: each $i \in V$ is assigned a weight $w_i \geq 0$,  $\calI = \{S \subseteq V ~|~ \sum_{i\in S} w_i \leq W \}$.
   \end{block}
@@ -312,7 +312,7 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
   \begin{block}{Matching}
      \emRed{Matching}: given a graph $G = (V, E)$, a \emph{Matching} is a set $S\subseteq E$ such that no edges in $S$ share common vertex.
   \end{block}
-
+  \pause
   \begin{block}{Matroid}
     \emRed{Matroid} is the generalization of the independence concept in linear algebra;
     omit details here ...
@@ -340,7 +340,7 @@ $$\calI = \{ A \subseteq V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\ma
   \begin{itemize}
     \item matroid is $1$-system
     \item matching is $2$-system
-    \item intersection of $p$ matroid is $p$-system
+    \item intersection of $p$ matroids is $p$-system
     \item ...
   \end{itemize}
 \end{block}
@@ -509,7 +509,7 @@ $p$-matchoid & $\frac{1}{p + 1}$ \cite{CCP+11,NWF78} & $\frac{(1-\eps)(2-o(1))}{
 \subsection{Overview}
 \begin{frame}
 \frametitle{Overview of Applications}
-\subsection{List of Possible Applications}
+%\subsection{List of Possible Applications}
 \begin{itemize}
 \item \textbf{Combinatorial Problems}: set cover, max $k$ coverage, vertex cover, edge cover, graph cut problems etc.
 \item \textbf{Networks}: social networks, viral marketing, diffusion networks etc.
@@ -611,8 +611,13 @@ where $\calK: V\times V \rightarrow \bbR$ is the kernel function that is symmetr
 \begin{frame}{The model}
 
   The ground set $V$ is an ordered sequence of items $e_1, e_2, \ldots, e_n$. We process the items one by one and the maximum space being used should be sublinear (i.e. $o(n)$).
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/streaming-model.pdf}
+    \caption{Streaming model}
+    \label{fig:streaming-model}
+\end{figure}
 
-\chensays{insert a graph here}
 \end{frame}
 
 
@@ -641,7 +646,7 @@ $S \gets \emptyset$\;
   \begin{block}{Problems with \sieveStreamOPT}
     \large{$\opt$ is unknown!}
   \end{block}
-  %\pause
+  \pause
   So what we do?    
   \begin{block}{Solution}
     \begin{itemize}
@@ -658,6 +663,7 @@ $S \gets \emptyset$\;
  \begin{block}{Problem again}
     \large{calculating $m = \max_{e\in V}f(\{e\})$ requires an extra pass!}
   \end{block}
+  \pause
   Solution?
   \begin{block}{Solution}
     \begin{itemize}
@@ -738,6 +744,9 @@ $S' \gets$ offline algorithm on $B$\;
 
 \end{frame}
 
+
+
+\subsection{Experiment}
 \begin{frame}
   \frametitle{experiment}
   
@@ -752,6 +761,7 @@ $S' \gets$ offline algorithm on $B$\;
 \end{frame}
 
 
+\subsection{Summary}
 \begin{frame}
   \frametitle{Summary of state of the art}
 \begin{table}[t]
