@@ -236,8 +236,8 @@ is submodular.
 The following property can be useful if we want to show that the negative of the objective function of k-median problem is submodular.
 \begin{property}
   \label{prop:max}
-Consider $V$ as a set of indices. Let $\mathbf{c}\in \bbR^V$ be a fixed vector, $c_i$ its $i$th coordinate. Then 
-$$f:2^V \rightarrow \bbR~~\text{with}~~ f(A) = \max_{j\in A}c_i$$ 
+Let $V$ be the ground set we consider, each element in $V$ is a real number.  Then 
+$$f:2^V \rightarrow \bbR~~\text{with}~~ f(A) = \max_{c\in A}c$$ 
 is submodular.
 \end{property}
 \end{frame}
@@ -256,6 +256,11 @@ A submodular maximization problem usually has the following form:
 \end{equation}
 \end{block}
 where $f$ is a submodular function and $\calI \subseteq 2^V$ is the collection of all feasible solutions. We call $\calI$ the \emRed{constraint} of the optimization problem.
+  \begin{block}{Example}
+    \emRed{Cardinality constraint}: $\calI = \{A \subseteq V ~|~ |A| \leq k\}$
+  \end{block}
+  \pause
+
 \end{frame}
 
 
@@ -299,7 +304,7 @@ A hereditary constraint is sometimes called an \emRed{independent system} and ea
 
 \begin{frame}
   \frametitle{Constraints cont.}
-  \begin{block}{Cardinality}
+\begin{block}{Cardinality}
     \emRed{Cardinality constraint}: $\calI = \{A \subseteq V ~|~ |A| \leq k\}$
   \end{block}
   \pause
