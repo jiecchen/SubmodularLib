@@ -183,30 +183,30 @@ An alternate equivalent definition is more interpretable in many situations.
 
 %------------------------------------------------
 
-\begin{frame}
-\frametitle{Modular Functions}
-\begin{definition}[Modularity]
-  \label{def:modular}
-  A function $f: 2^V \rightarrow \bbR$ is \emRed{modular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
-  \begin{equation}
-    \label{eq:modular}
-    f(A + v) - f(A) = f(B + v) - f(B).
-  \end{equation}
-\end{definition}
-Notably, a modular function $f$ can always be written as
-$$f(S) = f(\emptyset) + \sum_{v\in S} \left( f(\{v\}) - f(\emptyset) \right)$$
-for any $S \subseteq V$. If we further assume $f(\emptyset) = 0$ (in this case, we call $f$ \emRed{normalized} or \emRed{proper}), we have a simplified expression,
+% \begin{frame}
+% \frametitle{Modular Functions}
+% \begin{definition}[Modularity]
+%   \label{def:modular}
+%   A function $f: 2^V \rightarrow \bbR$ is \emRed{modular} if for any $A \subseteq B \subset V$, and $v \in V\backslash B$, we have that:
+%   \begin{equation}
+%     \label{eq:modular}
+%     f(A + v) - f(A) = f(B + v) - f(B).
+%   \end{equation}
+% \end{definition}
+% Notably, a modular function $f$ can always be written as
+% $$f(S) = f(\emptyset) + \sum_{v\in S} \left( f(\{v\}) - f(\emptyset) \right)$$
+% for any $S \subseteq V$. If we further assume $f(\emptyset) = 0$ (in this case, we call $f$ \emRed{normalized} or \emRed{proper}), we have a simplified expression,
 
-$$f(S) = \sum_{v\in S} f(\{v\}).$$
-\end{frame}
+% $$f(S) = \sum_{v\in S} f(\{v\}).$$
+% \end{frame}
 
-\begin{frame}
-\frametitle{Monotonitcity}
-\begin{definition}[Monotonitcity]
-  A set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in the similar way.
-\end{definition}
-When we say a submodular function is monotone, we mean it is non-decreasing.
-\end{frame}
+% \begin{frame}
+% \frametitle{Monotonitcity}
+% \begin{definition}[Monotonitcity]
+%   A set function $f: 2^V \rightarrow  \bbR$ is said to be non-decreasing if for any $A\subseteq B \subseteq V$, $f(A) \leq f(B)$. Non-increasing set functions are defined in the similar way.
+% \end{definition}
+% When we say a submodular function is monotone, we mean it is non-decreasing.
+% \end{frame}
 
 
 %\subsection{Properties}
@@ -380,7 +380,7 @@ $$\calI = \{ A \subseteq V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\ma
   \frametitle{Notations}
   \begin{block}{Some notations}
     \begin{itemize}
-      \item $\Delta_f(e|S) = f(S + e) - f(S)$ (or simply $\Delta(e|S)$ when $f$ is clear from context)
+      \item $\Delta_f(e|S) = f(S + e) - f(S)$ (or simply $\Delta(e|S)$ when $f$ is clear from context), call it \emRed{marginal gain}.
       \item \emRed{$\alpha$-approximation}: the returned solution $S$ always satisfies  $f(S) \geq \alpha \cdot \argmax_{I\in\calI}f(I)$
       \item When the algorithm is randomized, we normally say it guarantees \emRed{$\alpha$-approximation in expectation} if $$\E[f(S)] \geq \alpha\cdot \argmax_{I\in\calI}f(I).$$ 
     \end{itemize}
@@ -417,11 +417,11 @@ $$\calI = \{ A \subseteq V ~|~ \frac{\max_{S\in\mathcal{B}(A)}|S|}{\min_{S\in\ma
   \label{thm:1978-p}
   For a non-negative \emRed{monotone submodular} function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p + 1}$-approximation.
 \end{theorem}
-\pause
-\begin{theorem}[\cite{J76}, modular maximization s.t. $p$-system]
-  \label{thm:1976-p}
-  For a non-negative \emRed{monotone modular} function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p}$-approximation.
-\end{theorem}
+% \pause
+% \begin{theorem}[\cite{J76}, modular maximization s.t. $p$-system]
+%   \label{thm:1976-p}
+%   For a non-negative \emRed{monotone modular} function $f$, given a $p$-system $(V, \calI)$, Algorithm \ref{algo:greedy} returns a $\frac{1}{p}$-approximation.
+% \end{theorem}
 \end{frame}
 
 
